@@ -54,9 +54,9 @@ Kompilowany ze wsparciem dla X11, glibc 2.1 i ncurses.
 %build
 ./sys/unix/setup.sh links
 
-make OPTFLAGS="$RPM_OPT_FLAGS" all
+%{__make} OPTFLAGS="$RPM_OPT_FLAGS" all
 
-make -C util OPTFLAGS="$RPM_OPT_FLAGS" recover
+%{__make} -C util OPTFLAGS="$RPM_OPT_FLAGS" recover
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -64,9 +64,9 @@ install -d $RPM_BUILD_ROOT%{_datadir}/{games/nethack,fonts/misc} \
 $RPM_BUILD_ROOT{%{_mandir}/man6,%{_prefix}/X11R6/lib/X11/app-defaults} \
 	$RPM_BUILD_ROOT/var/games/nethack
 
-make install DESTDIR=$RPM_BUILD_ROOT
+%{__make} install DESTDIR=$RPM_BUILD_ROOT
 
-make -C doc manpages DESTDIR=$RPM_BUILD_ROOT
+%{__make} -C doc manpages DESTDIR=$RPM_BUILD_ROOT
 
 install util/recover	$RPM_BUILD_ROOT%{_datadir}/games/nethack
 install util/*_comp	$RPM_BUILD_ROOT%{_datadir}/games/nethack
