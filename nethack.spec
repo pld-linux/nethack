@@ -1,11 +1,11 @@
 #
 # Conditional build:
-# _with_vanilla - build vanilla NetHack (without patches)
-# _without_qt   - no X11 and QT bloat
+%bcond_without	qt	# no X11 and QT bloat 
+%bcond_with	vanilla	# build vanilla NetHack (without patches)
 #
 # no patches for now, wait for updates
-%define _with_vanilla	1
-
+%define		with_vanilla	1
+#
 %define		file_version	%(echo %{version} | tr -d .)
 Summary:	NetHack - An adventure into the Mazes of Menace
 Summary(es):	Juego estilo rogue que se basa en Dungeons and Dragons (calabozos y dragones)
@@ -60,11 +60,11 @@ Patch117:	%{name}-newt.patch
 # after adding additional features update this patch
 Patch200:	%{name}-makedefs.patch
 URL:		http://www.nethack.org/
-%{?!_without_qt:BuildRequires:	XFree86-devel}
+%{?with_qt:BuildRequires:	XFree86-devel}
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	ncurses-devel
-%{?!_without_qt:BuildRequires:	qt-devel >= 3.0.3}
+%{?with_qt:BuildRequires:	qt-devel >= 3.0.3}
 Requires:	/bin/gzip
 Conflicts:	applnk < 1.5.13
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -81,7 +81,7 @@ Andries Brouwer, were simply called `hack'. The name changed when
 maintenance was taken over by a group of hackers originally organized
 by Mike Stephenson.
 
-%{?!_with_vanilla:This package contains additional features.}
+%{!?with_vanilla:This package contains additional features.}
 
 %description -l pt_BR
 Nethack é um jogo clássico estilo rogue, baseado no Dungeons and
@@ -113,7 +113,7 @@ znacznie rozszerzone przez Andriesa Brouwara, nazywa³y siê po prostu
 'hack' (r±baæ, siekaæ.) Nazwa zmieni³a siê gdy opieka nad gr± zosta³a
 przejêta przez grupê hackerów zawi±zan± przez Mike'a Stephensona.
 
-%{?!_with_vanilla:Ten pakiet zawiera dodatkowe bajery.}
+%{!?with_vanilla:Ten pakiet zawiera dodatkowe bajery.}
 
 %package spoilers
 Summary:	Spoilers to NetHack
@@ -146,28 +146,28 @@ Nethackowy podrêcznik w formacie PDF.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%{?!_without_qt:%patch3 -p1}
+%{?with_qt:%patch3 -p1}
 
 # patches adding fun
-%{?!_with_vanilla:%patch100 -p1}
-%{?!_with_vanilla:%patch101 -p1}
-%{?!_with_vanilla:%patch102 -p1}
-%{?!_with_vanilla:%patch103 -p1}
-%{?!_with_vanilla:%patch104 -p1}
-%{?!_with_vanilla:%patch105 -p1}
-%{?!_with_vanilla:%patch106 -p1}
-%{?!_with_vanilla:%patch107 -p1}
-%{?!_with_vanilla:%patch108 -p1}
-%{?!_with_vanilla:%patch109 -p1}
-%{?!_with_vanilla:%patch110 -p1}
-%{?!_with_vanilla:%patch111 -p1}
-%{?!_with_vanilla:%patch112 -p1}
-%{?!_with_vanilla:%patch113 -p1}
-#%%{?!_with_vanilla:%patch114 -p1}
-#%%{?!_with_vanilla:%patch115 -p1}
-#%%{?!_with_vanilla:%patch116 -p1}
-%{?!_with_vanilla:%patch117 -p1}
-%{?!_with_vanilla:%patch200 -p1}
+%{!?with_vanilla:%patch100 -p1}
+%{!?with_vanilla:%patch101 -p1}
+%{!?with_vanilla:%patch102 -p1}
+%{!?with_vanilla:%patch103 -p1}
+%{!?with_vanilla:%patch104 -p1}
+%{!?with_vanilla:%patch105 -p1}
+%{!?with_vanilla:%patch106 -p1}
+%{!?with_vanilla:%patch107 -p1}
+%{!?with_vanilla:%patch108 -p1}
+%{!?with_vanilla:%patch109 -p1}
+%{!?with_vanilla:%patch110 -p1}
+%{!?with_vanilla:%patch111 -p1}
+%{!?with_vanilla:%patch112 -p1}
+%{!?with_vanilla:%patch113 -p1}
+#%%{!?with_vanilla:%patch114 -p1}
+#%%{!?with_vanilla:%patch115 -p1}
+#%%{!?with_vanilla:%patch116 -p1}
+%{!?with_vanilla:%patch117 -p1}
+%{!?with_vanilla:%patch200 -p1}
 
 %build
 sh ./sys/unix/setup.sh links
@@ -216,8 +216,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %attr(755,root,root) %dir %{_nhdir}
 %{_nhdir}/nhdat
-%{?!_without_qt:%{_nhdir}/*.xpm}
-%{?!_without_qt:%{_nhdir}/x11tiles}
+%{?with_qt:%{_nhdir}/*.xpm}
+%{?with_qt:%{_nhdir}/x11tiles}
 
 %attr(2775,root,games) %dir %{_dyndir}
 %attr(2775,root,games) %dir %{_dyndir}/save
