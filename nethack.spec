@@ -106,7 +106,7 @@ Nethackowy podrêcznik w formacie PDF.
 %patch1 -p1
 
 %build
-./sys/unix/setup.sh links
+sh ./sys/unix/setup.sh links
 
 %{__make} all \
 	CFLAGS="%{rpmcflags} -I../include -I%{_includedir}/ncurses" \
