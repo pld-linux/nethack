@@ -128,7 +128,7 @@ install util/recover $RPM_BUILD_ROOT%{_nhdir}
 install doc/nethack.6 doc/recover.6 $RPM_BUILD_ROOT%{_mandir}/man6/
 
 cp %{SOURCE5} %{SOURCE6} %{SOURCE7} .
-gzip -9nf doc/Guidebook README doc/window.doc doc/fixes* doc/lists \
+gzip -9nf doc/Guidebook README doc/window.doc doc/fixes* \
 	$RPM_BUILD_ROOT%{_nhdir}/license
 gzip -9nf	nhspoilers/README nhspoilers/*.txt nhspoilers/gazetteer/README
 
