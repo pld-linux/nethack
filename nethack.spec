@@ -1,29 +1,29 @@
-%define		nethack_version	3.3.1
-%define		patchhack_version	5.1
-%define		file_version	%(echo %{nethack_version} | tr -d .)
+%define		file_version	%(echo %{version} | tr -d .)
 Summary:	NetHack - An adventure into the Mazes of Menace
 Summary(es):	Juego estilo rogue que se basa en Dungeons and Dragons (calabozos y dragones)
 Summary(no):	NetHack - Et eventyr i en faretruende labyrint
 Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by
 Summary(pt_BR):	Jogo estilo rogue baseado no Dungeons and Dragons
 Name:		nethack
-Version:	%{nethack_version}%{?_with_patchhack:ph%{patchhack_version}}
-Release:	7
+Version:	3.4.0
+Release:	1
 License:	Nethack GPL
 Group:		Applications/Games
-Source0:	ftp://ftp.nethack.org/pub/nethack/nh331/src/%{name}-%{file_version}.tgz
+Source0:	ftp://ftp.nethack.org/pub/nethack/nh%{file_version}/src/%{name}-%{file_version}.tgz
 Source1:	http://www.spod-central.org/~psmith/nh/spoi-%{file_version}.tar.gz
 Source2:	http://www.spod-central.org/~psmith/nh/gazetteer.tar.gz
 Source3:	%{name}.desktop
 Source4:	%{name}.png
 Source5:	Guidebook-3.2pl.ps.gz
-Patch0:		patchhack-nh%{file_version}-5.1.diff.gz
-Patch1:		%{name}-ph-pld.patch
-Patch2:		%{name}-pld.patch
-Patch3:		%{name}-ph-dlb-files.patch
-Icon:		roguelike.gif
+Source6:	%{name}rc.gz
+Patch0:		%{name}-config.patch
+Patch1:		%{name}-makefile.patch
+# remove from cvs:
+#Patch0:		%{name}-ph-pld.patch
+#Patch1:		%{name}-pld.patch
+#Patch2:		%{name}-ph-dlb-files.patch
 URL:		http://www.nethack.org/
-Requires:	gzip
+Requires:	/bin/gzip
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	XFree86-devel
@@ -31,7 +31,7 @@ BuildRequires:	ncurses-devel
 BuildRequires:	qt-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define _nhdir	%{_datadir}/games/nethack
+%define _nhdir	%{_datadir}/nethack
 %define _dyndir	/var/games/nethack
 
 %description
@@ -57,7 +57,7 @@ individuos.
 %description -l no
 NetHack - Et eventyr i en faretruende labyrint.
 
-NetHack 3.3.1 er siste utvidelse til NetHack, et tøm og røm eventyr
+NetHack 3.4.0 er siste utvidelse til NetHack, et tøm og røm eventyr
 spill. Det er basert på spill som Rouge og Hack, og er etterfølgeren
 til versjon 3.0 og 3.1 av NetHack.
 
@@ -80,48 +80,46 @@ Group:		Applications/Games
 
 %description spoilers
 Spoilers - a set of texts which explain many secrets in the game.
-Beware: the game after reading it becomes even more addictive!!!
+Beware: the game after reading it becomes even more addictive! (But
+you will lose delights of discovering its secrets.)
 
 %description spoilers -l pl
 Spoilery - zbiór tekstów wyja¶niaj±cych wiele sekretów w grze. Uwaga:
-po przeczytaniu gra staje siê jeszcze bardziej uzale¿niaj±ca!
+po przeczytaniu gra staje siê jeszcze bardziej uzale¿niaj±ca! (Lecz
+stracisz rozkosze poznawania jej tajników.)
 
 %prep
-%setup -q -a 1 -a 2 -n %{name}-%{nethack_version}
-%if %{?_with_patchhack:1}%{?!_with_patchhack:0}
-%patch0 -p0
+%setup -q -a 1 -a 2 -n %{name}-%{version}
+%patch0 -p1
 %patch1 -p1
-%patch3 -p1
-%else
-%patch2 -p1
-%endif
+copy %{SOURCE6} .
 
 %build
 ./sys/unix/setup.sh links
 
-%{__make} OPTFLAGS="%{rpmcflags}" all
+%{__make} all \
+	CFLAGS="%{rpmcflags} -I../include -I%{_includedir}/ncurses" \
+	LFLAGS="%{rpmldflags}" \
+	CC="%{__cc}"
 
-%{__make} -C util OPTFLAGS="%{rpmcflags}" recover
+%{__make} -C util recover \
+	CFLAGS="%{rpmcflags} -I../include" \
+	LFLAGS="%{rpmldflags}" \
+	CC="%{__cc}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_pixmapsdir},%{_applnkdir}/Games/Roguelike}
+install -d $RPM_BUILD_ROOT{%{_pixmapsdir},%{_applnkdir}/Games/Roguelike,%{_mandir}/man6}
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
+install util/recover $RPM_BUILD_ROOT%{_nhdir}
 
-%{__make} -C doc manpages DESTDIR=$RPM_BUILD_ROOT
-
-rm $RPM_BUILD_ROOT%{_mandir}/man6/{dlb.6,dgn_comp.6,lev_comp.6}
-
-install util/recover	$RPM_BUILD_ROOT%{_nhdir}
+install doc/nethack.6 doc/recover.6 $RPM_BUILD_ROOT%{_mandir}/man6/
 
 cp %{SOURCE5} .
-gzip -9nf doc/Guidebook README doc/window.doc \
-	$RPM_BUILD_ROOT%{_nhdir}/license \
-	nhspoilers/README nhspoilers/*.txt nhspoilers/gazetteer/README
-%if %{?_with_patchhack:1}%{?!_with_patchhack:0}
-gzip -9nf README.patch_hack
-%endif
+gzip -9nf doc/Guidebook README doc/window.doc doc/fixes* doc/lists \
+	$RPM_BUILD_ROOT%{_nhdir}/license
+gzip -9nf	nhspoilers/README nhspoilers/*.txt nhspoilers/gazetteer/README
 
 install %{SOURCE3} $RPM_BUILD_ROOT%{_applnkdir}/Games/Roguelike
 install %{SOURCE4} $RPM_BUILD_ROOT%{_pixmapsdir}
@@ -131,11 +129,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README.gz doc/{Guidebook,window.doc}.gz
+%doc README.gz doc/*.gz %{name}rc.gz
 %doc $RPM_BUILD_ROOT%{_nhdir}/license.gz
-%if %{?_with_patchhack:1}%{?!_with_patchhack:0}
-%doc README.patch_hack.gz
-%endif
 %lang(pl) %doc Guidebook-3.2pl.ps.gz
 
 %attr(2755,root,games) %{_prefix}/games/nethack
