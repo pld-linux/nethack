@@ -12,9 +12,9 @@ Patch0:		nethack-pld.patch
 Patch1:		nethack-makefile.patch
 Icon:		rougelike.gif
 URL:            http://www.win.tue.nl/games/roguelike/nethack/
-BuildPrereq:	XFree86-devel
-BuildPrereq:	xpm-devel
-BuildPrereq:	ncurses-devel
+BuildRequires:	XFree86-devel
+BuildRequires:	xpm-devel
+BuildRequires:	ncurses-devel
 BuildRoot:	/tmp/%{name}-%{version}-root
 
 %description
