@@ -1,0 +1,138 @@
+diff -ruN nethack-3.4.0.orig/sys/unix/Makefile.src 2/sys/unix/Makefile.src
+--- nethack-3.4.0.orig/sys/unix/Makefile.src	Mon Mar 25 23:47:32 2002
++++ 2/sys/unix/Makefile.src	Tue Mar 26 21:29:11 2002
+@@ -150,7 +150,7 @@
+ # The Qt and Be window systems are written in C++, while the rest of
+ # NetHack is standard C.  If using Qt, uncomment the LD line here to get
+ # the C++ libraries linked in.
+-CXXFLAGS = $(CFLAGS) -I. -I$(QTDIR)/include
++CXXFLAGS = $(CFLAGS) -I. -I/usr/X11R6/include/qt
+ CXX=g++
+ #LD=g++
+ 
+@@ -203,8 +203,8 @@
+ 
+ #
+ #
+-WINSRC = $(WINTTYSRC)
+-WINOBJ = $(WINTTYOBJ)
++WINSRC = $(WINTTYSRC) $(WINQTSRC)
++WINOBJ = $(WINTTYOBJ) $(WINQTOBJ)
+ 
+ # on some systems the termcap library is in -ltermcap or -lcurses
+ # on 386 Xenix, the -ltermlib tputs() seems not to work; use -lcurses instead
+@@ -219,8 +219,8 @@
+ # WINTTYLIB = -ltermcap
+ # WINTTYLIB = -lcurses
+ # WINTTYLIB = -lcurses16
+-# WINTTYLIB = -lncurses
+-WINTTYLIB = -ltermlib
++WINTTYLIB = -lncurses
++# WINTTYLIB = -ltermlib
+ #
+ # libraries for X11
+ # If USE_XPM is defined in config.h, you will also need -lXpm here.
+@@ -230,7 +230,7 @@
+ # WINX11LIB = -lXaw -lXmu -lXpm -lXext -lXt -lX11 -lSM -lICE -lm # BSD/OS 2.0
+ #
+ # libraries for Qt
+-WINQTLIB = -L$(QTDIR)/lib -lqt
++WINQTLIB = -L/usr/X11R6/lib -lqt
+ #
+ # libraries for KDE (with Qt)
+ WINKDELIB = -lkdecore -lkdeui -lXext
+@@ -244,7 +244,7 @@
+ # libraries for BeOS 
+ WINBELIB = -lbe
+ 
+-WINLIB = $(WINTTYLIB)
++WINLIB = $(WINTTYLIB) $(WINQTLIB)
+ 
+ # any other strange libraries your system needs (for Sysunix only -- the more
+ # specialized targets should already be right)
+@@ -450,13 +450,13 @@
+ 
+ # Qt windowport meta-object-compiler output
+ qt_kde0.moc: ../include/qt_kde0.h
+-	$(QTDIR)/bin/moc ../include/qt_kde0.h > qt_kde0.moc
++	/usr/X11R6/bin/moc ../include/qt_kde0.h > qt_kde0.moc
+ 
+ qt_win.moc: ../include/qt_win.h
+-	$(QTDIR)/bin/moc ../include/qt_win.h > qt_win.moc
++	/usr/X11R6/bin/moc ../include/qt_win.h > qt_win.moc
+ 
+ qttableview.moc: ../include/qttableview.h
+-	$(QTDIR)/bin/moc ../include/qttableview.h > qttableview.moc
++	/usr/X11R6/bin/moc ../include/qttableview.h > qttableview.moc
+ 
+ $(MAKEDEFS): ../util/makedefs.c  $(CONFIG_H) ../include/permonst.h \
+ 		../include/objclass.h ../include/monsym.h \
+diff -ruN nethack-3.4.0.orig/sys/unix/Makefile.top 2/sys/unix/Makefile.top
+--- nethack-3.4.0.orig/sys/unix/Makefile.top	Mon Mar 25 23:47:32 2002
++++ 2/sys/unix/Makefile.top	Tue Mar 26 21:28:10 2002
+@@ -14,7 +14,7 @@
+ # MAKE = make
+ 
+ # make NetHack
+-PREFIX	 = /usr
++PREFIX	 = $(DESTDIR)/usr
+ GAME     = nethack
+ # GAME     = nethack.prg
+ GAMEUID  = games
+@@ -35,14 +35,14 @@
+ # therefore there should not be anything in GAMEDIR that you want to keep
+ # (if there is, you'll have to do the installation by hand or modify the
+ # instructions)
+-GAMEDIR  = $(PREFIX)/games/lib/$(GAME)dir
+-VARDIR  = $(GAMEDIR)
++GAMEDIR  = $(PREFIX)/share/nethack
++VARDIR  = $(DESTDIR)/var/games/nethack
+ SHELLDIR = $(PREFIX)/games
+ 
+ # per discussion in Install.X11 and Install.Qt
+-VARDATND = 
++#VARDATND = 
+ # VARDATND = x11tiles pet_mark.xbm
+-# VARDATND = x11tiles pet_mark.xbm rip.xpm
++VARDATND = x11tiles pet_mark.xbm rip.xpm
+ # for Atari/Gem
+ # VARDATND = nh16.img title.img GEM_RSC.RSC rip.img
+ # for BeOS
+@@ -64,8 +64,8 @@
+ # other permission-related reasons.  If that happens, you may want to set the
+ # command to "true", which is a no-op. Note that disabling chown or chgrp
+ # will only work if setuid (or setgid) behavior is not desired or required.
+-CHOWN = chown
+-CHGRP = chgrp
++CHOWN = true
++CHGRP = true
+ 
+ #
+ # end of configuration
+@@ -177,6 +177,7 @@
+ 	-rm -f $(SHELLDIR)/$(GAME)
+ 	sed -e 's;/usr/games/lib/nethackdir;$(GAMEDIR);' \
+ 		-e 's;HACKDIR/nethack;HACKDIR/$(GAME);' \
++		-e 's;$(DESTDIR);;' \
+ 		< sys/unix/nethack.sh \
+ 		> $(SHELLDIR)/$(GAME)
+ # set up their permissions
+diff -ruN nethack-3.4.0.orig/sys/unix/Makefile.utl 2/sys/unix/Makefile.utl
+--- nethack-3.4.0.orig/sys/unix/Makefile.utl	Mon Mar 25 23:47:32 2002
++++ 2/sys/unix/Makefile.utl	Tue Mar 26 21:28:10 2002
+@@ -97,11 +97,11 @@
+ 
+ # yacc/lex programs to use to generate *_comp.h, *_lex.c, and *_yacc.c.
+ # if, instead of yacc/lex you have bison/flex, comment/uncomment the following.
+-YACC     = yacc
+-LEX      = lex
+-# YACC     = bison -y
++# YACC     = yacc
++# LEX      = lex
++YACC     = bison -y
+ # YACC     = byacc
+-# LEX      = flex
++LEX      = flex
+  
+ # these are the names of the output files from YACC/LEX. Under MS-DOS
+ # and similar systems, they may differ
