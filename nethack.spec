@@ -19,10 +19,12 @@ Source6:	Guidebook.pdf
 Source7:	%{name}rc.gz
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-makefile.patch
-# remove from cvs:
-#Patch0:		%{name}-ph-pld.patch
-#Patch1:		%{name}-pld.patch
-#Patch2:		%{name}-ph-dlb-files.patch
+# patches below are adapted from ones found at http://avrc.city.ac.uk/nethack/patches.html
+# warning: order is important in most cases
+Patch100:	%{name}-show_born.patch
+Patch101:	%{name}-dump.patch
+Patch102:	%{name}-behind_boulder.patch
+Patch103:	%{name}-yafm-monabil.patch
 URL:		http://www.nethack.org/
 Requires:	/bin/gzip
 BuildRequires:	bison
@@ -104,6 +106,12 @@ Nethackowy podrêcznik w formacie PDF.
 %setup -q -a 1 -a 2 -n %{name}-%{version}
 %patch0 -p1
 %patch1 -p1
+
+# patches adding fun
+%patch100 -p1
+%patch101 -p1
+%patch102 -p1
+%patch103 -p1
 
 %build
 sh ./sys/unix/setup.sh links
