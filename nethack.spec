@@ -6,7 +6,7 @@ Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by
 Summary(pt_BR):	Jogo estilo rogue baseado no Dungeons and Dragons
 Name:		nethack
 Version:	3.4.0
-Release:	2
+Release:	3
 License:	Nethack GPL
 Group:		Applications/Games
 Source0:	ftp://ftp.nethack.org/pub/nethack/nh%{file_version}/src/%{name}-%{file_version}.tgz
@@ -25,6 +25,17 @@ Patch100:	%{name}-show_born.patch
 Patch101:	%{name}-dump.patch
 Patch102:	%{name}-behind_boulder.patch
 Patch103:	%{name}-yafm-monabil.patch
+Patch104:	%{name}-chivalry.patch
+Patch105:	%{name}-kenny.patch
+Patch106:	%{name}-sticky_objects.patch
+Patch107:	%{name}-steed-fix.patch
+Patch108:	%{name}-wash_hands.patch
+Patch109:	%{name}-listmons.patch
+Patch110:	%{name}-flipcoin.patch
+Patch111:	%{name}-ride_key.patch
+Patch112:	%{name}-dungeon_growth.patch
+# after adding additional features update this patch
+Patch200:	%{name}-makedefs.patch
 URL:		http://www.nethack.org/
 Requires:	/bin/gzip
 BuildRequires:	bison
@@ -112,6 +123,16 @@ Nethackowy podrêcznik w formacie PDF.
 %patch101 -p1
 %patch102 -p1
 %patch103 -p1
+%patch104 -p1
+%patch105 -p1
+%patch106 -p1
+%patch107 -p1
+%patch108 -p1
+%patch109 -p1
+%patch110 -p1
+%patch111 -p1
+%patch112 -p1
+%patch200 -p1
 
 %build
 sh ./sys/unix/setup.sh links
