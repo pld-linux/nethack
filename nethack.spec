@@ -1,4 +1,4 @@
-%define file_version 331
+%define		file_version	%(echo %{version} | tr -d .)
 Summary:	NetHack - An adventure into the Mazes of Menace
 Summary(es):	Juego estilo rogue que se basa en Dungeons and Dragons (calabozos y dragones)
 Summary(no):	NetHack - Et eventyr i en faretruende labyrint
@@ -28,9 +28,13 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define _dyndir	/var/games/nethack
 
 %description
-NetHack - An adventure into the Mazes of Menace. Nethack is a
-D&D-inspired, roguelike game. It is a very elaborate and deep game,
-developed over the years by the same team of individuals.
+A dungeon game similar to rogue but more elaborate, very popular at
+Unix sites and on PC-class machines (nethack is probably the most
+widely distributed of the freeware dungeon games). The earliest
+versions, written by Jay Fenlason and later considerably enhanced by
+Andries Brouwer, were simply called `hack'. The name changed when
+maintenance was taken over by a group of hackers originally organized
+by Mike Stephenson.
 
 %description -l pt_BR
 Nethack é um jogo clássico estilo rogue, baseado no Dungeons and
@@ -54,11 +58,13 @@ Denne utgaven er kopilert støtte for følgende utvidelser: QT og
 ncurses.
 
 %description -l pl
-NetHack -- Przygoda w Labiryntach Gro¼by.
-
-NetHack jest gr± przygodow±, której akcja toczy siê w podziemnych
-labiryntach. Wywodzi siê ze starszych gier, Rouge i Hack, i zawiera
-wiele nowych rozszerzeñ w stosunku do poprzednich wersji.
+Gra dziej±ca siê w lochu, podobna do rogue, lecz bardziej dopracowana.
+Bardzo popularna na Uniksach i maszynach klasy PC (nethack jest
+prawdopodobnie najszerzej rozpowszechnion± darmow± gr± labiryntow±.)
+Najwcze¶niejsze wersje, napisane przez Jaya Fenlasona, a nastêpnie
+znacznie rozszerzone przez Andriesa Brouwara, nazywa³y siê po prostu
+'hack' (r±baæ, siekaæ.) Nazwa zmieni³a siê gdy opieka nad gr± zosta³a
+przejêta przez grupê hackerów zawi±zan± przez Mike'a Stephensona.
 
 %package spoilers
 Summary:	Spoilers to NetHack
