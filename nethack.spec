@@ -8,7 +8,7 @@ Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by
 Summary(pt_BR):	Jogo estilo rogue baseado no Dungeons and Dragons
 Name:		nethack
 Version:	%{nethack_version}%{?_with_patchhack:ph%{patchhack_version}}
-Release:	6
+Release:	7
 License:	Nethack GPL
 Group:		Applications/Games
 Source0:	ftp://ftp.nethack.org/pub/nethack/nh331/src/%{name}-%{file_version}.tgz
@@ -23,8 +23,9 @@ Patch2:		%{name}-pld.patch
 Patch3:		%{name}-ph-dlb-files.patch
 Icon:		roguelike.gif
 URL:		http://www.nethack.org/
+Requires:	gzip
 BuildRequires:	bison
-BuildRequires:  flex
+BuildRequires:	flex
 BuildRequires:	XFree86-devel
 BuildRequires:	ncurses-devel
 BuildRequires:	qt-devel
