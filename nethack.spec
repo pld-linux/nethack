@@ -1,12 +1,14 @@
-%define		file_version	%(echo %{version} | tr -d .)
+%define		nethack_version	3.3.1
+%define		patchhack_version	5.1
+%define		file_version	%(echo %{nethack_version} | tr -d .)
 Summary:	NetHack - An adventure into the Mazes of Menace
 Summary(es):	Juego estilo rogue que se basa en Dungeons and Dragons (calabozos y dragones)
 Summary(no):	NetHack - Et eventyr i en faretruende labyrint
 Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by
 Summary(pt_BR):	Jogo estilo rogue baseado no Dungeons and Dragons
 Name:		nethack
-Version:	3.3.1
-Release:	3
+Version:	%{nethack_version}%{?_with_patchhack:ph%{patchhack_version}}
+Release:	4
 License:	Nethack GPL
 Group:		Applications/Games
 Source0:	ftp://ftp.nethack.org/pub/nethack/nh331/src/%{name}-%{file_version}.tgz
@@ -15,7 +17,9 @@ Source2:	http://www.spod-central.org/~psmith/nh/gazetteer.tar.gz
 Source3:	%{name}.desktop
 Source4:	%{name}.png
 Source5:	Guidebook-3.2pl.ps.gz
-Patch0:		%{name}-pld.patch
+Patch0:		patchhack-nh%{file_version}-5.1.diff.gz
+Patch1:		%{name}-ph-pld.patch
+Patch2:		%{name}-pld.patch
 Icon:		roguelike.gif
 URL:		http://www.nethack.org/
 BuildRequires:	bison
@@ -80,8 +84,13 @@ Spoilery - zbiór tekstów wyja¶niaj±cych wiele sekretów w grze. Uwaga:
 po przeczytaniu gra staje siê jeszcze bardziej uzale¿niaj±ca!
 
 %prep
-%setup -q -a 1 -a 2
-%patch0 -p1
+%setup -q -a 1 -a 2 -n %{name}-%{nethack_version}
+%if %{?_with_patchhack:1}%{?!_with_patchhack:0}
+%patch0 -p0
+%patch1 -p1
+%else
+%patch2 -p1
+%endif
 
 %build
 ./sys/unix/setup.sh links
@@ -103,7 +112,7 @@ rm $RPM_BUILD_ROOT%{_mandir}/man6/{dlb.6,dgn_comp.6,lev_comp.6}
 install util/recover	$RPM_BUILD_ROOT%{_nhdir}
 
 cp %{SOURCE5} .
-gzip -9nf doc/Guidebook README doc/window.doc \
+gzip -9nf doc/Guidebook README README.patch_hack doc/window.doc \
 	$RPM_BUILD_ROOT%{_nhdir}/license \
 	nhspoilers/README nhspoilers/*.txt nhspoilers/gazetteer/README
 
@@ -115,7 +124,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README.gz doc/{Guidebook,window.doc}.gz
+%doc README.gz README.patch_hack.gz doc/{Guidebook,window.doc}.gz
 %doc $RPM_BUILD_ROOT%{_nhdir}/license.gz
 %lang(pl) %doc Guidebook-3.2pl.ps.gz
 
