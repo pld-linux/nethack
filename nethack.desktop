@@ -1,5 +1,9 @@
 [Desktop Entry]
-Name=nethack
+Name=Nethack
+Name[ar]=نت هاك
+Name[eo]=Rethako
+Name[lv]=TīklaHacks
+Name[ven]=Vhukwamani ho Netaho
 Comment=An adventure into the Mazes of Menace
 Comment[pl]=Przygoda w Labiryntach Groźby
 Icon=nethack.png
