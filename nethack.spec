@@ -1,7 +1,7 @@
 #
 # Conditional build:
-# --with vanilla - build vanilla NetHack (without patches)
-# --without qt   - no X11 and QT bloat
+# _with_vanilla - build vanilla NetHack (without patches)
+# _without_qt   - no X11 and QT bloat
 #
 # no patches for now, wait for updates
 %define _with_vanilla	1
@@ -66,7 +66,6 @@ BuildRequires:	flex
 BuildRequires:	ncurses-devel
 %{?!_without_qt:BuildRequires:	qt-devel >= 3.0.3}
 Requires:	/bin/gzip
-Requires:	applnk >= 1.5.13
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define _nhdir	%{_datadir}/nethack
