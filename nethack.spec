@@ -21,6 +21,7 @@ Source4:	%{name}.png
 Source5:	Guidebook-3.2pl.ps.gz
 Source6:	Guidebook.pdf
 Source7:	%{name}rc.gz
+Source8:	http://avrc.city.ac.uk/nethack/VernonSpoilers/vol3-1.2.2.pdf
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-makefile.patch
 # patches below are adapted from ones found at http://avrc.city.ac.uk/nethack/patches.html
@@ -38,6 +39,7 @@ Patch109:	%{name}-listmons.patch
 Patch110:	%{name}-flipcoin.patch
 Patch111:	%{name}-ride_key.patch
 Patch112:	%{name}-dungeon_growth.patch
+Patch113:	%{name}-newtoys.patch
 # after adding additional features update this patch
 Patch200:	%{name}-makedefs.patch
 URL:		http://www.nethack.org/
@@ -140,6 +142,7 @@ Nethackowy podrêcznik w formacie PDF.
 %{?!_with_vanilla:%patch110 -p1}
 %{?!_with_vanilla:%patch111 -p1}
 %{?!_with_vanilla:%patch112 -p1}
+%{?!_with_vanilla:%patch113 -p1}
 %{?!_with_vanilla:%patch200 -p1}
 
 %build
@@ -166,7 +169,7 @@ install util/recover $RPM_BUILD_ROOT%{_nhdir}
 
 install doc/nethack.6 doc/recover.6 $RPM_BUILD_ROOT%{_mandir}/man6/
 
-cp %{SOURCE5} %{SOURCE6} %{SOURCE7} .
+cp %{SOURCE5} %{SOURCE6} %{SOURCE7} %{SOURCE8} .
 
 install %{SOURCE3} $RPM_BUILD_ROOT%{_applnkdir}/Games/Roguelike
 install %{SOURCE4} $RPM_BUILD_ROOT%{_pixmapsdir}
@@ -204,6 +207,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc nhspoilers/README nhspoilers/*.txt
 %doc %dir nhspoilers/gazetteer
+%doc vol3-1.2.2.pdf
 
 %files doc-pdf
 %defattr(644,root,root,755)
