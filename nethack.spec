@@ -9,7 +9,7 @@
 %define		file_version	%(echo %{version} | tr -d .)
 Summary:	NetHack - An adventure into the Mazes of Menace
 Summary(es):	Juego estilo rogue que se basa en Dungeons and Dragons (calabozos y dragones)
-Summary(no):	NetHack - Et eventyr i en faretruende labyrint
+Summary(nb):	NetHack - Et eventyr i en faretruende labyrint
 Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by
 Summary(pt_BR):	Jogo estilo rogue baseado no Dungeons and Dragons
 Name:		nethack
@@ -94,7 +94,7 @@ and Dragons (calabozos y dragones). Es un juego muy elaborado y
 profundo, desarrollado desde hace muchos años por el mismo grupo de
 individuos.
 
-%description -l no
+%description -l nb
 NetHack - Et eventyr i en faretruende labyrint.
 
 NetHack 3.4.0 er siste utvidelse til NetHack, et tøm og røm eventyr
