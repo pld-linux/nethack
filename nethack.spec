@@ -15,7 +15,7 @@ URL:            http://www.win.tue.nl/games/roguelike/nethack/
 BuildRequires:	XFree86-devel
 BuildRequires:	xpm-devel
 BuildRequires:	ncurses-devel
-BuildRoot:	/tmp/%{name}-%{version}-root
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 NetHack 3.2.2 -- An adventure into the Mazes of Menace.
