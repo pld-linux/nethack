@@ -117,7 +117,7 @@ gzip -9nf doc/Guidebook README doc/window.doc \
 	nhspoilers/README nhspoilers/*.txt nhspoilers/gazetteer/README
 %if %{?_with_patchhack:1}%{?!_with_patchhack:0}
 gzip -9nf README.patch_hack
-%elsif
+%endif
 
 install %{SOURCE3} $RPM_BUILD_ROOT%{_applnkdir}/Games/Roguelike
 install %{SOURCE4} $RPM_BUILD_ROOT%{_pixmapsdir}
@@ -131,7 +131,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc $RPM_BUILD_ROOT%{_nhdir}/license.gz
 %if %{?_with_patchhack:1}%{?!_with_patchhack:0}
 %doc README.patch_hack.gz
-%elsif
+%endif
 %lang(pl) %doc Guidebook-3.2pl.ps.gz
 
 %attr(2755,root,games) %{_prefix}/games/nethack
