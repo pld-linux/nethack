@@ -1,14 +1,28 @@
 %define file_version 331
 Summary:	NetHack - An adventure into the Mazes of Menace
+Summary(es):	Juego estilo rogue que se basa en Dungeons and Dragons (calabozos y dragones)
 Summary(no):	NetHack - Et eventyr i en faretruende labyrint
 Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by
+Summary(pt_BR):	Jogo estilo rogue baseado no Dungeons and Dragons
 Name:		nethack
 Version:	3.3.1
 Release:	2
-Group:		Applications/Games
-Group(de):	Applikationen/Spiele
-Group(pl):	Aplikacje/Gry
 License:	Nethack GPL
+Group:		Applications/Games
+Group(cs):	Aplikace/Hry
+Group(da):	Programmer/Spil
+Group(de):	Applikationen/Spiele
+Group(es):	Aplicaciones/Juegos
+Group(fr):	Applications/Jeux
+Group(is):	Forrit/Leikir
+Group(it):	Applicazioni/Giochi
+Group(ja):	¥¢¥×¥ê¥±¡¼¥·¥ç¥ó/¥²¡¼¥à
+Group(no):	Applikasjoner/Spill
+Group(pl):	Aplikacje/Gry
+Group(pt):	Aplicações/Jogos
+Group(ru):	ðÒÉÌÏÖÅÎÉÑ/éÇÒÙ
+Group(sl):	Programi/Igre
+Group(sv):	Tillämpningar/Spel
 Source0:	ftp://ftp.nethack.org/pub/nethack/nh331/src/%{name}-%{file_version}.tgz
 Source1:	http://www.spod-central.org/~psmith/nh/spoi-%{file_version}.tar.gz
 Source2:	http://www.spod-central.org/~psmith/nh/gazetteer.tar.gz
@@ -28,16 +42,23 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define _dyndir	/var/games/nethack
 
 %description
-NetHack - An adventure into the Mazes of Menace.
+NetHack - An adventure into the Mazes of Menace. Nethack is a
+D&D-inspired, roguelike game. It is a very elaborate and deep game,
+developed over the years by the same team of individuals.
 
-NetHack 3.3.1 is a new enhancement to the dungeon exploration game
-NetHack. It is a distant descendent of Rogue and Hack, and a direct
-descendent of NetHack 3.1 and 3.0.
+%description -l pt_BR
+Nethack é um jogo clássico estilo rogue, baseado no Dungeons and
+Dragons. Ele é um jogo muito elaborado e profundo, desenvolvido há
+anos pelo mesmo time de indivíduos.
 
-Compiled with: QT and ncurses support.
+%description -l es
+Nethack es un juego clásico estilo rogue, basado en el juego Dungeons
+and Dragons (calabozos y dragones). Es un juego muy elaborado y
+profundo, desarrollado desde hace muchos años por el mismo grupo de
+individuos.
 
 %description -l no
-NetHack 3.3.1 -- Et eventyr i en faretruende labyrint.
+NetHack - Et eventyr i en faretruende labyrint.
 
 NetHack 3.3.1 er siste utvidelse til NetHack, et tøm og røm eventyr
 spill. Det er basert på spill som Rouge og Hack, og er etterfølgeren
@@ -47,21 +68,30 @@ Denne utgaven er kopilert støtte for følgende utvidelser: QT og
 ncurses.
 
 %description -l pl
-NetHack 3.3.1 -- Przygoda w Labiryntach Gro¼by.
+NetHack -- Przygoda w Labiryntach Gro¼by.
 
-NetHack 3.3.1 jest przygodow± gr±, której akcja toczy siê w
-podziemnych labiryntach. Wywodzi siê ze starszych gier, Rouge i Hack,
-i zawiera wiele nowych rozszerzeñ w stosunku do poprzednich wersji 3.0
-i 3.1.
-
-Kompilowany ze wsparciem dla QT i ncurses.
+NetHack jest gr± przygodow±, której akcja toczy siê w podziemnych
+labiryntach. Wywodzi siê ze starszych gier, Rouge i Hack, i zawiera
+wiele nowych rozszerzeñ w stosunku do poprzednich wersji.
 
 %package spoilers
 Summary:	Spoilers to NetHack
 Summary(pl):	Spoilery dla NetHacka
 Group:		Applications/Games
+Group(cs):	Aplikace/Hry
+Group(da):	Programmer/Spil
 Group(de):	Applikationen/Spiele
+Group(es):	Aplicaciones/Juegos
+Group(fr):	Applications/Jeux
+Group(is):	Forrit/Leikir
+Group(it):	Applicazioni/Giochi
+Group(ja):	¥¢¥×¥ê¥±¡¼¥·¥ç¥ó/¥²¡¼¥à
+Group(no):	Applikasjoner/Spill
 Group(pl):	Aplikacje/Gry
+Group(pt):	Aplicações/Jogos
+Group(ru):	ðÒÉÌÏÖÅÎÉÑ/éÇÒÙ
+Group(sl):	Programi/Igre
+Group(sv):	Tillämpningar/Spel
 
 %description spoilers
 Spoilers - a set of texts which explain many secrets in the game.
@@ -84,21 +114,20 @@ po przeczytaniu gra staje siê jeszcze bardziej uzale¿niaj±ca!
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 install -d $RPM_BUILD_ROOT{%{_pixmapsdir},%{_applnkdir}/Games/Roguelike}
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 
 %{__make} -C doc manpages DESTDIR=$RPM_BUILD_ROOT
+
 rm $RPM_BUILD_ROOT%{_mandir}/man6/{dlb.6,dgn_comp.6,lev_comp.6}
 
 install util/recover	$RPM_BUILD_ROOT%{_nhdir}
 
 cp %{SOURCE5} .
-gzip -9nf doc/Guidebook README doc/window.doc 
-gzip -9nf $RPM_BUILD_ROOT%{_nhdir}/license
-
-gzip -9nf nhspoilers/README nhspoilers/*.txt nhspoilers/gazetteer/README
+gzip -9nf doc/Guidebook README doc/window.doc \
+	$RPM_BUILD_ROOT%{_nhdir}/license \
+	nhspoilers/README nhspoilers/*.txt nhspoilers/gazetteer/README
 
 install %{SOURCE3} $RPM_BUILD_ROOT%{_applnkdir}/Games/Roguelike
 install %{SOURCE4} $RPM_BUILD_ROOT%{_pixmapsdir}
