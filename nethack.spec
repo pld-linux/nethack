@@ -117,26 +117,3 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man6/*
 
 %config /usr/X11R6/lib/X11/app-defaults/NetHack
-
-%changelog
-* Mon Jul 26 1999 Piotr Czerwiñski <pius@pld.org.pl> 
-  [3.2.2-5]
-- modified package for PLD use,
-- removed all patches and added new ones,
-- compiled with ncurses 4.2 and glibc 2.1,
-- fixed color support when building with ncurses (thanks to Richard Braakman),
-- fixed glibc 2.1 prototypes checking (by Harmut Koptein),
-- graphic chars are now properly displayed,
-- all dynamic stuff moved to /var/games/nethack (fhs 2.0 compliant),
-- added using DESTDIR (nethack-makefile.patch),
-- fixed permissions on all files,
-- sgid games instead of suid games,
-- added no,pl translation,
-- other less important changes.
-
-* Thu Apr 08 1999 Michael Maher <mike@redhat.com>
-- I doubt this will ever be updated.
-- recompiled for 6.0
-
-* Wed Aug 13 1998 Michael Maher <mike@redhat.com>
-- Built package 
