@@ -15,7 +15,6 @@ URL:		http://www.win.tue.nl/games/roguelike/nethack/
 Prereq:		/usr/X11R6/bin/mkfontdir
 BuildRequires:	bison
 BuildRequires:	XFree86-devel
-BuildRequires:	xpm-devel
 BuildRequires:	ncurses-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
