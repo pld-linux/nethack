@@ -3,7 +3,7 @@ Summary(no):	NetHack - Et eventyr i en faretruende labyrint
 Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by 
 Name:		nethack
 Version:	3.2.2
-Release:	7
+Release:	8
 Group:		Games
 Group(pl):	Gry
 License:	GPL
@@ -13,6 +13,7 @@ Patch1:		%{name}-makefile.patch
 Icon:		rougelike.gif
 URL:		http://www.win.tue.nl/games/roguelike/nethack/
 Prereq:		/usr/X11R6/bin/mkfontdir
+BuildRequires:	bison
 BuildRequires:	XFree86-devel
 BuildRequires:	xpm-devel
 BuildRequires:	ncurses-devel
