@@ -1,6 +1,6 @@
 #
 # Conditional build:
-%bcond_without	qt	# no X11 and QT bloat 
+%bcond_without	qt	# no X11 and Qt bloat 
 %bcond_with	vanilla	# build vanilla NetHack (without patches)
 #
 # no patches for now, wait for updates
@@ -102,7 +102,7 @@ NetHack 3.4.0 er siste utvidelse til NetHack, et tøm og røm eventyr
 spill. Det er basert på spill som Rouge og Hack, og er etterfølgeren
 til versjon 3.0 og 3.1 av NetHack.
 
-Denne utgaven er kopilert støtte for følgende utvidelser: QT og
+Denne utgaven er kopilert støtte for følgende utvidelser: Qt og
 ncurses.
 
 %description -l pl
