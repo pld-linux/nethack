@@ -13,17 +13,17 @@ Summary(nb):	NetHack - Et eventyr i en faretruende labyrint
 Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by
 Summary(pt_BR):	Jogo estilo rogue baseado no Dungeons and Dragons
 Name:		nethack
-Version:	3.4.1
-Release:	3
+Version:	3.4.3
+Release:	0.1
 License:	Nethack GPL
 Group:		Applications/Games
-Source0:	ftp://ftp.nethack.org/pub/nethack/nh%{file_version}/src/%{name}-%{file_version}.tgz
-# Source0-md5:	aefcbeb20210b2d64511c84bd03c3e4e
-#Source1:	http://www.spod-central.org/~psmith/nh/spoi-%{file_version}.tar.gz
-Source1:	http://www.spod-central.org/~psmith/nh/spoi-340.tar.gz
-# Source1-md5:	0e6596bfb1d6c527f805d4ba8e88b031
+Source0:	http://dl.sourceforge.net/sourceforge/nethack/%{name}-%{file_version}-src.tgz
+# Source0-md5:	21479c95990eefe7650df582426457f9
+Source1:	http://www.spod-central.org/~psmith/nh/spoi-%{file_version}.tar.gz
+# Source1-md5:	72cac599c3660eac0a54b17ece8989ff
+#Source1:	http://www.spod-central.org/~psmith/nh/spoi-340.tar.gz
 Source2:	http://www.spod-central.org/~psmith/nh/gazetteer.tar.gz
-# Source2-md5:	8c878e1eb8190f42ce28131fb2a3e65f
+# Source2-md5:	651997ab54552b5e9a586cef46bcc50a
 Source3:	%{name}.desktop
 Source4:	%{name}.png
 Source5:	Guidebook-3.2pl.ps.gz
