@@ -37,6 +37,7 @@ Patch0:		%{name}-config.patch
 Patch1:		%{name}-makefile.patch
 Patch2:		%{name}-gcc3.patch
 Patch3:		%{name}-qt.patch
+Patch4:		%{name}-qt33.patch
 # patches below are adapted from ones found at http://avrc.city.ac.uk/nethack/patches.html
 # warning: order is important in most cases
 Patch100:	%{name}-show_born.patch
@@ -69,8 +70,8 @@ Requires:	/bin/gzip
 Conflicts:	applnk < 1.5.13
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define _nhdir	%{_datadir}/nethack
-%define _dyndir	/var/games/nethack
+%define		_nhdir		%{_datadir}/nethack
+%define		_dyndir		/var/games/nethack
 
 %description
 A dungeon game similar to rogue but more elaborate, very popular at
@@ -147,6 +148,7 @@ Nethackowy podrêcznik w formacie PDF.
 %patch1 -p1
 %patch2 -p1
 %{?with_qt:%patch3 -p1}
+%patch4 -p1
 
 # patches adding fun
 %{!?with_vanilla:%patch100 -p1}
@@ -193,7 +195,7 @@ install -d $RPM_BUILD_ROOT{%{_pixmapsdir},%{_desktopdir},%{_mandir}/man6}
 	DESTDIR=$RPM_BUILD_ROOT
 install util/recover $RPM_BUILD_ROOT%{_nhdir}
 
-install doc/nethack.6 doc/recover.6 $RPM_BUILD_ROOT%{_mandir}/man6/
+install doc/nethack.6 doc/recover.6 $RPM_BUILD_ROOT%{_mandir}/man6
 
 cp %{SOURCE5} %{SOURCE6} %{SOURCE7} .
 cp %{SOURCE8} vol3-1.2.2.pdf
@@ -216,7 +218,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %attr(755,root,root) %dir %{_nhdir}
 %{_nhdir}/nhdat
-%{?with_qt:%{_nhdir}/*.xpm}
+%{?with_qt:%{_nhdir}/*.x[bp]m}
 %{?with_qt:%{_nhdir}/x11tiles}
 
 %attr(2775,root,games) %dir %{_dyndir}
