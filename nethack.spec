@@ -4,8 +4,9 @@ Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by
 Name:		nethack
 Version:	3.2.2
 Release:	8
-Group:		Games
-Group(pl):	Gry
+Group:		Applications/Games
+Group(de):	Applikationen/Spiele
+Group(pl):	Aplikacje/Gry
 License:	GPL
 Source0:	ftp://prep.ai.mit.edu/pub/gnu/%{name}-%{version}.tar.gz
 Patch0:		%{name}-pld.patch
@@ -55,9 +56,9 @@ Kompilowany ze wsparciem dla X11, glibc 2.1 i ncurses.
 %build
 ./sys/unix/setup.sh links
 
-%{__make} OPTFLAGS="$RPM_OPT_FLAGS" all
+%{__make} OPTFLAGS="%{rpmcflags}" all
 
-%{__make} -C util OPTFLAGS="$RPM_OPT_FLAGS" recover
+%{__make} -C util OPTFLAGS="%{rpmcflags}" recover
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -81,8 +82,7 @@ $RPM_BUILD_ROOT%{_prefix}/X11R6/lib/X11/app-defaults/NetHack
 install nh10.pcf ibm.pcf $RPM_BUILD_ROOT%{_datadir}/fonts/misc
 )
 
-gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man6/* \
-	$RPM_BUILD_ROOT%{_datadir}/fonts/misc/*.pcf \
+gzip -9nf $RPM_BUILD_ROOT%{_datadir}/fonts/misc/*.pcf \
 	doc/Guidebook* doc/tmac.n README doc/window.doc 
 
 %post
