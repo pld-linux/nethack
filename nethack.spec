@@ -92,7 +92,7 @@ stracisz rozkosze poznawania jej tajników.)
 %setup -q -a 1 -a 2 -n %{name}-%{version}
 %patch0 -p1
 %patch1 -p1
-copy %{SOURCE6} .
+cp %{SOURCE6} .
 
 %build
 ./sys/unix/setup.sh links
