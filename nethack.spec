@@ -14,7 +14,7 @@ Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by
 Summary(pt_BR):	Jogo estilo rogue baseado no Dungeons and Dragons
 Name:		nethack
 Version:	3.4.1
-Release:	1
+Release:	2
 License:	Nethack GPL
 Group:		Applications/Games
 Source0:	ftp://ftp.nethack.org/pub/nethack/nh%{file_version}/src/%{name}-%{file_version}.tgz
@@ -187,7 +187,7 @@ sh ./sys/unix/setup.sh links
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_pixmapsdir},%{_applnkdir}/Games/RPG,%{_mandir}/man6}
+install -d $RPM_BUILD_ROOT{%{_pixmapsdir},%{_desktopdir},%{_mandir}/man6}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -198,7 +198,7 @@ install doc/nethack.6 doc/recover.6 $RPM_BUILD_ROOT%{_mandir}/man6/
 cp %{SOURCE5} %{SOURCE6} %{SOURCE7} .
 cp %{SOURCE8} vol3-1.2.2.pdf
 
-install %{SOURCE3} $RPM_BUILD_ROOT%{_applnkdir}/Games/RPG
+install %{SOURCE3} $RPM_BUILD_ROOT%{_desktopdir}
 install %{SOURCE4} $RPM_BUILD_ROOT%{_pixmapsdir}
 
 %clean
@@ -227,7 +227,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %{_mandir}/man6/*
 
-%{_applnkdir}/Games/RPG/*
+%{_desktopdir}/*
 %{_pixmapsdir}/*
 
 %files spoilers
