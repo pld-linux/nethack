@@ -23,6 +23,7 @@ Patch2:		%{name}-pld.patch
 Icon:		roguelike.gif
 URL:		http://www.nethack.org/
 BuildRequires:	bison
+BuildRequires:  flex
 BuildRequires:	XFree86-devel
 BuildRequires:	ncurses-devel
 BuildRequires:	qt-devel
