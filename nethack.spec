@@ -15,7 +15,8 @@ Source2:	http://www.spod-central.org/~psmith/nh/gazetteer.tar.gz
 Source3:	%{name}.desktop
 Source4:	%{name}.png
 Source5:	Guidebook-3.2pl.ps.gz
-Source6:	%{name}rc.gz
+Source6:	Guidebook.pdf
+Source7:	%{name}rc.gz
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-makefile.patch
 # remove from cvs:
@@ -75,7 +76,7 @@ przejêta przez grupê hackerów zawi±zan± przez Mike'a Stephensona.
 
 %package spoilers
 Summary:	Spoilers to NetHack
-Summary(pl):	Spoilery dla NetHacka
+Summary(pl):	Psuje dla NetHacka
 Group:		Applications/Games
 
 %description spoilers
@@ -84,15 +85,25 @@ Beware: the game after reading it becomes even more addictive! (But
 you will lose delights of discovering its secrets.)
 
 %description spoilers -l pl
-Spoilery - zbiór tekstów wyja¶niaj±cych wiele sekretów w grze. Uwaga:
-po przeczytaniu gra staje siê jeszcze bardziej uzale¿niaj±ca! (Lecz
+Psuje - zbiór tekstów wyja¶niaj±cych wiele sekretów w grze. Uwaga: po
+przeczytaniu gra staje siê jeszcze bardziej uzale¿niaj±ca! (Lecz
 stracisz rozkosze poznawania jej tajników.)
+
+%package doc-pdf
+Summary:	Nethack Guidebook, PDF format
+Summary(pl):	Nethackowy podrêcznik w formacie PDF
+Group:		Applications/Games
+
+%description doc-pdf
+Nethack Guidebook, PDF format.
+
+%description doc-pdf -l pl
+Nethackowy podrêcznik w formacie PDF.
 
 %prep
 %setup -q -a 1 -a 2 -n %{name}-%{version}
 %patch0 -p1
 %patch1 -p1
-cp %{SOURCE6} .
 
 %build
 ./sys/unix/setup.sh links
@@ -116,7 +127,7 @@ install util/recover $RPM_BUILD_ROOT%{_nhdir}
 
 install doc/nethack.6 doc/recover.6 $RPM_BUILD_ROOT%{_mandir}/man6/
 
-cp %{SOURCE5} .
+cp %{SOURCE5} %{SOURCE6} %{SOURCE7} .
 gzip -9nf doc/Guidebook README doc/window.doc doc/fixes* doc/lists \
 	$RPM_BUILD_ROOT%{_nhdir}/license
 gzip -9nf	nhspoilers/README nhspoilers/*.txt nhspoilers/gazetteer/README
@@ -157,3 +168,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc nhspoilers/README.gz nhspoilers/*.txt.gz
 %doc %dir nhspoilers/gazetteer
+
+%files doc-pdf
+%defattr(644,root,root,755)
+%doc Guidebook.pdf
