@@ -1,0 +1,796 @@
+--- nethack-3.2.2/doc/recover.6	Wed Feb 14 04:08:01 1996
++++ nethack-3.2.2.pld/doc/recover.6	Mon Jul 26 01:59:04 1999
+@@ -4,10 +4,6 @@
+ recover \- recover a NetHack game interrupted by disaster
+ .SH SYNOPSIS
+ .B recover
+-[
+-.B \-d
+-.I directory
+-]
+ .I "base1 base2" ...
+ .SH DESCRIPTION
+ .PP
+@@ -25,14 +21,6 @@
+ which files to process.
+ Each base option specifies recovery of a separate game.
+ .PP
+-The
+-.B \-d
+-option, which must be the first argument if it appears,
+-supplies a directory which is the NetHack playground.
+-It overrides the value from NETHACKDIR, HACKDIR, or the directory
+-specified by the game administrator during compilation
+-(usually /usr/games/lib/nethackdir).
+-.PP
+ For recovery to be possible,
+ .I nethack
+ must have been compiled with the INSURANCE option, and the run-time option
+@@ -61,33 +49,13 @@
+ .I nethack
+ would have used.
+ .PP
+-Since
+-.I recover
+-must be able to read and delete files from the playground
+-and create files in the save directory,
+-it has interesting interactions with game security.
+-Giving ordinary players access to
+-.I recover
+-through setuid or setgid is tantamount to leaving the playground
+-world-writable,
+-with respect to both cheating and messing up other players.
+-For a single-user system, this of course does not change anything,
+-so some of the microcomputer ports install
+-.I recover
+-by default.
+-.PP
+-For a multi-user system,
+-the game administrator may want to arrange for all .0 files in the
+-playground to be fed to recover when the host machine boots,
+-and handle game crashes individually.
+-If the user population is sufficiently trustworthy,
+-.I recover
+-can be installed with the same permissions the
+-.I nethack
+-executable has.
+-In either case,
+ .I recover
+-is easily compiled from the distribution utility directory.
++has been installed under PLD Linux as sgid games. This makes
++it possible for users to recover their own games. The security hazards
++of possible cheating have been removed, by taking out the
++.I -d
++option and making sure the only directory auto-save files can be read
++from is /var/games/nethack.
+ .SH NOTES
+ .PP
+ Like
+--- nethack-3.2.2/include/config.h	Tue Dec 10 21:20:07 1996
++++ nethack-3.2.2.pld/include/config.h	Mon Jul 26 03:47:41 1999
+@@ -126,7 +126,7 @@
+ 
+ /* #define STUPID	/* avoid some complicated expressions if
+ 			   your C compiler chokes on them */
+-/* #define TERMINFO	/* uses terminfo rather than termcap */
++#define TERMINFO	/* uses terminfo rather than termcap */
+ 			/* should be defined for HPUX and most, but not all,
+ 			   SYSV */
+ 			/* in particular, it should NOT be defined for the
+@@ -211,7 +211,7 @@
+  * Some combinations make no sense.  See the installation document.
+  */
+ #define TTY_GRAPHICS	/* good old tty based graphics */
+-/* #define X11_GRAPHICS	/* X11 interface */
++#define X11_GRAPHICS	/* X11 interface */
+ 
+ /*
+  * Define the default window system.  This should be one that is compiled
+@@ -256,7 +256,7 @@
+  * would allow:
+  *  xpmtoppm <x11tiles.xpm | pnmscale 1.25 | ppmquant 90 >x11tiles_big.xpm
+  */
+-/* # define USE_XPM		/* Disable if you do not have the XPM library */
++# define USE_XPM		/* Disable if you do not have the XPM library */
+ # ifdef USE_XPM
+ #  define GRAPHIC_TOMBSTONE	/* Use graphical tombstone (rip.xpm) */
+ # endif
+@@ -271,15 +271,15 @@
+ 
+ #ifndef WIZARD		/* allow for compile-time or Makefile changes */
+ # ifndef KR1ED
+-#  define WIZARD  "wizard" /* the person allowed to use the -D option */
++#  define WIZARD  "root" /* the person allowed to use the -D option */
+ # else
+ #  define WIZARD
+ #  define WIZARD_NAME "wizard"
+ # endif
+ #endif
+ 
+-#define LOGFILE "logfile"	/* larger file for debugging purposes */
+-#define NEWS "news"		/* the file containing the latest hack news */
++#define LOGFILE "/var/games/nethack/logfile"	/* larger file for debugging purposes */
++#define NEWS "/var/games/nethack/news"	/* the file containing the latest hack news */
+ 
+ /*
+  *	If COMPRESS is defined, it should contain the full path name of your
+@@ -296,12 +296,12 @@
+ 
+ #ifdef UNIX
+ /* path and file name extension for compression program */
+-# define COMPRESS "/usr/ucb/compress"	     /* Lempel-Ziv compression */
+-# define COMPRESS_EXTENSION ".Z"	     /* compress's extension */
++/* # define COMPRESS "/usr/ucb/compress"	/* Lempel-Ziv compression */
++/* # define COMPRESS_EXTENSION ".Z"	     /* compress's extension */
+ 
+ /* An example of one alternative you might want to use: */
+-/* # define COMPRESS "/usr/local/bin/gzip"   /* FSF gzip compression */
+-/* # define COMPRESS_EXTENSION ".gz"	     /* normal gzip extension */
++# define COMPRESS "/bin/gzip"   /* FSF gzip compression */
++# define COMPRESS_EXTENSION ".gz"	     /* normal gzip extension */
+ #endif
+ #ifndef COMPRESS
+ # define INTERNAL_COMP	/* control use of NetHack's compression routines */
+@@ -312,7 +312,7 @@
+  *	a tar-like file, thus making a neater installation.  See *conf.h
+  *	for detailed configuration.
+  */
+-/* #define DLB		/* not supported on all platforms */
++#define DLB		/* not supported on all platforms */
+ 
+ /*
+  *	Defining INSURANCE slows down level changes, but allows games that
+@@ -331,7 +331,7 @@
+  * otherwise it will be the current directory.
+  */
+ # ifndef HACKDIR
+-#  define HACKDIR "/usr/games/lib/nethackdir"	/* nethack directory */
++#  define HACKDIR "/usr/share/games/nethack"	/* nethack directory */
+ # endif
+ 
+ /*
+@@ -341,7 +341,7 @@
+  * since the user might create files in a directory of his choice.
+  * Of course SECURE is meaningful only if HACKDIR is defined.
+  */
+-/* #define SECURE	/* do setuid(getuid()) after chdir() */
++#define SECURE	/* do setuid(getuid()) after chdir() */
+ 
+ /*
+  * If it is desirable to limit the number of people that can play Hack
+@@ -427,7 +427,7 @@
+  * functions that have been macroized.
+  */
+ 
+-/*#define VISION_TABLES	/* use vision tables generated at compile time */
++#define VISION_TABLES	/* use vision tables generated at compile time */
+ #ifndef VISION_TABLES
+ # ifndef NO_MACRO_CPATH
+ #  define MACRO_CPATH	/* use clear_path macros instead of functions */
+@@ -465,7 +465,7 @@
+ #endif
+ 
+ #define EXP_ON_BOTL	/* Show experience on bottom line */
+-/* #define SCORE_ON_BOTL	/* added by Gary Erickson (erickson@ucivax) */
++#define SCORE_ON_BOTL	/* added by Gary Erickson (erickson@ucivax) */
+ 
+ #include "global.h"	/* Define everything else according to choices above */
+ 
+--- nethack-3.2.2/include/global.h	Tue Nov 26 00:52:52 1996
++++ nethack-3.2.2.pld/include/global.h	Mon Jul 26 02:09:00 1999
+@@ -14,7 +14,7 @@
+  * Files expected to exist in the playground directory.
+  */
+ 
+-#define RECORD		"record"  /* a file containing list of topscorers */
++#define RECORD		"/var/games/nethack/record"  /* a file containing list of topscorers */
+ #define HELP		"help"	  /* a file containing command descriptions */
+ #define SHELP		"hh"		/* abbreviated form of the same */
+ #define DEBUGHELP	"wizhelp"	/* a file containing debug mode cmds */
+--- nethack-3.2.2/include/system.h	Mon Nov  4 15:01:25 1996
++++ nethack-3.2.2.pld/include/system.h	Mon Jul 26 02:12:21 1999
+@@ -281,6 +281,9 @@
+ E long NDECL(fork);
+ #endif
+ 
++
++#if (__GLIBC__ > 2) || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 1)
++#else
+ #if defined(SYSV) || defined(VMS) || defined(MAC) || defined(SUNOS4) || defined(POSIX_TYPES)
+ # if defined(NHSTDC) || defined(POSIX_TYPES) || (defined(VMS) && !defined(ANCIENT_VAXC))
+ #  if !defined(_AIX32) && !(defined(SUNOS4) && defined(__STDC__))
+@@ -306,6 +309,7 @@
+ E void *FDECL(memcpy, (char *,char *,int));
+ E void *FDECL(memset, (char*,int,int));
+ # endif
++#endif
+ #endif
+ 
+ #if defined(MICRO) && !defined(LATTICE)
+--- nethack-3.2.2/include/unixconf.h	Tue Dec 10 21:20:08 1996
++++ nethack-3.2.2.pld/include/unixconf.h	Mon Jul 26 02:20:27 1999
+@@ -19,22 +19,22 @@
+  */
+ 
+ /* define exactly one of the following four choices */
+-#define BSD	1	/* define for 4.n BSD  */
++/* #define BSD	1	/* define for 4.n BSD  */
+ 			/* also for relatives like SunOS, Linux and DG/UX */
+ /* #define ULTRIX	/* define for Ultrix v3.0 or higher (but not lower) */
+ 			/* Use BSD for < v3.0 */
+ 			/* "ULTRIX" not to be confused with "ultrix" */
+-/* #define SYSV		/* define for System V */
++#define SYSV		/* define for System V */
+ /* #define HPUX		/* Hewlett-Packard's Unix, version 6.5 or higher */
+ 			/* use SYSV for < v6.5 */
+ 
+ 
+ /* define any of the following that are appropriate */
+-/* #define SVR4		/* use in addition to SYSV for System V Release 4 */
++#define SVR4		/* use in addition to SYSV for System V Release 4 */
+ #define NETWORK		/* if running on a networked system */
+ 			/* e.g. Suns sharing a playground through NFS */
+-#define SUNOS4	/* SunOS 4.x */
+-/* #define LINUX	/* Another Unix clone */
++/* #define SUNOS4	/* SunOS 4.x */
++#define LINUX	/* Another Unix clone */
+ /* #define GENIX	/* Yet Another Unix Clone */
+ /* #define HISX		/* Bull Unix for XPS Machines */
+ /* #define BOS		/* Bull Open Software - Unix for DPX/2 Machines */
+@@ -42,12 +42,12 @@
+ /* #define AIX_31	/* In AIX 3.1 (IBM RS/6000) use BSD ioctl's to gain
+ 			 * job control (note that AIX is SYSV otherwise)
+ 			 * Also define this for AIX 3.2 */
+-/* #define TEXTCOLOR	/* Use System V r3.2 terminfo color support */
++#define TEXTCOLOR	/* Use System V r3.2 terminfo color support */
+ 			/* and/or ANSI color support on termcap systems */
+ 			/* and/or X11 color */
+-/* #define POSIX_JOB_CONTROL	/* use System V / POSIX job control
++#define POSIX_JOB_CONTROL	/* use System V / POSIX job control
+ 			 * (e.g., VSUSP) */
+-/* #define POSIX_TYPES	/* use POSIX types for system calls and termios */
++#define POSIX_TYPES	/* use POSIX types for system calls and termios */
+ 			/* define for many recent OS releases, including
+ 			 * those with specific defines (since types are
+ 			 * changing toward the standard from earlier chaos).
+@@ -84,7 +84,7 @@
+  */
+ 
+ /* #define NO_FILE_LINKS	/* if no hard links */
+-/* #define LOCKDIR "/usr/games/lib/nethackdir"	/* where to put locks */
++#define LOCKDIR "/var/games/nethack"	/* where to put locks */
+ 
+ 
+ /*
+@@ -114,7 +114,7 @@
+  * "extra output" method is used, but not all systems provide access to
+  * a fine-grained timer.
+  */
+-/* #define TIMED_DELAY		/* usleep() */
++#define TIMED_DELAY		/* usleep() */
+ #endif
+ 
+ /*
+@@ -163,7 +163,7 @@
+ #   ifdef __sgi
+ #define DEF_MAILREADER	"/usr/sbin/Mail"
+ #   else
+-#define DEF_MAILREADER	"/usr/bin/mailx"
++#define DEF_MAILREADER	"/usr/bin/Mail"
+ #   endif
+ #  endif
+ # else
+@@ -241,7 +241,7 @@
+ #include <time.h>
+ #endif
+ 
+-#define HLOCK	"perm"	/* an empty file used for locking purposes */
++#define HLOCK	"/var/games/nethack/perm"	/* an empty file used for locking purposes */
+ 
+ #ifndef REDO
+ #define Getchar nhgetch
+--- nethack-3.2.2/src/drawing.c	Sat Oct 26 20:53:01 1996
++++ nethack-3.2.2.pld/src/drawing.c	Mon Jul 26 02:29:44 1999
+@@ -812,7 +812,7 @@
+ #endif /* ASCIIGRAPH */
+ 
+ 	for (i = 0; i < MAXOCLASSES; i++) {
+-#ifdef ASCIIGRAPH
++#if defined(ASCIIGRAPH) && !defined(LINUX)
+ 	    if (iflags.IBMgraphics
+ # if defined(USE_TILES) && defined(MSDOS)
+ 		&& !iflags.grmode
+@@ -820,7 +820,7 @@
+ 		)
+ 		oc_syms[i] = IBM_r_oc_syms[i];
+ 	    else
+-#endif /* ASCIIGRAPH */
++#endif /* ASCIIGRAPH && !LINUX */
+ 		oc_syms[i] = r_oc_syms[i];
+ 	}
+ #if defined(MSDOS)
+--- nethack-3.2.2/src/files.c	Mon Oct 28 01:33:03 1996
++++ nethack-3.2.2.pld/src/files.c	Mon Jul 26 02:37:29 1999
+@@ -37,8 +37,13 @@
+ char bones[] = "bonesnn.xxx;1";
+ char lock[PL_NSIZ+17] = "1lock"; /* long enough for _uid+name+.99;1 */
+ # else
++#  ifdef LINUX
++char bones[] = "/var/games/nethack/bonesnn.xxx";
++char lock[255] = "/var/games/nethack/1lock";
++#  else
+ char bones[] = "bonesnn.xxx";
+ char lock[PL_NSIZ+14] = "1lock"; /* long enough for uid+name+.99 */
++#  endif
+ # endif	/* VMS */
+ #endif	/* MFLOPPY */
+ 
+@@ -426,8 +431,13 @@
+ 	}
+ 	Strcat(SAVEF, ".sav");
+ # else
+-	Sprintf(SAVEF, "save/%d%s", (int)getuid(), plname);
+-	regularize(SAVEF+5);	/* avoid . or / in name */
++#  ifdef LINUX
++       Sprintf(SAVEF, "/var/games/nethack/save/%d%s", (int)getuid(), plname);
++       regularize(SAVEF+28);   /* avoid . or / in name */
++#  else
++        Sprintf(SAVEF, "save/%d%s", (int)getuid(), plname);
++        regularize(SAVEF+5);    /* avoid . or / in name */
++#  endif /* LINUX */
+ # endif	/* MICRO */
+ #endif	/* VMS */
+ }
+--- nethack-3.2.2/src/topten.c	Mon Nov 25 23:41:39 1996
++++ nethack-3.2.2.pld/src/topten.c	Mon Jul 26 02:41:33 1999
+@@ -32,9 +32,9 @@
+ #define dealloc_ttentry(ttent) free((genericptr_t) (ttent))
+ #define NAMSZ	10
+ #define DTHSZ	60
+-#define PERSMAX	 3		/* entries per name/uid per char. allowed */
++#define PERSMAX	10		/* entries per name/uid per char. allowed */
+ #define POINTSMIN	1	/* must be > 0 */
+-#define ENTRYMAX	100	/* must be >= 10 */
++#define ENTRYMAX	1000	/* must be >= 10 */
+ 
+ #if !defined(MICRO) && !defined(MAC)
+ #define PERS_IS_UID		/* delete for PERSMAX per name; now per uid */
+--- nethack-3.2.2/sys/share/ioctl.c	Tue May 21 18:46:26 1996
++++ nethack-3.2.2.pld/sys/share/ioctl.c	Mon Jul 26 02:51:34 1999
+@@ -72,6 +72,10 @@
+ extern void NDECL(sco_mapon);
+ extern void NDECL(sco_mapoff);
+ #endif
++#ifdef __linux__
++extern void NDECL(linux_mapon);
++extern void NDECL(linux_mapoff);
++#endif
+ 
+ #ifdef AUX
+ void
+@@ -156,6 +160,9 @@
+ #  ifdef _M_UNIX
+ 		sco_mapon();
+ #  endif
++#  ifdef __linux__
++		linux_mapon();
++#  endif
+ 		(void) signal(SIGTSTP, SIG_DFL);
+ #  ifdef AUX
+ 		( void ) kill ( 0 , SIGSTOP ) ;
+@@ -164,6 +171,9 @@
+ #  endif
+ #  ifdef _M_UNIX
+ 		sco_mapoff();
++#  endif
++#  ifdef __linux__
++		linux_mapoff();
+ #  endif
+ 		resume_nhwindows();
+ 	} else {
+--- nethack-3.2.2/sys/share/unixtty.c	Mon Oct 28 01:33:05 1996
++++ nethack-3.2.2.pld/sys/share/unixtty.c	Mon Jul 26 02:56:50 1999
+@@ -365,7 +365,58 @@
+ }
+ #endif	/* _M_UNIX */
+ 
++#ifdef __linux__
++# include <sys/vt.h>
+ 
++int sco_flag_console = 0;
++
++void
++linux_mapon()
++{
++# ifdef TTY_GRAPHICS
++	if (!strcmp(windowprocs.name, "tty") && sco_flag_console) {
++		write(1, "\033(B", 3);
++	}
++# endif
++}
++
++void
++linux_mapoff()
++{
++# ifdef TTY_GRAPHICS
++	if (!strcmp(windowprocs.name, "tty") && sco_flag_console) {
++		write(1, "\033(U", 3);
++	}
++# endif
++}
++
++void
++check_linux_console()
++{
++	struct vt_mode vtm;
++
++	if (isatty(0) && ioctl(0,VT_GETMODE,&vtm) >= 0) {
++		sco_flag_console = 1;
++	}
++}
++
++void
++init_linux_cons()
++{
++# ifdef TTY_GRAPHICS
++	if (!strcmp(windowprocs.name, "tty") && sco_flag_console) {
++		atexit(linux_mapon);
++		linux_mapoff();
++		switch_graphics(IBM_GRAPHICS);
++#  ifdef TEXTCOLOR
++		if (has_colors())
++			iflags.use_color = TRUE;
++#  endif
++	}
++# endif
++}
++#endif /* __linux__ */
++	
+ #ifndef __begui__	/* the Be GUI will define its own error proc */
+ /* fatal error */
+ /*VARARGS1*/
+--- nethack-3.2.2/sys/unix/Makefile.src	Tue Dec 10 21:20:09 1996
++++ nethack-3.2.2.pld/sys/unix/Makefile.src	Mon Jul 26 03:10:42 1999
+@@ -56,7 +56,7 @@
+ #	if you get setcgtty() warnings during execution, you are feeding gcc
+ #		a non-ANSI <sys/ioctl.h> -- either run fixincludes on it or use
+ #		-traditional in CFLAGS
+-# CC = gcc
++CC = gcc
+ #
+ #	For Bull DPX/2 systems at B.O.S. 2.0 or higher use the following:
+ #
+@@ -109,8 +109,11 @@
+ 
+ # flags for Linux
+ #   compile normally
+-# CFLAGS = -O2 -fomit-frame-pointer -I../include -I/usr/X11/include
+-# LFLAGS = -L/usr/X11/lib
++
++OPTFLAGS = -O2 -fomit-frame-pointer
++CFLAGS = $(OPTFLAGS) -I../include -I/usr/X11R6/include -I/usr/include/ncurses
++LFLAGS = -s -L/usr/X11R6/lib
++
+ #   OR compile backwards compatible a.out format
+ # CFLAGS = -O2 -b i486-linuxaout -fomit-frame-pointer -I../include -I/usr/X11/include
+ # LFLAGS = -b i486-linuxaout -L/usr/X11/lib
+@@ -124,8 +127,8 @@
+ # flags for debugging:
+ # CFLAGS = -g -I../include
+ 
+-CFLAGS = -O -I../include
+-LFLAGS = 
++# CFLAGS = -O -I../include
++# LFLAGS = 
+ 
+ 
+ # Set the WINSRC, WINOBJ, and WINLIB lines to correspond to your desired
+@@ -146,8 +149,8 @@
+ 	winmisc.o winstat.o wintext.o winval.o tile.o
+ #
+ # 
+-WINSRC = $(WINTTYSRC)
+-WINOBJ = $(WINTTYOBJ)
++WINSRC = $(WINTTYSRC) $(WINX11SRC)
++WINOBJ = $(WINTTYOBJ) $(WINX11OBJ)
+ 
+ # on some systems the termcap library is in -ltermcap or -lcurses
+ # on 386 Xenix, the -ltermlib tputs() seems not to work; use -lcurses instead
+@@ -162,18 +165,18 @@
+ # WINTTYLIB = -ltermcap
+ # WINTTYLIB = -lcurses
+ # WINTTYLIB = -lcurses16
+-# WINTTYLIB = -lncurses
+-WINTTYLIB = -ltermlib
++WINTTYLIB = -lncurses
++# WINTTYLIB = -ltermlib
+ #
+ # libraries for X11
+ # If USE_XPM is defined in config.h, you will also need -lXpm here.
+-WINX11LIB = -lXaw -lXmu -lXext -lXt -lX11
++# WINX11LIB = -lXaw -lXmu -lXext -lXt -lX11
+ # WINX11LIB = -lXaw -lXmu -lXt -lX11
+ # WINX11LIB = -lXaw -lXmu -lXext -lXt -lXpm -lX11 -lm
+-# WINX11LIB = -lXaw -lXmu -lXpm -lXext -lXt -lX11 -lSM -lICE -lm # BSD/OS 2.0
++WINX11LIB = -lXaw -lXmu -lXpm -lXext -lXt -lX11 -lSM -lICE # Linux 2.0
+ #
+ #
+-WINLIB = $(WINTTYLIB)
++WINLIB = $(WINTTYLIB) $(WINX11LIB)
+ 
+ # any other strange libraries your system needs (for Sysunix only -- the more
+ # specialized targets should already be right)
+--- nethack-3.2.2/sys/unix/Makefile.top	Tue Dec 10 21:20:10 1996
++++ nethack-3.2.2.pld/sys/unix/Makefile.top	Mon Jul 26 03:16:05 1999
+@@ -32,13 +32,13 @@
+ # therefore there should not be anything in GAMEDIR that you want to keep
+ # (if there is, you'll have to do the installation by hand or modify the
+ # instructions)
+-GAMEDIR  = /usr/games/lib/$(GAME)dir
++GAMEDIR  = /usr/share/games/$(GAME)
+ SHELLDIR = /usr/games
+ 
+ # per discussion in Install.X11
+-VARDATND = 
++# VARDATND = 
+ # VARDATND = x11tiles pet_mark.xbm
+-# VARDATND = x11tiles pet_mark.xbm rip.xpm
++VARDATND = x11tiles pet_mark.xbm rip.xpm
+ 
+ VARDATD = data oracles options quest.dat rumors
+ VARDAT = $(VARDATD) $(VARDATND)
+--- nethack-3.2.2/sys/unix/Makefile.utl	Tue Dec 10 21:20:11 1996
++++ nethack-3.2.2.pld/sys/unix/Makefile.utl	Mon Jul 26 03:18:04 1999
+@@ -15,7 +15,7 @@
+ 
+ # if you are using gcc as your compiler,
+ #	uncomment the CC definition below if it's not in your environment
+-# CC = gcc
++CC = gcc
+ #
+ #	For Bull DPX/2 systems at B.O.S. 2.0 or higher use the following:
+ #
+@@ -64,8 +64,9 @@
+ 
+ # flags for Linux
+ #   compile normally
+-# CFLAGS = -O2 -fomit-frame-pointer -I../include -I/usr/X11/include
+-# LFLAGS = -L/usr/X11/lib
++OPTFLAGS = -O2 -fomit-frame-pointer
++CFLAGS = $(OPTFLAGS) -I../include -I/usr/X11R6/include
++LFLAGS = -s -L/usr/X11R6/lib
+ #   OR compile backwards compatible a.out format
+ # CFLAGS = -O2 -b i486-linuxaout -fomit-frame-pointer -I../include -I/usr/X11/include
+ # LFLAGS = -b i486-linuxaout -L/usr/X11/lib
+@@ -78,17 +79,17 @@
+ # flags for debugging:
+ # CFLAGS = -g -I../include
+ 
+-CFLAGS = -O -I../include
+-LFLAGS =
++# CFLAGS = -O -I../include
++# LFLAGS =
+  
+ 
+ # yacc/lex programs to use to generate *_comp.h, *_lex.c, and *_yacc.c.
+ # if, instead of yacc/lex you have bison/flex, comment/uncomment the following.
+-YACC     = yacc
+-LEX      = lex
+-# YACC     = bison -y
++# YACC     = yacc
++# LEX      = lex
++YACC     = bison -y
+ # YACC     = byacc
+-# LEX      = flex
++LEX      = flex
+  
+ # these are the names of the output files from YACC/LEX. Under MS-DOS
+ # and similar systems, they may differ
+--- nethack-3.2.2/sys/unix/unixmain.c	Wed Sep 25 02:37:10 1996
++++ nethack-3.2.2.pld/sys/unix/unixmain.c	Mon Jul 26 03:23:05 1999
+@@ -35,6 +35,11 @@
+ extern void NDECL(init_sco_cons);
+ #endif
+ 
++#ifdef __linux__
++extern void NDECL(check_linux_console);
++extern void NDECL(init_linux_cons);
++#endif
++
+ static void NDECL(wd_message);
+ #ifdef WIZARD
+ static boolean wiz_error_flag = FALSE;
+@@ -120,12 +125,18 @@
+ #ifdef _M_UNIX
+ 	check_sco_console();
+ #endif
++#ifdef __linux__
++	check_linux_console();
++#endif
+ 	initoptions();
+ 	init_nhwindows(&argc,argv);
+ 	exact_username = whoami();
+ #ifdef _M_UNIX
+ 	init_sco_cons();
+ #endif
++#ifdef __linux__
++	init_linux_cons();
++#endif
+ 
+ 	/*
+ 	 * It seems you really want to play.
+@@ -175,11 +186,11 @@
+ 		(void) signal(SIGQUIT,SIG_IGN);
+ 		(void) signal(SIGINT,SIG_IGN);
+ 		if(!locknum)
+-			Sprintf(lock, "%d%s", (int)getuid(), plname);
++			Sprintf(lock, "/var/games/nethack/%d%s", (int)getuid(), plname);
+ 		getlock();
+ #ifdef WIZARD
+ 	} else {
+-		Sprintf(lock, "%d%s", (int)getuid(), plname);
++		Sprintf(lock, "/var/games/nethack/%d%s", (int)getuid(), plname);
+ 		getlock();
+ 	}
+ #endif /* WIZARD /**/
+--- nethack-3.2.2/sys/unix/unixunix.c	Tue Jun 18 00:34:55 1996
++++ nethack-3.2.2.pld/sys/unix/unixunix.c	Mon Jul 26 03:27:23 1999
+@@ -17,6 +17,10 @@
+ extern void NDECL(sco_mapon);
+ extern void NDECL(sco_mapoff);
+ #endif
++#ifdef __linux__
++extern void NDECL(linux_mapon);
++extern void NDECL(linux_mapoff);
++#endif
+ 
+ static struct stat buf, hbuf;
+ 
+@@ -181,14 +185,14 @@
+ 		error("%s", "");
+ 	}
+ 
+-	regularize(lock);
++	regularize(lock+23);
+ 	set_levelfile_name(lock, 0);
+ 
+ 	if(locknum) {
+ 		if(locknum > 25) locknum = 25;
+ 
+ 		do {
+-			lock[0] = 'a' + i++;
++			lock[23] = 'a' + i++;
+ 
+ 			if((fd = open(lock, 0)) == -1) {
+ 			    if(errno == ENOENT) goto gotlock; /* no such file */
+@@ -315,6 +319,9 @@
+ #ifdef _M_UNIX
+ 	sco_mapon();
+ #endif
++#ifdef __linux__
++	linux_mapon();
++#endif
+ 	if((f = fork()) == 0){		/* child */
+ 		(void) setgid(getgid());
+ 		(void) setuid(getuid());
+@@ -333,6 +340,9 @@
+ 	(void) wait( (int *) 0);
+ #ifdef _M_UNIX
+ 	sco_mapoff();
++#endif
++#ifdef __linux__
++	linux_mapoff();
+ #endif
+ 	(void) signal(SIGINT, (SIG_RET_TYPE) done1);
+ #ifdef WIZARD
+--- nethack-3.2.2/util/recover.c	Tue Oct 22 04:14:19 1996
++++ nethack-3.2.2.pld/util/recover.c	Mon Jul 26 02:25:25 1999
+@@ -53,41 +53,13 @@
+ 	char *startdir = (char *)0;
+ #endif
+ 
+-	if (argc == 1 || (argc == 2 && !strcmp(argv[1], "-"))) {
++	if (argc == 1) {
+ 		Fprintf(stderr,
+-			"Usage: %s [-d directory] base1 base2 ...\n", argv[0]);
++			"Usage: %s base1 base2 ...\n", argv[0]);
+ 		exit(EXIT_FAILURE);
+ 	}
+ 
+ 	argno = 1;
+-	if (!strncmp(argv[argno], "-d", 2)) {
+-		dir = argv[argno]+2;
+-		if (*dir == '=' || *dir == ':') dir++;
+-		if (!*dir && argc > argno) {
+-			argno++;
+-			dir = argv[argno];
+-		}
+-		if (!*dir) {
+-		    Fprintf(stderr,
+-			"%s: flag -d must be followed by a directory name.\n",
+-			argv[0]);
+-		    exit(EXIT_FAILURE);
+-		}
+-		argno++;
+-	}
+-
+-	if (!dir) dir = getenv("NETHACKDIR");
+-	if (!dir) dir = getenv("HACKDIR");
+-#if defined(SECURE) && !defined(VMS)
+-	if (dir
+-# ifdef HACKDIR
+-		&& strcmp(dir, HACKDIR)
+-# endif
+-		) {
+-		(void) setgid(getgid());
+-		(void) setuid(getuid());
+-	}
+-#endif	/* SECURE && !VMS */
+ 
+ #ifdef HACKDIR
+ 	if (!dir) dir = HACKDIR;
+--- nethack-3.2.2/win/tty/termcap.c	Wed Sep 25 02:37:10 1996
++++ nethack-3.2.2.pld/win/tty/termcap.c	Mon Jul 26 03:33:50 1999
+@@ -41,8 +41,9 @@
+ 
+ STATIC_VAR char *HO, *CL, *CE, *UP, *XD, *BC, *SO, *SE, *TI, *TE;
+ STATIC_VAR char *VS, *VE;
++STATIC_VAR char *ME;
+ #if 0
+-STATIC_VAR char *MR, *ME;
++STATIC_VAR char *MR;
+ STATIC_VAR char *MB, *MH;
+ STATIC_VAR char *MD;     /* may already be in use below */
+ #endif
+@@ -158,8 +159,8 @@
+ 		US = "\033[4m";
+ #  if 0
+ 		MR = "\033[7m";
+-		ME = "\033[0m";
+ #  endif
++		ME = "\033[0m";
+ 		TI = HE = SE = UE = "\033[0m";
+ 		/* strictly, SE should be 2, and UE should be 24,
+ 		   but we can't trust all ANSI emulators to be
+@@ -288,8 +289,8 @@
+ 	MB = Tgetstr("mb");	/* blink */
+ 	MD = Tgetstr("md");	/* boldface */
+ 	MH = Tgetstr("mh");	/* dim */
+-	ME = Tgetstr("me");
+ # endif
++	ME = Tgetstr("me");
+ 
+ 	/* Get rid of padding numbers for HI and HE.  Hope they
+ 	 * aren't really needed!!!  HI and HE are ouputted to the
+@@ -827,7 +828,10 @@
+ 		hilites[c] = HI;
+ 	hilites[CLR_GRAY] = hilites[NO_COLOR] = (char *)0;
+ 
+-	if (tgetnum("Co") < 8 || (setf = tgetstr("Sf", (char **)0)) == (char *)0)
++	if (tgetnum("Co") < 8)
++		return;
++	if ((setf = tgetstr("Sf", (char **)0)) == (char *)0
++		&& (setf = tgetstr("AF", (char **)0)) == (char *)0)
+ 		return;
+ 
+ 	for (c = 0; c < CLR_MAX / 2; c++) {
+@@ -1082,7 +1086,7 @@
+ void
+ term_end_color()
+ {
+-	xputs(HE);
++	xputs(ME);
+ }
+ 
+ 
+--- nethack-3.2.2/sys/unix/Makefile.doc	Tue Dec 10 21:20:08 1996
++++ nethack-3.2.2.pld/sys/unix/Makefile.doc	Mon Jul 26 03:54:21 1999
+@@ -31,7 +31,7 @@
+ 
+ 
+ GAME	= nethack
+-MANDIR	= /usr/man/man6
++MANDIR	= /usr/share/man/man6
+ MANEXT	= 6
+ 
+ # manual installation for most BSD-style systems

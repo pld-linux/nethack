@@ -1,0 +1,117 @@
+--- nethack-3.2.2/sys/unix/Makefile.doc	Mon Jul 26 03:54:21 1999
++++ nethack-3.2.2.pld/sys/unix/Makefile.doc	Mon Jul 26 03:56:20 1999
+@@ -48,11 +48,11 @@
+ # DLBMANCREATE = nroff -man dlb.6 >
+ 
+ manpages:
+-	-$(GAMEMANCREATE) $(MANDIR)/$(GAME).$(MANEXT)
+-	-$(LEVMANCREATE) $(MANDIR)/lev_comp.$(MANEXT)
+-	-$(DGNMANCREATE) $(MANDIR)/dgn_comp.$(MANEXT)
+-	-$(RCVRMANCREATE) $(MANDIR)/recover.$(MANEXT)
+-	-$(DLBMANCREATE) $(MANDIR)/dlb.$(MANEXT)
++	-$(GAMEMANCREATE) $(DESTDIR)$(MANDIR)/$(GAME).$(MANEXT)
++	-$(LEVMANCREATE) $(DESTDIR)$(MANDIR)/lev_comp.$(MANEXT)
++	-$(DGNMANCREATE) $(DESTDIR)$(MANDIR)/dgn_comp.$(MANEXT)
++	-$(RCVRMANCREATE) $(DESTDIR)$(MANDIR)/recover.$(MANEXT)
++	-$(DLBMANCREATE) $(DESTDIR)$(MANDIR)/dlb.$(MANEXT)
+ 
+ # manual creation for distribution
+ DISTRIB = Guidebook.txt nethack.txt lev_comp.txt dgn_comp.txt recover.txt dlb.txt
+--- nethack-3.2.2/sys/unix/Makefile.top	Mon Jul 26 03:16:05 1999
++++ nethack-3.2.2.pld/sys/unix/Makefile.top	Mon Jul 26 04:08:06 1999
+@@ -32,8 +32,9 @@
+ # therefore there should not be anything in GAMEDIR that you want to keep
+ # (if there is, you'll have to do the installation by hand or modify the
+ # instructions)
+-GAMEDIR  = /usr/share/games/$(GAME)
++GAMEDIR  = /usr/share/games/nethack
+ SHELLDIR = /usr/games
++VARDIR   = /var/games/nethack
+ 
+ # per discussion in Install.X11
+ # VARDATND = 
+@@ -135,34 +136,34 @@
+ 		-e '}' 					\
+ 	  	-e '$$s/.*/nodlb/p' < dat/options` ;	\
+ 	$(MAKE) dofiles-$${target-nodlb}
+-	cp src/$(GAME) $(GAMEDIR)
+-	-rm -f $(SHELLDIR)/$(GAME)
++	cp src/$(GAME) $(DESTDIR)$(GAMEDIR)
++#	-rm -f $(SHELLDIR)/$(GAME)
+	sed -e 's;/usr/games/lib/nethackdir;$(GAMEDIR);' \
+ 		-e 's;HACKDIR/nethack;HACKDIR/$(GAME);' \
+ 		< sys/unix/nethack.sh \
+-		> $(SHELLDIR)/$(GAME)
++		> $(DESTDIR)$(SHELLDIR)/$(GAME)
+ # set up their permissions
+-	-( cd $(GAMEDIR) ; $(CHOWN) $(GAMEUID) $(GAME) ; \
+-			$(CHGRP) $(GAMEGRP) $(GAME) )
+-	chmod $(GAMEPERM) $(GAMEDIR)/$(GAME)
+-	-$(CHOWN) $(GAMEUID) $(SHELLDIR)/$(GAME)
+-	$(CHGRP) $(GAMEGRP) $(SHELLDIR)/$(GAME)
+-	chmod $(EXEPERM) $(SHELLDIR)/$(GAME)
++#	-( cd $(GAMEDIR) ; $(CHOWN) $(GAMEUID) $(GAME) ; \
++#			$(CHGRP) $(GAMEGRP) $(GAME) )
++#	chmod $(GAMEPERM) $(GAMEDIR)/$(GAME)
++#	-$(CHOWN) $(GAMEUID) $(SHELLDIR)/$(GAME)
++#	$(CHGRP) $(GAMEGRP) $(SHELLDIR)/$(GAME)
++#	chmod $(EXEPERM) $(SHELLDIR)/$(GAME)
+ 
+ dofiles-dlb: check-dlb
+-	( cd dat ; cp nhdat $(DATNODLB) $(GAMEDIR) )
++	( cd dat ; cp nhdat $(DATNODLB) $(DESTDIR)$(GAMEDIR) )
+ # set up their permissions
+-	-( cd $(GAMEDIR) ; $(CHOWN) $(GAMEUID) nhdat $(DATNODLB) ; \
+-			$(CHGRP) $(GAMEGRP) nhdat $(DATNODLB) ; \
+-			chmod $(FILEPERM) nhdat $(DATNODLB) )
++#	-( cd $(GAMEDIR) ; $(CHOWN) $(GAMEUID) nhdat $(DATNODLB) ; \
++#			$(CHGRP) $(GAMEGRP) nhdat $(DATNODLB) ; \
++#			chmod $(FILEPERM) nhdat $(DATNODLB) )
+ 
+ dofiles-nodlb:
+ # copy over the game files
+-	( cd dat ; cp $(DAT) $(GAMEDIR) )
++	( cd dat ; cp $(DAT) $(DESTDIR)$(GAMEDIR) )
+ # set up their permissions
+-	-( cd $(GAMEDIR) ; $(CHOWN) $(GAMEUID) $(DAT) ; \
+-			$(CHGRP) $(GAMEGRP) $(DAT) ; \
+-			chmod $(FILEPERM) $(DAT) )
++#	-( cd $(GAMEDIR) ; $(CHOWN) $(GAMEUID) $(DAT) ; \
++#			$(CHGRP) $(GAMEGRP) $(DAT) ; \
++#			chmod $(FILEPERM) $(DAT) )
+ 
+ update: $(GAME) $(VARDAT) dungeon spec_levs
+ #	(don't yank the old version out from under people who're playing it)
+@@ -182,21 +183,21 @@
+ 
+ install: $(GAME) $(VARDAT) dungeon spec_levs
+ # set up the directories
+-	-mkdir $(SHELLDIR)
+-	-rm -rf $(GAMEDIR)
+-	-mkdir $(GAMEDIR) $(GAMEDIR)/save
+-	-$(CHOWN) $(GAMEUID) $(GAMEDIR) $(GAMEDIR)/save
+-	$(CHGRP) $(GAMEGRP) $(GAMEDIR) $(GAMEDIR)/save
+-	chmod $(DIRPERM) $(GAMEDIR) $(GAMEDIR)/save
++	-mkdir $(DESTDIR)$(SHELLDIR)
++	-mkdir $(DESTDIR)$(GAMEDIR)
++	-mkdir $(DESTDIR)$(VARDIR) $(DESTDIR)$(VARDIR)/save
++#	-$(CHOWN) $(GAMEUID) $(GAMEDIR) $(GAMEDIR)/save
++#	$(CHGRP) $(GAMEGRP) $(GAMEDIR) $(GAMEDIR)/save
++#	chmod $(DIRPERM) $(GAMEDIR) $(GAMEDIR)/save
+ # set up the game files
+ 	( $(MAKE) dofiles )
+ # set up some additional files
+-	touch $(GAMEDIR)/perm $(GAMEDIR)/record $(GAMEDIR)/logfile
+-	-( cd $(GAMEDIR) ; $(CHOWN) $(GAMEUID) perm record logfile ; \
+-			$(CHGRP) $(GAMEGRP) perm record logfile ; \
+-			chmod $(FILEPERM) perm record logfile )
++	touch $(DESTDIR)$(VARDIR)/perm $(DESTDIR)$(VARDIR)/record $(DESTDIR)$(VARDIR)/logfile
++#	-( cd $(GAMEDIR) ; $(CHOWN) $(GAMEUID) perm record logfile ; \
++#			$(CHGRP) $(GAMEGRP) perm record logfile ; \
++#			chmod $(FILEPERM) perm record logfile )
+ # and a reminder
+-	@echo You may also want to reinstall the man pages via the doc Makefile.
++#	@echo You may also want to reinstall the man pages via the doc Makefile.
+ 
+ 
+ # 'make clean' removes all the .o files, but leaves around all the executables
