@@ -11,5 +11,5 @@ Exec=/usr/games/nethack
 Terminal=false
 Type=Application
 Encoding=UTF-8
-Categories=Application;Game;RolePlaying;
+Categories=;Game;RolePlaying;
 # vi: encoding=utf-8
