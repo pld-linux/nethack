@@ -10,7 +10,7 @@ Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by
 Summary(pt_BR):	Jogo estilo rogue baseado no Dungeons and Dragons
 Name:		nethack
 Version:	3.4.0
-Release:	11
+Release:	12
 License:	Nethack GPL
 Group:		Applications/Games
 Source0:	ftp://ftp.nethack.org/pub/nethack/nh%{file_version}/src/%{name}-%{file_version}.tgz
@@ -25,6 +25,8 @@ Source7:	%{name}rc.gz
 Source8:	%{name}-vol3-1.2.2.pdf
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-makefile.patch
+# renamed from http://nethack.sourceforge.net/v340/bugmore/secpatch.txt
+Patch2:		%{name}-secpatch.patch
 # patches below are adapted from ones found at http://avrc.city.ac.uk/nethack/patches.html
 # warning: order is important in most cases
 Patch100:	%{name}-show_born.patch
@@ -133,6 +135,7 @@ Nethackowy podrêcznik w formacie PDF.
 %setup -q -a 1 -a 2 -n %{name}-%{version}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 # patches adding fun
 %{?!_with_vanilla:%patch100 -p1}
