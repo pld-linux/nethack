@@ -10,7 +10,7 @@ Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by
 Summary(pt_BR):	Jogo estilo rogue baseado no Dungeons and Dragons
 Name:		nethack
 Version:	3.4.0
-Release:	7
+Release:	13
 License:	Nethack GPL
 Group:		Applications/Games
 Source0:	ftp://ftp.nethack.org/pub/nethack/nh%{file_version}/src/%{name}-%{file_version}.tgz
@@ -25,6 +25,8 @@ Source7:	%{name}rc.gz
 Source8:	%{name}-vol3-1.2.2.pdf
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-makefile.patch
+# renamed from http://nethack.sourceforge.net/v340/bugmore/secpatch.txt
+Patch2:		%{name}-secpatch.patch
 # patches below are adapted from ones found at http://avrc.city.ac.uk/nethack/patches.html
 # warning: order is important in most cases
 Patch100:	%{name}-show_born.patch
@@ -40,17 +42,22 @@ Patch109:	%{name}-listmons.patch
 Patch110:	%{name}-flipcoin.patch
 Patch111:	%{name}-ride_key.patch
 Patch112:	%{name}-dungeon_growth.patch
-Patch113:	%{name}-newtoys.patch
-Patch114:	%{name}-dragon_hoard.patch
+Patch113:	%{name}-dragon_hoard.patch
+Patch114:	%{name}-torch.patch
+Patch115:	%{name}-hole.patch
+Patch116:	%{name}-mirror.patch
+Patch117:	%{name}-newt.patch
 # after adding additional features update this patch
 Patch200:	%{name}-makedefs.patch
 URL:		http://www.nethack.org/
-Requires:	/bin/gzip
+BuildRequires:	XFree86-devel
 BuildRequires:	bison
 BuildRequires:	flex
-BuildRequires:	XFree86-devel
 BuildRequires:	ncurses-devel
-BuildRequires:	qt-devel
+BuildRequires:	qt-devel >= 3.1.2-3
+Requires:	/bin/gzip
+Requires:	applnk >= 1.5.13
+Requires:	qt >= 3.1.2-3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define _nhdir	%{_datadir}/nethack
@@ -129,6 +136,7 @@ Nethackowy podrêcznik w formacie PDF.
 %setup -q -a 1 -a 2 -n %{name}-%{version}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 # patches adding fun
 %{?!_with_vanilla:%patch100 -p1}
@@ -145,7 +153,10 @@ Nethackowy podrêcznik w formacie PDF.
 %{?!_with_vanilla:%patch111 -p1}
 %{?!_with_vanilla:%patch112 -p1}
 %{?!_with_vanilla:%patch113 -p1}
-%{?!_with_vanilla:%patch114 -p1}
+#%{?!_with_vanilla:%patch114 -p1}
+#%{?!_with_vanilla:%patch115 -p1}
+#%{?!_with_vanilla:%patch116 -p1}
+%{?!_with_vanilla:%patch117 -p1}
 %{?!_with_vanilla:%patch200 -p1}
 
 %build
@@ -165,7 +176,7 @@ sh ./sys/unix/setup.sh links
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_pixmapsdir},%{_applnkdir}/Games/Roguelike,%{_mandir}/man6}
+install -d $RPM_BUILD_ROOT{%{_pixmapsdir},%{_applnkdir}/Games/RPG,%{_mandir}/man6}
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 install util/recover $RPM_BUILD_ROOT%{_nhdir}
@@ -175,7 +186,7 @@ install doc/nethack.6 doc/recover.6 $RPM_BUILD_ROOT%{_mandir}/man6/
 cp %{SOURCE5} %{SOURCE6} %{SOURCE7} .
 cp %{SOURCE8} vol3-1.2.2.pdf
 
-install %{SOURCE3} $RPM_BUILD_ROOT%{_applnkdir}/Games/Roguelike
+install %{SOURCE3} $RPM_BUILD_ROOT%{_applnkdir}/Games/RPG
 install %{SOURCE4} $RPM_BUILD_ROOT%{_pixmapsdir}
 
 %clean
@@ -184,7 +195,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README doc/Guidebook doc/window.doc doc/fixes* %{name}rc.gz
-%doc $RPM_BUILD_ROOT%{_nhdir}/license
+#%doc $RPM_BUILD_ROOT%{_nhdir}/license CHANGES*
 %lang(pl) %doc Guidebook-3.2pl.ps.gz
 
 %attr(2755,root,games) %{_prefix}/games/nethack
@@ -204,7 +215,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %{_mandir}/man6/*
 
-%{_applnkdir}/Games/Roguelike/*
+%{_applnkdir}/Games/RPG/*
 %{_pixmapsdir}/*
 
 %files spoilers
