@@ -21,7 +21,8 @@ Source4:	%{name}.png
 Source5:	Guidebook-3.2pl.ps.gz
 Source6:	Guidebook.pdf
 Source7:	%{name}rc.gz
-Source8:	http://avrc.city.ac.uk/nethack/VernonSpoilers/vol3-1.2.2.pdf
+# http://avrc.city.ac.uk/nethack/VernonSpoilers/vol3-1.2.2.pdf
+Source8:	%{name}-vol3-1.2.2.pdf
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-makefile.patch
 # patches below are adapted from ones found at http://avrc.city.ac.uk/nethack/patches.html
@@ -169,7 +170,8 @@ install util/recover $RPM_BUILD_ROOT%{_nhdir}
 
 install doc/nethack.6 doc/recover.6 $RPM_BUILD_ROOT%{_mandir}/man6/
 
-cp %{SOURCE5} %{SOURCE6} %{SOURCE7} %{SOURCE8} .
+cp %{SOURCE5} %{SOURCE6} %{SOURCE7} .
+cp %{SOURCE8} vol3-1.2.2.pdf
 
 install %{SOURCE3} $RPM_BUILD_ROOT%{_applnkdir}/Games/Roguelike
 install %{SOURCE4} $RPM_BUILD_ROOT%{_pixmapsdir}
