@@ -14,7 +14,7 @@ Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by
 Summary(pt_BR):	Jogo estilo rogue baseado no Dungeons and Dragons
 Name:		nethack
 Version:	3.4.3
-Release:	0.1
+Release:	1
 License:	Nethack GPL
 Group:		Applications/Games
 Source0:	http://dl.sourceforge.net/sourceforge/nethack/%{name}-%{file_version}-src.tgz
