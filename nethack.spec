@@ -8,7 +8,7 @@ Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by
 Summary(pt_BR):	Jogo estilo rogue baseado no Dungeons and Dragons
 Name:		nethack
 Version:	%{nethack_version}%{?_with_patchhack:ph%{patchhack_version}}
-Release:	4
+Release:	5
 License:	Nethack GPL
 Group:		Applications/Games
 Source0:	ftp://ftp.nethack.org/pub/nethack/nh331/src/%{name}-%{file_version}.tgz
@@ -112,9 +112,12 @@ rm $RPM_BUILD_ROOT%{_mandir}/man6/{dlb.6,dgn_comp.6,lev_comp.6}
 install util/recover	$RPM_BUILD_ROOT%{_nhdir}
 
 cp %{SOURCE5} .
-gzip -9nf doc/Guidebook README README.patch_hack doc/window.doc \
+gzip -9nf doc/Guidebook README doc/window.doc \
 	$RPM_BUILD_ROOT%{_nhdir}/license \
 	nhspoilers/README nhspoilers/*.txt nhspoilers/gazetteer/README
+%if %{?_with_patchhack:1}%{?!_with_patchhack:0}
+gzip -9nf README.patch_hack
+%elsif
 
 install %{SOURCE3} $RPM_BUILD_ROOT%{_applnkdir}/Games/Roguelike
 install %{SOURCE4} $RPM_BUILD_ROOT%{_pixmapsdir}
@@ -124,8 +127,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README.gz README.patch_hack.gz doc/{Guidebook,window.doc}.gz
+%doc README.gz doc/{Guidebook,window.doc}.gz
 %doc $RPM_BUILD_ROOT%{_nhdir}/license.gz
+%if %{?_with_patchhack:1}%{?!_with_patchhack:0}
+%doc README.patch_hack.gz
+%elsif
 %lang(pl) %doc Guidebook-3.2pl.ps.gz
 
 %attr(2755,root,games) %{_prefix}/games/nethack
