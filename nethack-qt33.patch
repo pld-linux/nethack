@@ -1,9 +1,9 @@
---- nethack-3.4.1/win/Qt/qt_win.cpp.orig	2004-04-02 22:20:47.000000000 +0200
-+++ nethack-3.4.1/win/Qt/qt_win.cpp	2004-04-02 22:31:43.306317608 +0200
-@@ -70,7 +70,7 @@
- #undef max
+--- nethack-3.4.3/win/Qt/qt_win.cpp.orig	2004-04-02 22:20:47.000000000 +0200
++++ nethack-3.4.3/win/Qt/qt_win.cpp	2004-04-02 22:31:43.306317608 +0200
+@@ -72,7 +72,7 @@
  #undef alloc
  #undef lock
+ #undef yn
 -
 +#undef Invisible
  }

@@ -1,15 +1,15 @@
-diff -ruN nethack-3.4.0.orig/include/config.h 2/include/config.h
---- nethack-3.4.0.orig/include/config.h	Mon Mar 25 23:47:30 2002
-+++ 2/include/config.h	Tue Mar 26 20:35:52 2002
-@@ -136,6 +136,7 @@
-  *		LOGFILE and NEWS refer to files in the playground.
+diff -ruN nethack-3.4.3.orig/include/config.h nethack-3.4.3/include/config.h
+--- nethack-3.4.3.orig/include/config.h	Mon Mar 25 23:47:30 2002
++++ nethack-3.4.3/include/config.h	Tue Mar 26 20:35:52 2002
+@@ -141,6 +141,7 @@
+  *		playground.
   */
  
 +#if 0
  #ifndef WIZARD		/* allow for compile-time or Makefile changes */
  # ifndef KR1ED
  #  define WIZARD  "wizard" /* the person allowed to use the -D option */
-@@ -144,6 +145,7 @@
+@@ -149,6 +150,7 @@
  #  define WIZARD_NAME "wizard"
  # endif
  #endif
@@ -17,7 +17,7 @@ diff -ruN nethack-3.4.0.orig/include/config.h 2/include/config.h
  
  #define LOGFILE "logfile"	/* larger file for debugging purposes */
  #define NEWS "news"		/* the file containing the latest hack news */
-@@ -163,8 +165,8 @@
+@@ -169,8 +171,8 @@
  
  #ifdef UNIX
  /* path and file name extension for compression program */
@@ -28,7 +28,7 @@ diff -ruN nethack-3.4.0.orig/include/config.h 2/include/config.h
  /* An example of one alternative you might want to use: */
  /* #define COMPRESS "/usr/local/bin/gzip" */	/* FSF gzip compression */
  /* #define COMPRESS_EXTENSION ".gz" */		/* normal gzip extension */
-@@ -179,7 +181,7 @@
+@@ -185,7 +187,7 @@
   *	a tar-like file, thus making a neater installation.  See *conf.h
   *	for detailed configuration.
   */
@@ -37,16 +37,16 @@ diff -ruN nethack-3.4.0.orig/include/config.h 2/include/config.h
  
  /*
   *	Defining INSURANCE slows down level changes, but allows games that
-@@ -201,7 +203,7 @@
- #  ifdef __APPLE__
- #    define HACKDIR "nethackdir"	/* nethack directory */
- #  else
--#    define HACKDIR "/usr/games/lib/nethackdir"
-+#    define HACKDIR "/usr/share/nethack"
- #  endif
+@@ -206,7 +208,7 @@
+  * otherwise it will be the current directory.
+  */
+ # ifndef HACKDIR
+-#  define HACKDIR "/usr/games/lib/nethackdir"
++#  define HACKDIR "/usr/share/nethack"
  # endif
  
-@@ -298,7 +300,7 @@
+ /*
+@@ -300,7 +302,7 @@
   * functions that have been macroized.
   */
  
