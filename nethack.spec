@@ -1,7 +1,7 @@
 %define file_version 331
 Summary:	NetHack - An adventure into the Mazes of Menace
 Summary(no):	NetHack - Et eventyr i en faretruende labyrint
-Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by 
+Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by
 Name:		nethack
 Version:	3.3.1
 Release:	1
@@ -51,7 +51,8 @@ i 3.1.
 Kompilowany ze wsparciem dla QT i ncurses.
 
 %package spoilers
-Summary:	Spoilers to NetHack.
+Summary:	Spoilers to NetHack
+Summary(pl):	Spoilery dla NetHacka
 Group:		Applications/Games
 Group(de):	Applikationen/Spiele
 Group(pl):	Aplikacje/Gry
@@ -59,6 +60,10 @@ Group(pl):	Aplikacje/Gry
 %description spoilers
 Spoilers - a set of texts which explain many secrets in the game.
 Beware: the game after reading it becomes even more addictive!!!
+
+%description spoilers -l pl
+Spoilery - zbiór tekstów wyja¶niaj±cych wiele sekretów w grze. Uwaga:
+po przeczytaniu gra staje siê jeszcze bardziej uzale¿niaj±ca!
 
 %prep
 %setup -q -a 1 -a 2
