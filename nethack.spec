@@ -2,6 +2,9 @@
 # Conditional build:
 # --with vanilla - build vanilla NetHack (without patches)
 #
+# no patches for now, wait for updates
+%define _with_vanilla	1
+
 %define		file_version	%(echo %{version} | tr -d .)
 Summary:	NetHack - An adventure into the Mazes of Menace
 Summary(es):	Juego estilo rogue que se basa en Dungeons and Dragons (calabozos y dragones)
@@ -9,12 +12,13 @@ Summary(no):	NetHack - Et eventyr i en faretruende labyrint
 Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by
 Summary(pt_BR):	Jogo estilo rogue baseado no Dungeons and Dragons
 Name:		nethack
-Version:	3.4.0
-Release:	11
+Version:	3.4.1
+Release:	1
 License:	Nethack GPL
 Group:		Applications/Games
 Source0:	ftp://ftp.nethack.org/pub/nethack/nh%{file_version}/src/%{name}-%{file_version}.tgz
-Source1:	http://www.spod-central.org/~psmith/nh/spoi-%{file_version}.tar.gz
+#Source1:	http://www.spod-central.org/~psmith/nh/spoi-%{file_version}.tar.gz
+Source1:	http://www.spod-central.org/~psmith/nh/spoi-340.tar.gz
 Source2:	http://www.spod-central.org/~psmith/nh/gazetteer.tar.gz
 Source3:	%{name}.desktop
 Source4:	%{name}.png
@@ -25,6 +29,7 @@ Source7:	%{name}rc.gz
 Source8:	%{name}-vol3-1.2.2.pdf
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-makefile.patch
+Patch2:		%{name}-gcc3.patch
 # patches below are adapted from ones found at http://avrc.city.ac.uk/nethack/patches.html
 # warning: order is important in most cases
 Patch100:	%{name}-show_born.patch
@@ -133,6 +138,7 @@ Nethackowy podrêcznik w formacie PDF.
 %setup -q -a 1 -a 2 -n %{name}-%{version}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 # patches adding fun
 %{?!_with_vanilla:%patch100 -p1}
@@ -163,7 +169,8 @@ sh ./sys/unix/setup.sh links
 	LFLAGS="%{rpmldflags}" \
 	CC="%{__cc}" \
 	CXX="%{__cxx}" \
-	LD="%{__cxx}"
+	LD="%{__cxx}" \
+	QTDIR="%{_prefix}"
 
 %{__make} -C util recover \
 	CFLAGS="%{rpmcflags} -I../include" \
