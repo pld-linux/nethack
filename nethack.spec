@@ -10,7 +10,7 @@ Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by
 Summary(pt_BR):	Jogo estilo rogue baseado no Dungeons and Dragons
 Name:		nethack
 Version:	3.4.0
-Release:	10
+Release:	11
 License:	Nethack GPL
 Group:		Applications/Games
 Source0:	ftp://ftp.nethack.org/pub/nethack/nh%{file_version}/src/%{name}-%{file_version}.tgz
@@ -54,6 +54,7 @@ BuildRequires:	flex
 BuildRequires:	ncurses-devel
 BuildRequires:	qt-devel >= 3.0.3
 Requires:	/bin/gzip
+Requires:	applnk >= 1.5.13
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define _nhdir	%{_datadir}/nethack
@@ -171,7 +172,7 @@ sh ./sys/unix/setup.sh links
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_pixmapsdir},%{_applnkdir}/Games/Roguelike,%{_mandir}/man6}
+install -d $RPM_BUILD_ROOT{%{_pixmapsdir},%{_applnkdir}/Games/RPG,%{_mandir}/man6}
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 install util/recover $RPM_BUILD_ROOT%{_nhdir}
@@ -181,7 +182,7 @@ install doc/nethack.6 doc/recover.6 $RPM_BUILD_ROOT%{_mandir}/man6/
 cp %{SOURCE5} %{SOURCE6} %{SOURCE7} .
 cp %{SOURCE8} vol3-1.2.2.pdf
 
-install %{SOURCE3} $RPM_BUILD_ROOT%{_applnkdir}/Games/Roguelike
+install %{SOURCE3} $RPM_BUILD_ROOT%{_applnkdir}/Games/RPG
 install %{SOURCE4} $RPM_BUILD_ROOT%{_pixmapsdir}
 
 %clean
@@ -210,7 +211,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %{_mandir}/man6/*
 
-%{_applnkdir}/Games/Roguelike/*
+%{_applnkdir}/Games/RPG/*
 %{_pixmapsdir}/*
 
 %files spoilers
