@@ -1,7 +1,7 @@
 diff -ruN nethack-3.4.0.orig/src/cmd.c nethack-3.4.0/src/cmd.c
 --- nethack-3.4.0.orig/src/cmd.c	Thu Apr 11 17:58:27 2002
 +++ nethack-3.4.0/src/cmd.c	Thu Apr 11 23:51:45 2002
-@@ -461,7 +461,16 @@
+@@ -463,7 +463,16 @@
  	    else aggravate();
  	} else if (Upolyd)
  		pline("Any special ability you may have is purely reflexive.");
