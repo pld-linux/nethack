@@ -9,20 +9,6 @@ Version:	3.3.1
 Release:	2
 License:	Nethack GPL
 Group:		Applications/Games
-Group(cs):	Aplikace/Hry
-Group(da):	Programmer/Spil
-Group(de):	Applikationen/Spiele
-Group(es):	Aplicaciones/Juegos
-Group(fr):	Applications/Jeux
-Group(is):	Forrit/Leikir
-Group(it):	Applicazioni/Giochi
-Group(ja):	•¢•◊•Í•±°º•∑•Á•Û/•≤°º•‡
-Group(no):	Applikasjoner/Spill
-Group(pl):	Aplikacje/Gry
-Group(pt):	AplicaÁıes/Jogos
-Group(ru):	“…Ãœ÷≈Œ…—/È«“Ÿ
-Group(sl):	Programi/Igre
-Group(sv):	Till‰mpningar/Spel
 Source0:	ftp://ftp.nethack.org/pub/nethack/nh331/src/%{name}-%{file_version}.tgz
 Source1:	http://www.spod-central.org/~psmith/nh/spoi-%{file_version}.tar.gz
 Source2:	http://www.spod-central.org/~psmith/nh/gazetteer.tar.gz
@@ -78,20 +64,6 @@ wiele nowych rozszerzeÒ w stosunku do poprzednich wersji.
 Summary:	Spoilers to NetHack
 Summary(pl):	Spoilery dla NetHacka
 Group:		Applications/Games
-Group(cs):	Aplikace/Hry
-Group(da):	Programmer/Spil
-Group(de):	Applikationen/Spiele
-Group(es):	Aplicaciones/Juegos
-Group(fr):	Applications/Jeux
-Group(is):	Forrit/Leikir
-Group(it):	Applicazioni/Giochi
-Group(ja):	•¢•◊•Í•±°º•∑•Á•Û/•≤°º•‡
-Group(no):	Applikasjoner/Spill
-Group(pl):	Aplikacje/Gry
-Group(pt):	AplicaÁıes/Jogos
-Group(ru):	“…Ãœ÷≈Œ…—/È«“Ÿ
-Group(sl):	Programi/Igre
-Group(sv):	Till‰mpningar/Spel
 
 %description spoilers
 Spoilers - a set of texts which explain many secrets in the game.
