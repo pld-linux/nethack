@@ -1,15 +1,17 @@
-diff -ruN nethack-3.4.0.orig/sys/unix/Makefile.src 2/sys/unix/Makefile.src
---- nethack-3.4.0.orig/sys/unix/Makefile.src	Mon Mar 25 23:47:32 2002
-+++ 2/sys/unix/Makefile.src	Tue Mar 26 21:29:11 2002
-@@ -150,7 +150,7 @@
+diff -ruN nethack-3.4.0./sys/unix/Makefile.src nethack-3.4.0/sys/unix/Makefile.src
+--- nethack-3.4.0./sys/unix/Makefile.src	Thu Apr 11 17:58:28 2002
++++ nethack-3.4.0/sys/unix/Makefile.src	Wed Jun 12 00:01:35 2002
+@@ -150,8 +150,8 @@
  # The Qt and Be window systems are written in C++, while the rest of
  # NetHack is standard C.  If using Qt, uncomment the LD line here to get
  # the C++ libraries linked in.
 -CXXFLAGS = $(CFLAGS) -I. -I$(QTDIR)/include
+-CXX=g++
 +CXXFLAGS = $(CFLAGS) -I. -I/usr/X11R6/include/qt
- CXX=g++
++#CXX=g++
  #LD=g++
  
+ # Set the WINSRC, WINOBJ, and WINLIB lines to correspond to your desired
 @@ -203,8 +203,8 @@
  
  #
@@ -50,6 +52,15 @@ diff -ruN nethack-3.4.0.orig/sys/unix/Makefile.src 2/sys/unix/Makefile.src
  
  # any other strange libraries your system needs (for Sysunix only -- the more
  # specialized targets should already be right)
+@@ -381,7 +381,7 @@
+ 
+ Sysunix:	$(HOBJ) Makefile
+ 	@echo "Loading ..."
+-	@$(CC) $(LFLAGS) -o $(GAME) $(HOBJ) $(WINLIB) $(LIBS)
++	@$(LD) $(LFLAGS) -o $(GAME) $(HOBJ) $(WINLIB) $(LIBS)
+ 	@touch Sysunix
+ 
+ Sys3B2:	$(HOBJ) Makefile
 @@ -450,13 +450,13 @@
  
  # Qt windowport meta-object-compiler output
@@ -67,9 +78,9 @@ diff -ruN nethack-3.4.0.orig/sys/unix/Makefile.src 2/sys/unix/Makefile.src
  
  $(MAKEDEFS): ../util/makedefs.c  $(CONFIG_H) ../include/permonst.h \
  		../include/objclass.h ../include/monsym.h \
-diff -ruN nethack-3.4.0.orig/sys/unix/Makefile.top 2/sys/unix/Makefile.top
---- nethack-3.4.0.orig/sys/unix/Makefile.top	Mon Mar 25 23:47:32 2002
-+++ 2/sys/unix/Makefile.top	Tue Mar 26 21:28:10 2002
+diff -ruN nethack-3.4.0./sys/unix/Makefile.top nethack-3.4.0/sys/unix/Makefile.top
+--- nethack-3.4.0./sys/unix/Makefile.top	Thu Apr 11 17:58:28 2002
++++ nethack-3.4.0/sys/unix/Makefile.top	Wed Jun 12 00:00:43 2002
 @@ -14,7 +14,7 @@
  # MAKE = make
  
@@ -117,9 +128,9 @@ diff -ruN nethack-3.4.0.orig/sys/unix/Makefile.top 2/sys/unix/Makefile.top
  		< sys/unix/nethack.sh \
  		> $(SHELLDIR)/$(GAME)
  # set up their permissions
-diff -ruN nethack-3.4.0.orig/sys/unix/Makefile.utl 2/sys/unix/Makefile.utl
---- nethack-3.4.0.orig/sys/unix/Makefile.utl	Mon Mar 25 23:47:32 2002
-+++ 2/sys/unix/Makefile.utl	Tue Mar 26 21:28:10 2002
+diff -ruN nethack-3.4.0./sys/unix/Makefile.utl nethack-3.4.0/sys/unix/Makefile.utl
+--- nethack-3.4.0./sys/unix/Makefile.utl	Thu Apr 11 17:58:28 2002
++++ nethack-3.4.0/sys/unix/Makefile.utl	Wed Jun 12 00:00:43 2002
 @@ -97,11 +97,11 @@
  
  # yacc/lex programs to use to generate *_comp.h, *_lex.c, and *_yacc.c.

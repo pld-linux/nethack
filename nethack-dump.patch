@@ -1,6 +1,6 @@
-diff -ruN nethack-3.4.0.orig/dat/opthelp nethack-3.4.0/dat/opthelp
---- nethack-3.4.0.orig/dat/opthelp	Fri Apr 12 00:32:26 2002
-+++ nethack-3.4.0/dat/opthelp	Fri Apr 12 00:33:20 2002
+diff -ruN nethack-3.4.0./dat/opthelp nethack-3.4.0/dat/opthelp
+--- nethack-3.4.0./dat/opthelp	Wed Jun 12 00:29:06 2002
++++ nethack-3.4.0/dat/opthelp	Wed Jun 12 00:29:19 2002
 @@ -94,6 +94,9 @@
  boulder       override the default boulder symbol with another default:`
  disclose      the types of information you want offered at the end of the
@@ -11,9 +11,9 @@ diff -ruN nethack-3.4.0.orig/dat/opthelp nethack-3.4.0/dat/opthelp
  fruit         the name of a fruit you enjoy eating  [slime mold]
                (basically a whimsy which NetHack uses from time to time).
  menustyle     user interface for selection of multiple objects:
-diff -ruN nethack-3.4.0.orig/doc/Guidebook.mn nethack-3.4.0/doc/Guidebook.mn
---- nethack-3.4.0.orig/doc/Guidebook.mn	Fri Apr 12 00:32:26 2002
-+++ nethack-3.4.0/doc/Guidebook.mn	Fri Apr 12 00:33:20 2002
+diff -ruN nethack-3.4.0./doc/Guidebook.mn nethack-3.4.0/doc/Guidebook.mn
+--- nethack-3.4.0./doc/Guidebook.mn	Wed Jun 12 00:29:06 2002
++++ nethack-3.4.0/doc/Guidebook.mn	Wed Jun 12 00:29:19 2002
 @@ -1690,6 +1690,12 @@
  .lp dogname
  Name your starting dog (ex. ``dogname:Fang'').
@@ -27,9 +27,9 @@ diff -ruN nethack-3.4.0.orig/doc/Guidebook.mn nethack-3.4.0/doc/Guidebook.mn
  .lp dungeon
  Set the graphics symbols for displaying the dungeon
  (default \&``\ |--------||.-|++##.##<><>_|\e\e#{}.}..##\ #}'').
-diff -ruN nethack-3.4.0.orig/doc/Guidebook.tex nethack-3.4.0/doc/Guidebook.tex
---- nethack-3.4.0.orig/doc/Guidebook.tex	Fri Apr 12 00:32:26 2002
-+++ nethack-3.4.0/doc/Guidebook.tex	Fri Apr 12 00:33:20 2002
+diff -ruN nethack-3.4.0./doc/Guidebook.tex nethack-3.4.0/doc/Guidebook.tex
+--- nethack-3.4.0./doc/Guidebook.tex	Wed Jun 12 00:29:06 2002
++++ nethack-3.4.0/doc/Guidebook.tex	Wed Jun 12 00:29:19 2002
 @@ -2112,6 +2112,13 @@
  Name your starting dog (ex.\ ``{\tt dogname:Fang}'').
  Cannot be set with the `{\tt O}' command.
@@ -44,9 +44,9 @@ diff -ruN nethack-3.4.0.orig/doc/Guidebook.tex nethack-3.4.0/doc/Guidebook.tex
  \item[\ib{dungeon}]
  Set the graphics symbols for displaying the dungeon (default
  ``\verb& |--------||.-|++##& \verb&.##<><>_|\\#{}.}..## #}&'').
-diff -ruN nethack-3.4.0.orig/doc/Guidebook.txt nethack-3.4.0/doc/Guidebook.txt
---- nethack-3.4.0.orig/doc/Guidebook.txt	Fri Apr 12 00:32:26 2002
-+++ nethack-3.4.0/doc/Guidebook.txt	Fri Apr 12 00:33:20 2002
+diff -ruN nethack-3.4.0./doc/Guidebook.txt nethack-3.4.0/doc/Guidebook.txt
+--- nethack-3.4.0./doc/Guidebook.txt	Wed Jun 12 00:29:06 2002
++++ nethack-3.4.0/doc/Guidebook.txt	Wed Jun 12 00:29:19 2002
 @@ -2194,6 +2194,13 @@
                 Name your starting dog (ex.  ``dogname:Fang'').   Cannot  be
                 set with the `O' command.
@@ -61,9 +61,9 @@ diff -ruN nethack-3.4.0.orig/doc/Guidebook.txt nethack-3.4.0/doc/Guidebook.txt
            dungeon
                 Set the graphics symbols for displaying the dungeon (default
                 `` |--------||.-|++##.##<><>_|\\#{}.}..## #}'').   The  dun-
-diff -ruN nethack-3.4.0.orig/include/config.h nethack-3.4.0/include/config.h
---- nethack-3.4.0.orig/include/config.h	Fri Apr 12 00:32:26 2002
-+++ nethack-3.4.0/include/config.h	Fri Apr 12 00:34:38 2002
+diff -ruN nethack-3.4.0./include/config.h nethack-3.4.0/include/config.h
+--- nethack-3.4.0./include/config.h	Wed Jun 12 00:29:06 2002
++++ nethack-3.4.0/include/config.h	Wed Jun 12 00:29:19 2002
 @@ -348,6 +348,8 @@
   * bugs left here.
   */
@@ -73,9 +73,9 @@ diff -ruN nethack-3.4.0.orig/include/config.h nethack-3.4.0/include/config.h
  #define SHOW_BORN	/* show born patch */
  /*#define GOLDOBJ */	/* Gold is kept on obj chains - Helge Hafting */
  
-diff -ruN nethack-3.4.0.orig/include/decl.h nethack-3.4.0/include/decl.h
---- nethack-3.4.0.orig/include/decl.h	Thu Apr 11 17:58:27 2002
-+++ nethack-3.4.0/include/decl.h	Fri Apr 12 00:33:20 2002
+diff -ruN nethack-3.4.0./include/decl.h nethack-3.4.0/include/decl.h
+--- nethack-3.4.0./include/decl.h	Thu Apr 11 17:58:27 2002
++++ nethack-3.4.0/include/decl.h	Wed Jun 12 00:29:19 2002
 @@ -183,6 +183,9 @@
  E const char *configfile;
  E NEARDATA char plname[PL_NSIZ];
@@ -86,9 +86,9 @@ diff -ruN nethack-3.4.0.orig/include/decl.h nethack-3.4.0/include/decl.h
  E NEARDATA char catname[];
  E NEARDATA char horsename[];
  E char preferred_pet;
-diff -ruN nethack-3.4.0.orig/include/extern.h nethack-3.4.0/include/extern.h
---- nethack-3.4.0.orig/include/extern.h	Thu Apr 11 17:58:27 2002
-+++ nethack-3.4.0/include/extern.h	Fri Apr 12 00:33:20 2002
+diff -ruN nethack-3.4.0./include/extern.h nethack-3.4.0/include/extern.h
+--- nethack-3.4.0./include/extern.h	Thu Apr 11 17:58:27 2002
++++ nethack-3.4.0/include/extern.h	Wed Jun 12 00:29:19 2002
 @@ -165,6 +165,10 @@
  E int NDECL(extcmd_via_menu);
  E void FDECL(enlightenment, (int));
@@ -138,9 +138,9 @@ diff -ruN nethack-3.4.0.orig/include/extern.h nethack-3.4.0/include/extern.h
  E void FDECL(unrestrict_weapon_skill, (int));
  E void FDECL(use_skill, (int,int));
  E void FDECL(add_weapon_skill, (int));
-diff -ruN nethack-3.4.0.orig/src/botl.c nethack-3.4.0/src/botl.c
---- nethack-3.4.0.orig/src/botl.c	Thu Apr 11 17:58:27 2002
-+++ nethack-3.4.0/src/botl.c	Fri Apr 12 00:33:20 2002
+diff -ruN nethack-3.4.0./src/botl.c nethack-3.4.0/src/botl.c
+--- nethack-3.4.0./src/botl.c	Thu Apr 11 17:58:27 2002
++++ nethack-3.4.0/src/botl.c	Wed Jun 12 00:29:19 2002
 @@ -163,10 +163,16 @@
  }
  #endif
@@ -207,9 +207,9 @@ diff -ruN nethack-3.4.0.orig/src/botl.c nethack-3.4.0/src/botl.c
  	curs(WIN_STATUS, 1, 1);
  	putstr(WIN_STATUS, 0, newbot2);
  }
-diff -ruN nethack-3.4.0.orig/src/cmd.c nethack-3.4.0/src/cmd.c
---- nethack-3.4.0.orig/src/cmd.c	Fri Apr 12 00:32:26 2002
-+++ nethack-3.4.0/src/cmd.c	Fri Apr 12 00:33:20 2002
+diff -ruN nethack-3.4.0./src/cmd.c nethack-3.4.0/src/cmd.c
+--- nethack-3.4.0./src/cmd.c	Wed Jun 12 00:29:06 2002
++++ nethack-3.4.0/src/cmd.c	Wed Jun 12 00:29:19 2002
 @@ -1044,6 +1044,287 @@
  	return;
  }
@@ -589,9 +589,9 @@ diff -ruN nethack-3.4.0.orig/src/cmd.c nethack-3.4.0/src/cmd.c
  #endif /* OVLB */
  #ifdef OVL1
  
-diff -ruN nethack-3.4.0.orig/src/decl.c nethack-3.4.0/src/decl.c
---- nethack-3.4.0.orig/src/decl.c	Thu Apr 11 17:58:27 2002
-+++ nethack-3.4.0/src/decl.c	Fri Apr 12 00:33:20 2002
+diff -ruN nethack-3.4.0./src/decl.c nethack-3.4.0/src/decl.c
+--- nethack-3.4.0./src/decl.c	Thu Apr 11 17:58:27 2002
++++ nethack-3.4.0/src/decl.c	Wed Jun 12 00:29:19 2002
 @@ -195,6 +195,15 @@
  /* used to zero all elements of a struct obj */
  NEARDATA struct obj zeroobj = DUMMY;
@@ -608,9 +608,9 @@ diff -ruN nethack-3.4.0.orig/src/decl.c nethack-3.4.0/src/decl.c
  /* originally from dog.c */
  NEARDATA char dogname[PL_PSIZ] = DUMMY;
  NEARDATA char catname[PL_PSIZ] = DUMMY;
-diff -ruN nethack-3.4.0.orig/src/display.c nethack-3.4.0/src/display.c
---- nethack-3.4.0.orig/src/display.c	Thu Apr 11 17:58:27 2002
-+++ nethack-3.4.0/src/display.c	Fri Apr 12 00:33:20 2002
+diff -ruN nethack-3.4.0./src/display.c nethack-3.4.0/src/display.c
+--- nethack-3.4.0./src/display.c	Thu Apr 11 17:58:27 2002
++++ nethack-3.4.0/src/display.c	Wed Jun 12 00:29:19 2002
 @@ -1339,6 +1339,82 @@
  
  /* ========================================================================= */
@@ -694,9 +694,9 @@ diff -ruN nethack-3.4.0.orig/src/display.c nethack-3.4.0/src/display.c
  /*
   * back_to_glyph()
   *
-diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
---- nethack-3.4.0.orig/src/end.c	Fri Apr 12 00:32:26 2002
-+++ nethack-3.4.0/src/end.c	Fri Apr 12 00:33:20 2002
+diff -ruN nethack-3.4.0./src/end.c nethack-3.4.0/src/end.c
+--- nethack-3.4.0./src/end.c	Wed Jun 12 00:29:06 2002
++++ nethack-3.4.0/src/end.c	Wed Jun 12 00:31:14 2002
 @@ -41,7 +41,12 @@
  STATIC_DCL void FDECL(display_artifact_score, (struct obj *,winid));
  STATIC_DCL void FDECL(savelife, (int));
@@ -710,7 +710,7 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  STATIC_DCL boolean FDECL(should_query_disclose_option, (int, int*));
  
  #if defined(__BEOS__) || defined(MICRO) || defined(WIN32) || defined(OS2)
-@@ -83,6 +88,49 @@
+@@ -83,6 +88,52 @@
  
  extern const char *killed_by_prefix[];
  
@@ -728,7 +728,10 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
 +      if (p == dump_fn)
 +	buf[0] = 0;
 +      else
-+	strncpy(buf, dump_fn, (int)p - (int)dump_fn);
++      {
++        strncpy(buf, dump_fn, (int)p - (int)dump_fn);
++        buf[(int)p-(int)dump_fn]='\0';
++      }
 +      strncat(buf, plname, BUFSZ - strlen(buf));
 +      p += 2;
 +      if (strlen(buf) < BUFSZ && strlen(p) > 0)
@@ -760,7 +763,7 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  
  /*ARGSUSED*/
  void
-@@ -351,8 +399,13 @@
+@@ -351,8 +402,13 @@
  			    makeknown(obj->otyp);
  			    obj->known = obj->bknown = obj->dknown = obj->rknown = 1;
  			}
@@ -774,7 +777,7 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  		}
  		if (ask && c == 'q')  done_stopprint++;
  	    }
-@@ -366,14 +419,25 @@
+@@ -366,14 +422,25 @@
  		enlightenment(how >= PANICKED ? 1 : 2); /* final */
  	    if (ask && c == 'q') done_stopprint++;
  	}
@@ -800,7 +803,7 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  
  	ask = should_query_disclose_option('c', &defquery);
  	if (!done_stopprint) {
-@@ -383,6 +447,12 @@
+@@ -383,6 +450,12 @@
  		show_conduct(how >= PANICKED ? 1 : 2);
  	    if (ask && c == 'q') done_stopprint++;
  	}
@@ -813,7 +816,7 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  }
  
  /* try to get the player back in a viable state after being killed */
-@@ -514,6 +584,10 @@
+@@ -514,6 +587,10 @@
  		arti_cost(otmp), currency(2L), 
  		arti_cost(otmp) * 5 / 2);
  	    putstr(endwin, 0, pbuf);
@@ -824,7 +827,7 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  	}
  	if (Has_contents(otmp))
  	    display_artifact_score(otmp->cobj,endwin);
-@@ -593,6 +667,22 @@
+@@ -593,6 +670,22 @@
  
  die:
  	program_state.gameover = 1;
@@ -847,7 +850,7 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  	/* in case of a subsequent panic(), there's no point trying to save */
  	program_state.something_worth_saving = 0;
  	/* render vision subsystem inoperative */
-@@ -740,15 +830,19 @@
+@@ -740,15 +833,19 @@
  		/* don't bother counting to see whether it should be plural */
  	}
  
@@ -872,7 +875,7 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  
  	if (how == ESCAPED || how == ASCENDED) {
  	    register struct monst *mtmp;
-@@ -788,13 +882,17 @@
+@@ -788,13 +885,17 @@
  	    } else {
  		if (!done_stopprint) Strcat(pbuf, " ");
  	    }
@@ -892,7 +895,7 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  
  	    if (!done_stopprint)
  		display_artifact_score(invent,endwin);
-@@ -824,6 +922,10 @@
+@@ -824,6 +925,10 @@
  				count, plur(count));
  		    }
  		    putstr(endwin, 0, pbuf);
@@ -903,7 +906,7 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  		}
  	    }
  
-@@ -848,12 +950,23 @@
+@@ -848,12 +953,23 @@
  	    Sprintf(eos(pbuf), " with %ld point%s,",
  		    u.urexp, plur(u.urexp));
  	    putstr(endwin, 0, pbuf);
@@ -927,7 +930,7 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  	}
  	if (!done_stopprint) {
  	    Sprintf(pbuf,
-@@ -861,6 +974,10 @@
+@@ -861,6 +977,10 @@
  		    u.ulevel, u.uhpmax, plur(u.uhpmax), ends[how]);
  	    putstr(endwin, 0, pbuf);
  	    putstr(endwin, 0, "");
@@ -938,7 +941,7 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  	}
  	if (!done_stopprint)
  	    display_nhwindow(endwin, TRUE);
-@@ -878,6 +995,10 @@
+@@ -878,6 +998,10 @@
  		exit_nhwindows((char *)0);
  	    topten(how);
  	}
@@ -949,7 +952,7 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  
  	if(done_stopprint) { raw_print(""); raw_print(""); }
  	terminate(EXIT_SUCCESS);
-@@ -888,9 +1009,20 @@
+@@ -888,9 +1012,20 @@
  container_contents(list, identified, all_containers)
  struct obj *list;
  boolean identified, all_containers;
@@ -971,7 +974,7 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  
  	for (box = list; box; box = box->nobj) {
  	    if (Is_container(box) && box->otyp != BAG_OF_TRICKS) {
-@@ -899,26 +1031,68 @@
+@@ -899,26 +1034,68 @@
  		    Sprintf(buf, "Contents of %s:", the(xname(box)));
  		    putstr(tmpwin, 0, buf);
  		    putstr(tmpwin, 0, "");
@@ -1041,7 +1044,7 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  }
  
  
-@@ -944,6 +1118,17 @@
+@@ -944,6 +1121,17 @@
  list_vanquished(defquery, ask)
  int defquery;
  boolean ask;
@@ -1059,7 +1062,7 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  {
      register int i, lev;
      int ntypes = 0, max_lev = 0, nkilled;
-@@ -971,6 +1156,10 @@
+@@ -971,6 +1159,10 @@
  	    klwin = create_nhwindow(NHW_MENU);
  	    putstr(klwin, 0, "Vanquished creatures:");
  	    putstr(klwin, 0, "");
@@ -1070,7 +1073,7 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  
  	    /* countdown by monster "toughness" */
  	    for (lev = max_lev; lev >= 0; lev--)
-@@ -1004,6 +1193,10 @@
+@@ -1004,6 +1196,10 @@
  #endif
  		    }
  		    putstr(klwin, 0, buf);
@@ -1081,7 +1084,7 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  		}
  	    /*
  	     * if (Hallucination)
-@@ -1013,9 +1206,17 @@
+@@ -1013,9 +1209,17 @@
  		putstr(klwin, 0, "");
  		Sprintf(buf, "%ld creatures vanquished.", total_killed);
  		putstr(klwin, 0, buf);
@@ -1099,7 +1102,7 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  	}
      }
  }
-@@ -1032,10 +1233,18 @@
+@@ -1032,10 +1236,18 @@
      return n;
  }
  
@@ -1118,7 +1121,7 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  {
      register int i;
      int ngenocided;
-@@ -1055,6 +1264,10 @@
+@@ -1055,6 +1267,10 @@
  	    klwin = create_nhwindow(NHW_MENU);
  	    putstr(klwin, 0, "Genocided species:");
  	    putstr(klwin, 0, "");
@@ -1129,7 +1132,7 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  
  	    for (i = LOW_PM; i < NUMMONS; i++)
  		if (mvitals[i].mvflags & G_GENOD) {
-@@ -1065,11 +1278,21 @@
+@@ -1065,11 +1281,21 @@
  		    else
  			Strcpy(buf, makeplural(mons[i].mname));
  		    putstr(klwin, 0, buf);
@@ -1151,9 +1154,9 @@ diff -ruN nethack-3.4.0.orig/src/end.c nethack-3.4.0/src/end.c
  
  	    display_nhwindow(klwin, TRUE);
  	    destroy_nhwindow(klwin);
-diff -ruN nethack-3.4.0.orig/src/invent.c nethack-3.4.0/src/invent.c
---- nethack-3.4.0.orig/src/invent.c	Thu Apr 11 17:58:28 2002
-+++ nethack-3.4.0/src/invent.c	Fri Apr 12 00:33:20 2002
+diff -ruN nethack-3.4.0./src/invent.c nethack-3.4.0/src/invent.c
+--- nethack-3.4.0./src/invent.c	Thu Apr 11 17:58:28 2002
++++ nethack-3.4.0/src/invent.c	Wed Jun 12 00:29:19 2002
 @@ -20,7 +20,11 @@
  STATIC_DCL boolean FDECL(putting_on, (const char *));
  STATIC_PTR int FDECL(ckunpaid,(struct obj *));
@@ -1298,9 +1301,9 @@ diff -ruN nethack-3.4.0.orig/src/invent.c nethack-3.4.0/src/invent.c
  /*
   * Returns the number of unpaid items within the given list.  This includes
   * contained objects.
-diff -ruN nethack-3.4.0.orig/src/options.c nethack-3.4.0/src/options.c
---- nethack-3.4.0.orig/src/options.c	Fri Apr 12 00:32:26 2002
-+++ nethack-3.4.0/src/options.c	Fri Apr 12 00:33:20 2002
+diff -ruN nethack-3.4.0./src/options.c nethack-3.4.0/src/options.c
+--- nethack-3.4.0./src/options.c	Wed Jun 12 00:29:06 2002
++++ nethack-3.4.0/src/options.c	Wed Jun 12 00:29:19 2002
 @@ -220,6 +220,14 @@
  						SET_IN_GAME },
  	{ "dogname",  "the name of your (first) dog (e.g., dogname:Fang)",
@@ -1347,9 +1350,9 @@ diff -ruN nethack-3.4.0.orig/src/options.c nethack-3.4.0/src/options.c
  	else if (!strcmp(optname, "dungeon"))
  		Sprintf(buf, "%s", to_be_done);
  	else if (!strcmp(optname, "effects"))
-diff -ruN nethack-3.4.0.orig/src/topten.c nethack-3.4.0/src/topten.c
---- nethack-3.4.0.orig/src/topten.c	Thu Apr 11 17:58:28 2002
-+++ nethack-3.4.0/src/topten.c	Fri Apr 12 00:33:20 2002
+diff -ruN nethack-3.4.0./src/topten.c nethack-3.4.0/src/topten.c
+--- nethack-3.4.0./src/topten.c	Thu Apr 11 17:58:28 2002
++++ nethack-3.4.0/src/topten.c	Wed Jun 12 00:29:19 2002
 @@ -358,6 +358,12 @@
  	      "Since you were in %s mode, the score list will not be checked.",
  		    wizard ? "wizard" : "discover");
@@ -1464,9 +1467,9 @@ diff -ruN nethack-3.4.0.orig/src/topten.c nethack-3.4.0/src/topten.c
  }
  
  STATIC_OVL int
-diff -ruN nethack-3.4.0.orig/src/weapon.c nethack-3.4.0/src/weapon.c
---- nethack-3.4.0.orig/src/weapon.c	Thu Apr 11 17:58:28 2002
-+++ nethack-3.4.0/src/weapon.c	Fri Apr 12 00:33:20 2002
+diff -ruN nethack-3.4.0./src/weapon.c nethack-3.4.0/src/weapon.c
+--- nethack-3.4.0./src/weapon.c	Thu Apr 11 17:58:28 2002
++++ nethack-3.4.0/src/weapon.c	Wed Jun 12 00:29:19 2002
 @@ -9,6 +9,10 @@
   */
  #include "hack.h"
