@@ -52,7 +52,7 @@ BuildRequires:	XFree86-devel
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	ncurses-devel
-BuildRequires:	qt-devel
+BuildRequires:	qt-devel >= 3.0.3
 Requires:	/bin/gzip
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
