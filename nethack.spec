@@ -142,7 +142,7 @@ Nethack Guidebook, PDF format.
 Nethackowy podrêcznik w formacie PDF.
 
 %prep
-%setup -q -a 1 -a 2 -n %{name}-%{version}
+%setup -q -a1 -a2
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -189,7 +189,8 @@ sh ./sys/unix/setup.sh links
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_pixmapsdir},%{_applnkdir}/Games/RPG,%{_mandir}/man6}
 
-%{__make} install DESTDIR=$RPM_BUILD_ROOT
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
 install util/recover $RPM_BUILD_ROOT%{_nhdir}
 
 install doc/nethack.6 doc/recover.6 $RPM_BUILD_ROOT%{_mandir}/man6/
