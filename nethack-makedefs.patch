@@ -1,13 +1,14 @@
-diff -ruN nethack-3.4.0.orig/util/makedefs.c nethack-3.4.0/util/makedefs.c
---- nethack-3.4.0.orig/util/makedefs.c	Thu Apr 11 17:58:28 2002
-+++ nethack-3.4.0/util/makedefs.c	Sat Apr 13 18:18:41 2002
-@@ -592,12 +592,17 @@
+diff -ruN nethack-3.4.0./util/makedefs.c nethack-3.4.0/util/makedefs.c
+--- nethack-3.4.0./util/makedefs.c	Thu Apr 11 17:58:28 2002
++++ nethack-3.4.0/util/makedefs.c	Tue Jun 18 23:02:51 2002
+@@ -592,12 +592,18 @@
  }
  
  static const char *build_opts[] = {
 +#ifdef FLIPCOIN
 +		"ability to flip coin",
 +#endif
++		"additional levels",
  #ifdef AMIGA_WBENCH
  		"Amiga WorkBench support",
  #endif
@@ -19,17 +20,18 @@ diff -ruN nethack-3.4.0.orig/util/makedefs.c nethack-3.4.0/util/makedefs.c
  #ifdef TEXTCOLOR
  		"color",
  #endif
-@@ -613,6 +618,9 @@
+@@ -613,6 +619,10 @@
  #ifdef WIZARD
  		"debug mode",
  #endif
++		"dragon hoard",
 +#ifdef DUMP_LOG
 +		"dumping character to file",
 +#endif
  #ifdef ELBERETH
  		"Elbereth",
  #endif
-@@ -622,21 +630,30 @@
+@@ -622,21 +632,30 @@
  #ifdef MFLOPPY
  		"floppy drive support",
  #endif
@@ -60,7 +62,7 @@ diff -ruN nethack-3.4.0.orig/util/makedefs.c nethack-3.4.0/util/makedefs.c
  #ifdef GNUDOS
  		"MSDOS protected mode",
  #endif
-@@ -694,9 +711,14 @@
+@@ -694,9 +713,14 @@
  #ifdef SHELL
  		"shell command",
  #endif
@@ -75,7 +77,7 @@ diff -ruN nethack-3.4.0.orig/util/makedefs.c nethack-3.4.0/util/makedefs.c
  #ifdef SUSPEND
  		"suspend command",
  #endif
-@@ -722,6 +744,7 @@
+@@ -722,6 +746,7 @@
  #ifdef WALLIFIED_MAZE
  		"walled mazes",
  #endif
