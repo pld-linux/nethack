@@ -10,7 +10,7 @@ Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by
 Summary(pt_BR):	Jogo estilo rogue baseado no Dungeons and Dragons
 Name:		nethack
 Version:	3.4.0
-Release:	12
+Release:	13
 License:	Nethack GPL
 Group:		Applications/Games
 Source0:	ftp://ftp.nethack.org/pub/nethack/nh%{file_version}/src/%{name}-%{file_version}.tgz
@@ -54,9 +54,10 @@ BuildRequires:	XFree86-devel
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	ncurses-devel
-BuildRequires:	qt-devel >= 3.0.3
+BuildRequires:	qt-devel >= 3.1.2-3
 Requires:	/bin/gzip
 Requires:	applnk >= 1.5.13
+Requires:	qt >= 3.1.2-3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define _nhdir	%{_datadir}/nethack
