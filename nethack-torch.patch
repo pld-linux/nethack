@@ -1,0 +1,1325 @@
+diff -ruN nethack-3.4.0dd/CHANGES.torch-patch nethack-3.4.0/CHANGES.torch-patch
+--- nethack-3.4.0dd/CHANGES.torch-patch	Thu Jan  1 01:00:00 1970
++++ nethack-3.4.0/CHANGES.torch-patch	Sat Aug 24 21:41:12 2002
+@@ -0,0 +1,104 @@
++Changes made by Malcolm Ryan - Torch patch
++------------------------------------------
++
++12/10/01:
++	Started with Nethack v3.3.1
++
++	* objects.c
++
++	Added torch item as a weptool. Does nothing yet.
++
++21/10/01:
++
++	* apply.c objects.c mkobj.c objnam.c timeout.c shknam.c light.c
++	  mkroom.h	
++
++	Added torches as a light source.  
++	
++	* weapon.c 
++
++	Added torches to the list of possible weapons for monsters to
++	wield.
++
++	* uhitm.c 
++	
++	Added extra fire-effects for hitting a monster with a burning
++	torch.
++
++	* timeout.c extern.h
++	
++	Added code to accelerate timers, to allow torches to burn 
++	more quickly when used as weapons.
++
++	* object.c invent.c 
++
++	Make torches mergable, so long as they are unlit.
++
++	* apply.c 
++
++	When you light a torch from a collection you peel one off,
++	wield it, and possibly drop the rest (considered preferable 
++	to vice versa).
++
++	* objnam.c
++	
++	Added code to makesingular to convert "torches" to "torch".
++
++	Saved as Back/8.tgz
++
++28/10/01
++	
++	* wield.c extern.h apply.c ball.c do.c do_wear.c dothrow.c 
++	  eat.c invent.c mhitu.c pickup.c restore.c trap.c u_init.c	
++	  uhitm.c 
++
++	Change setuwep and setuswapwep to take an argument which signifies 
++	whether the old weapon is going back into the backpack or not. 
++	Torches which are being unwielded in this way are extiguished.
++	If however they are dropped, destroyed, or  moving to another 
++	weapon hand, then they are not. 	
++
++	* steal.c 
++
++	Extinguish a torch when you steal it.
++
++	* mkobj.c
++	
++	Reduced the burn time for torches a little. (300-600 turns)
++
++	* apply.c shk.c
++
++	Added a charge for using an unpaid-for torch.
++	Torches decrease in value as they are used up.
++
++	* u_init.c
++
++	Some classes may start with torches instead of lamps.
++
++30/10/01:
++
++	* mhitu.c uhitm.c mhitm.c
++
++	Fighting with lit torches is fully implemented.
++	One thing I didn't bother to fix: monsters can carry
++	lit torches without wielding them, and can wield several 
++	lit torches at once. The messages are printed correctly
++	for wielding multiple lit torches, even though it is
++	very unlikely that it should happen (lit torches do 
++	not merge).  
++
++	* makemon.c
++
++	Dwarfs in the mines sometimes carry lit torches.
++
++RELEASE VERSION 1.0
++
++31/5/02:
++
++	Revised patch to apply to Nethack 3.4.0
++
++	* objnam.c
++
++	Fixed naming of torches.
++
++RELEASE VERSION 2.0
+diff -ruN nethack-3.4.0dd/include/extern.h nethack-3.4.0/include/extern.h
+--- nethack-3.4.0dd/include/extern.h	Sat Aug 24 21:40:29 2002
++++ nethack-3.4.0/include/extern.h	Sat Aug 24 21:41:12 2002
+@@ -808,7 +808,7 @@
+ #endif /* STICKY_OBJECTS */
+ E int FDECL(count_unpaid, (struct obj *));
+ E int FDECL(count_buc, (struct obj *,int));
+-E void FDECL(carry_obj_effects, (struct obj *));
++E void FDECL(carry_obj_effects, (struct monst *, struct obj *));
+ E const char *FDECL(currency, (long));
+ 
+ /* ### ioctl.c ### */
+@@ -1926,6 +1926,7 @@
+ E void FDECL(burn_object, (genericptr_t, long));
+ E void FDECL(begin_burn, (struct obj *, BOOLEAN_P));
+ E void FDECL(end_burn, (struct obj *, BOOLEAN_P));
++E void FDECL(burn_faster, (struct obj *, long));
+ E void NDECL(do_storms);
+ E boolean FDECL(start_timer, (long, SHORT_P, SHORT_P, genericptr_t));
+ E long FDECL(stop_timer, (SHORT_P, genericptr_t));
+@@ -2211,9 +2212,9 @@
+ 
+ /* ### wield.c ### */
+ 
+-E void FDECL(setuwep, (struct obj *));
++E void FDECL(setuwep, (struct obj *, boolean));
+ E void FDECL(setuqwep, (struct obj *));
+-E void FDECL(setuswapwep, (struct obj *));
++E void FDECL(setuswapwep, (struct obj *, boolean));
+ E int NDECL(dowield);
+ E int NDECL(doswapweapon);
+ E int NDECL(dowieldquiver);
+diff -ruN nethack-3.4.0dd/include/mkroom.h nethack-3.4.0/include/mkroom.h
+--- nethack-3.4.0dd/include/mkroom.h	Thu Mar 21 00:42:49 2002
++++ nethack-3.4.0/include/mkroom.h	Sat Aug 24 21:41:12 2002
+@@ -30,7 +30,7 @@
+ 	struct itp {
+ 	    int iprob;		/* probability of an item type */
+ 	    int itype;	/* item type: if >=0 a class, if < 0 a specific item */
+-	} iprobs[5];
++	} iprobs[6];
+ 	const char **shknms;	/* list of shopkeeper names for this type */
+ };
+ 
+diff -ruN nethack-3.4.0dd/src/apply.c nethack-3.4.0/src/apply.c
+--- nethack-3.4.0dd/src/apply.c	Sat Aug 24 21:40:29 2002
++++ nethack-3.4.0/src/apply.c	Sat Aug 24 21:41:12 2002
+@@ -33,6 +33,7 @@
+ STATIC_DCL void FDECL(use_candelabrum, (struct obj *));
+ STATIC_DCL void FDECL(use_candle, (struct obj *));
+ STATIC_DCL void FDECL(use_lamp, (struct obj *));
++STATIC_DCL int FDECL(use_torch, (struct obj *));
+ STATIC_DCL void FDECL(light_cocktail, (struct obj *));
+ STATIC_DCL void FDECL(use_tinning_kit, (struct obj *));
+ STATIC_DCL void FDECL(use_figurine, (struct obj *));
+@@ -613,7 +614,7 @@
+ 	    if(uswapwep == obj) return (FALSE);
+ 	} else {
+ 	    You("now wield %s.", doname(obj));
+-	    setuwep(obj);
++	    setuwep(obj, TRUE);
+ 	}
+ 	if (uwep != obj) return(FALSE); /* rewielded old object after dying */
+ 	/* applying weapon or tool that gets wielded ends two-weapon combat */
+@@ -1028,7 +1029,8 @@
+ 
+ 	if (obj->lamplit) {
+ 	    if (obj->otyp == OIL_LAMP || obj->otyp == MAGIC_LAMP ||
+-		    obj->otyp == BRASS_LANTERN || obj->otyp == POT_OIL) {
++		obj->otyp == BRASS_LANTERN || obj->otyp == POT_OIL ||
++		obj->otyp == TORCH) {
+ 		(void) get_obj_location(obj, &x, &y, 0);
+ 		if (obj->where == OBJ_MINVENT ? cansee(x,y) : !Blind)
+ 		    pline("%s %s out!", Yname2(obj), otense(obj, "go"));
+@@ -1097,6 +1099,9 @@
+ 			|| (obj->otyp == MAGIC_LAMP && obj->spe == 0)) {
+ 		if (obj->otyp == BRASS_LANTERN)
+ 			Your("lamp has run out of power.");
++		else if (obj->otyp == TORCH) {
++		        Your("torch has burnt out and cannot be relit.");
++		}
+ 		else pline("This %s has no oil.", xname(obj));
+ 		return;
+ 	}
+@@ -1108,6 +1113,13 @@
+ 				obj->otyp == BRASS_LANTERN) {
+ 		    check_unpaid(obj);
+ 		    pline("%s lamp is now on.", Shk_Your(buf, obj));
++		} else if (obj->otyp == TORCH) {
++		    check_unpaid(obj);
++		    pline("%s flame%s burn%s%s",
++			s_suffix(Yname2(obj)),
++			plur(obj->quan),
++			obj->quan > 1L ? "" : "s",
++			Blind ? "." : " brightly!");
+ 		} else {	/* candle(s) */
+ 		    pline("%s flame%s %s%s",
+ 			s_suffix(Yname2(obj)),
+@@ -1124,6 +1136,48 @@
+ 	}
+ }
+ 
++/* MRKR: Torches */
++
++STATIC_OVL int
++use_torch(obj)
++struct obj *obj;
++{
++        struct obj *otmp = NULL;
++
++	if(u.uswallow) {
++		You(no_elbow_room);
++		return 0;
++	}
++
++	if(Underwater) {
++		pline("Sorry, fire and water don't mix.");
++		return 0;
++	}
++
++	if (obj->quan > 1L) {
++	  otmp = obj;
++	  obj = splitobj(otmp, 1L);
++
++	  obj_extract_self(otmp);	/* free from inv */
++	}
++
++	/* You can use a torch in either weapon slot */
++
++	if (obj != uwep && obj != uswapwep) {
++	    if (!wield_tool(obj)) return 0;
++	}
++
++	use_lamp(obj);
++
++	/* shouldn't merge */
++	if (otmp) {
++	  otmp = hold_another_object(otmp, "You drop %s!",
++				      doname(otmp), (const char *)0);
++	}
++
++	return 1;
++}
++
+ STATIC_OVL void
+ light_cocktail(obj)
+ 	struct obj *obj;	/* obj is a potion of oil */
+@@ -2788,6 +2842,9 @@
+ 	case BRASS_LANTERN:
+ 		use_lamp(obj);
+ 		break;
++	case TORCH:
++	        res = use_torch(obj);
++		break;
+ 	case POT_OIL:
+ 		light_cocktail(obj);
+ 		break;
+diff -ruN nethack-3.4.0dd/src/ball.c nethack-3.4.0/src/ball.c
+--- nethack-3.4.0dd/src/ball.c	Thu Mar 21 00:43:00 2002
++++ nethack-3.4.0/src/ball.c	Sat Aug 24 21:41:12 2002
+@@ -19,9 +19,9 @@
+ 	if (carried(uball)) {
+ 		pline("Startled, you drop the iron ball.");
+ 		if (uwep == uball)
+-			setuwep((struct obj *)0);
++			setuwep((struct obj *)0, FALSE);
+ 		if (uswapwep == uball)
+-			setuswapwep((struct obj *)0);
++			setuswapwep((struct obj *)0, FALSE);
+ 		if (uquiver == uball)
+ 			setuqwep((struct obj *)0);;
+ 		if (uwep != uball)
+diff -ruN nethack-3.4.0dd/src/do.c nethack-3.4.0/src/do.c
+--- nethack-3.4.0dd/src/do.c	Thu Mar 21 00:43:02 2002
++++ nethack-3.4.0/src/do.c	Sat Aug 24 21:41:12 2002
+@@ -453,14 +453,14 @@
+ 			weldmsg(obj);
+ 			return(0);
+ 		}
+-		setuwep((struct obj *)0);
++		setuwep((struct obj *)0, FALSE);
++	}
++	if (obj == uswapwep) {
++		setuswapwep((struct obj *)0, FALSE);
+ 	}
+ 	if(obj == uquiver) {
+ 		setuqwep((struct obj *)0);
+ 	}
+-	if (obj == uswapwep) {
+-		setuswapwep((struct obj *)0);
+-	}
+ 
+ 	if (u.uswallow) {
+ 		/* barrier between you and the floor */
+@@ -521,9 +521,9 @@
+ dropy(obj)
+ register struct obj *obj;
+ {
+-	if (obj == uwep) setuwep((struct obj *)0);
++	if (obj == uwep) setuwep((struct obj *)0, FALSE);
+ 	if (obj == uquiver) setuqwep((struct obj *)0);
+-	if (obj == uswapwep) setuswapwep((struct obj *)0);
++	if (obj == uswapwep) setuswapwep((struct obj *)0, FALSE);
+ 
+ 	if (!u.uswallow && flooreffects(obj,u.ux,u.uy,"drop")) return;
+ 	/* uswallow check done by GAN 01/29/87 */
+@@ -1110,9 +1110,9 @@
+ 			drag_down();
+ 			if (carried(uball)) {
+ 			    if (uwep == uball)
+-				setuwep((struct obj *)0);
++				setuwep((struct obj *)0, FALSE);
+ 			    if (uswapwep == uball)
+-				setuswapwep((struct obj *)0);
++				setuswapwep((struct obj *)0, FALSE);
+ 			    if (uquiver == uball)
+ 				setuqwep((struct obj *)0);
+ 			    freeinv(uball);
+diff -ruN nethack-3.4.0dd/src/do_wear.c nethack-3.4.0/src/do_wear.c
+--- nethack-3.4.0dd/src/do_wear.c	Sat Aug 24 21:40:29 2002
++++ nethack-3.4.0/src/do_wear.c	Sat Aug 24 21:41:12 2002
+@@ -637,8 +637,8 @@
+     long oldprop = u.uprops[objects[obj->otyp].oc_oprop].extrinsic;
+     int old_attrib;
+ 
+-    if (obj == uwep) setuwep((struct obj *) 0);
+-    if (obj == uswapwep) setuswapwep((struct obj *) 0);
++    if (obj == uwep) setuwep((struct obj *) 0, TRUE);
++    if (obj == uswapwep) setuswapwep((struct obj *) 0, TRUE);
+     if (obj == uquiver) setuqwep((struct obj *) 0);
+ 
+     /* only mask out W_RING when we don't have both
+@@ -867,9 +867,9 @@
+ 	boolean already_blind = Blind, changed = FALSE;
+ 
+ 	if (otmp == uwep)
+-	    setuwep((struct obj *) 0);
++	    setuwep((struct obj *) 0, TRUE);
+ 	if (otmp == uswapwep)
+-	    setuswapwep((struct obj *) 0);
++	    setuswapwep((struct obj *) 0, TRUE);
+ 	if (otmp == uquiver)
+ 	    setuqwep((struct obj *) 0);
+ 	setworn(otmp, W_TOOL);
+@@ -1370,9 +1370,9 @@
+ 
+ 	otmp->known = TRUE;
+ 	if(otmp == uwep)
+-		setuwep((struct obj *)0);
++		setuwep((struct obj *)0, TRUE);
+ 	if (otmp == uswapwep)
+-		setuswapwep((struct obj *) 0);
++		setuswapwep((struct obj *) 0, TRUE);
+ 	if (otmp == uquiver)
+ 		setuqwep((struct obj *) 0);
+ 	setworn(otmp, mask);
+@@ -1417,9 +1417,9 @@
+ 		return(0);
+ 	}
+ 	if(otmp == uwep)
+-		setuwep((struct obj *)0);
++		setuwep((struct obj *)0, TRUE);
+ 	if(otmp == uswapwep)
+-		setuswapwep((struct obj *) 0);
++		setuswapwep((struct obj *) 0, TRUE);
+ 	if(otmp == uquiver)
+ 		setuqwep((struct obj *) 0);
+ 	if(otmp->oclass == RING_CLASS || otmp->otyp == MEAT_RING) {
+@@ -1582,7 +1582,7 @@
+ 				makesingular(oclass_names[(int)otmp->oclass]),
+ 			xfl ? "also " : "",
+ 			makeplural(body_part(HAND)));
+-		setuswapwep((struct obj *)0);
++		setuswapwep((struct obj *)0, FALSE);
+ 		xfl++;
+ 		if (otmp->otyp != LOADSTONE || !otmp->cursed)
+ 			dropx(otmp);
+@@ -1595,7 +1595,7 @@
+ 				makesingular(oclass_names[(int)otmp->oclass]),
+ 			xfl ? "also " : "",
+ 			makeplural(body_part(HAND)));
+-		setuwep((struct obj *)0);
++		setuwep((struct obj *)0, FALSE);
+ 		if (otmp->otyp != LOADSTONE || !otmp->cursed)
+ 			dropx(otmp);
+ 	}
+@@ -1719,12 +1719,12 @@
+ 
+ 	if (taking_off == W_WEP) {
+ 	  if(!cursed(uwep)) {
+-	    setuwep((struct obj *) 0);
++	    setuwep((struct obj *) 0, TRUE);
+ 	    You("are empty %s.", body_part(HANDED));
+ 	    u.twoweap = FALSE;
+ 	  }
+ 	} else if (taking_off == W_SWAPWEP) {
+-	  setuswapwep((struct obj *) 0);
++	  setuswapwep((struct obj *) 0, TRUE);
+ 	  You("no longer have a second weapon readied.");
+ 	  u.twoweap = FALSE;
+ 	} else if (taking_off == W_QUIVER) {
+diff -ruN nethack-3.4.0dd/src/dokick.c nethack-3.4.0/src/dokick.c
+--- nethack-3.4.0dd/src/dokick.c	Sat Aug 24 21:40:29 2002
++++ nethack-3.4.0/src/dokick.c	Sat Aug 24 21:41:12 2002
+@@ -1281,9 +1281,9 @@
+ 		otmp->no_charge = 0;
+ 	}
+ 
+-	if (otmp == uwep) setuwep((struct obj *)0);
++	if (otmp == uwep) setuwep((struct obj *)0, FALSE);
++	if (otmp == uswapwep) setuswapwep((struct obj *)0, FALSE);
+ 	if (otmp == uquiver) setuqwep((struct obj *)0);
+-	if (otmp == uswapwep) setuswapwep((struct obj *)0);
+ 
+ 	/* some things break rather than ship */
+ 	if (breaktest(otmp)) {
+diff -ruN nethack-3.4.0dd/src/dothrow.c nethack-3.4.0/src/dothrow.c
+--- nethack-3.4.0dd/src/dothrow.c	Thu Mar 21 00:43:03 2002
++++ nethack-3.4.0/src/dothrow.c	Sat Aug 24 21:41:12 2002
+@@ -874,7 +874,7 @@
+ 		      Tobjnam(obj, "hit"), ceiling(u.ux,u.uy));
+ 		obj = addinv(obj);
+ 		(void) encumber_msg();
+-		setuwep(obj);
++		setuwep(obj, TRUE);
+ 		u.twoweap = twoweap;
+ 	    } else if (u.dz < 0 && !Is_airlevel(&u.uz) &&
+ 		    !Underwater && !Is_waterlevel(&u.uz)) {
+@@ -984,7 +984,7 @@
+ 			pline("%s to your hand!", Tobjnam(obj, "return"));
+ 			obj = addinv(obj);
+ 			(void) encumber_msg();
+-			setuwep(obj);
++			setuwep(obj, TRUE);
+ 			u.twoweap = twoweap;
+ 			if(cansee(bhitpos.x, bhitpos.y))
+ 			    newsym(bhitpos.x,bhitpos.y);
+diff -ruN nethack-3.4.0dd/src/invent.c nethack-3.4.0/src/invent.c
+--- nethack-3.4.0dd/src/invent.c	Sat Aug 24 21:40:29 2002
++++ nethack-3.4.0/src/invent.c	Sat Aug 24 21:41:12 2002
+@@ -380,7 +380,7 @@
+ 
+ added:
+ 	addinv_core2(obj);
+-	carry_obj_effects(obj);		/* carrying affects the obj */
++	carry_obj_effects(&youmonst, obj); /* carrying affects the obj */
+ 	update_inventory();
+ 	return(obj);
+ }
+@@ -392,7 +392,8 @@
+  * and after hero's intrinsics have been updated.
+  */
+ void
+-carry_obj_effects(obj)
++carry_obj_effects(mon, obj)
++struct monst *mon;
+ struct obj *obj;
+ {
+ 	/* Cursed figurines can spontaneously transform
+@@ -404,6 +405,16 @@
+ 			attach_fig_transform_timeout(obj);
+ 		    }
+ 	}
++	else if (obj->otyp == TORCH && obj->lamplit) {
++	  /* MRKR: extinguish torches before putting them */
++	  /*       away. Should monsters do the same?  */
++
++	  if (mon == &youmonst) {
++	    You("extinguish %s before putting it away.", 
++		yname(obj));
++	    end_burn(obj, TRUE);
++	  }
++	}	
+ }
+ 
+ #endif /* OVL1 */
+@@ -2353,11 +2364,13 @@
+ 
+ 	/* allow candle merging only if their ages are close */
+ 	/* see begin_burn() for a reference for the magic "25" */
+-	if (Is_candle(obj) && obj->age/25 != otmp->age/25)
++	if ((obj->otyp == TORCH || Is_candle(obj)) 
++	    && obj->age/25 != otmp->age/25)
+ 	    return(FALSE);
+ 
+ 	/* burning potions of oil never merge */
+-	if (obj->otyp == POT_OIL && obj->lamplit)
++	/* MRKR: nor do burning torches */
++	if ((obj->otyp == POT_OIL || obj->otyp == TORCH) && obj->lamplit)
+ 	    return FALSE;
+ 
+ 	/* don't merge surcharged item with base-cost item */
+diff -ruN nethack-3.4.0dd/src/light.c nethack-3.4.0/src/light.c
+--- nethack-3.4.0dd/src/light.c	Thu Mar 21 00:43:07 2002
++++ nethack-3.4.0/src/light.c	Sat Aug 24 21:41:12 2002
+@@ -488,6 +488,7 @@
+ 		(  obj->otyp == MAGIC_LAMP
+ 		|| obj->otyp == BRASS_LANTERN
+ 		|| obj->otyp == OIL_LAMP
++		|| obj->otyp == TORCH
+ 		|| obj->otyp == CANDELABRUM_OF_INVOCATION
+ 		|| obj->otyp == TALLOW_CANDLE
+ 		|| obj->otyp == WAX_CANDLE
+diff -ruN nethack-3.4.0dd/src/makemon.c nethack-3.4.0/src/makemon.c
+--- nethack-3.4.0dd/src/makemon.c	Thu Mar 21 00:43:08 2002
++++ nethack-3.4.0/src/makemon.c	Sat Aug 24 21:41:12 2002
+@@ -316,6 +316,22 @@
+ 		    } else {
+ 			(void)mongets(mtmp, !rn2(3) ? PICK_AXE : DAGGER);
+ 		    }
++
++		    /* MRKR: Dwarves in the Mines sometimes carry torches */
++
++		    if (In_mines(&u.uz)) {
++		      if (!rn2(4)) {	
++			otmp = mksobj(TORCH, TRUE, FALSE);
++			otmp->quan = 1;
++			(void) mpickobj(mtmp, otmp);
++
++			/* If this spot is unlit, light the torch */
++
++			if (!levl[mtmp->mx][mtmp->my].lit) {
++			  begin_burn(otmp, FALSE);
++			}		      
++		      }
++		    }
+ 		}
+ 		break;
+ # ifdef KOPS
+diff -ruN nethack-3.4.0dd/src/mhitm.c nethack-3.4.0/src/mhitm.c
+--- nethack-3.4.0dd/src/mhitm.c	Thu Mar 21 00:43:08 2002
++++ nethack-3.4.0/src/mhitm.c	Sat Aug 24 21:41:12 2002
+@@ -654,6 +654,41 @@
+ 				touch_petrifies(&mons[otmp->corpsenm]))
+ 			    goto do_stone_goto_label;
+ 			tmp += dmgval(otmp, mdef);
++	
++			/* MRKR: Handling damage when hitting with */
++			/*       a burning torch */
++
++			if(otmp->otyp == TORCH && otmp->lamplit
++			   && !resists_fire(mdef)) {			  
++
++			  if (!Blind) {
++			    static char outbuf[BUFSZ];
++			    char *s = Shk_Your(outbuf, otmp);
++
++			    boolean water = (mdef->data == 
++					     &mons[PM_WATER_ELEMENTAL]);
++			    
++			    pline("%s %s %s%s %s%s.", s, xname(otmp),
++				  (water ? "vaporize" : "burn"),
++				  (otmp->quan > 1L ? "" : "s"),
++				  (water ? "part of " : ""), mon_nam(mdef));
++			  }
++
++			  burn_faster(otmp, 1);
++
++			  tmp++;
++			  if (resists_cold(mdef)) tmp += rnd(3);
++
++			  if (!rn2(2) && burnarmor(mdef)) {
++			    if (!rn2(3)) 
++			      (void)destroy_mitem(mdef, POTION_CLASS, AD_FIRE);
++			    if (!rn2(3)) 
++			      (void)destroy_mitem(mdef, SCROLL_CLASS, AD_FIRE);
++			    if (!rn2(5)) 
++			      (void)destroy_mitem(mdef, SPBOOK_CLASS, AD_FIRE);
++			  }
++			}
++
+ 			if (otmp->oartifact) {
+ 			    (void)artifact_hit(magr,mdef, otmp, &tmp, dieroll);
+ 			    if (mdef->mhp <= 0)
+diff -ruN nethack-3.4.0dd/src/mhitu.c nethack-3.4.0/src/mhitu.c
+--- nethack-3.4.0dd/src/mhitu.c	Thu Mar 21 00:43:08 2002
++++ nethack-3.4.0/src/mhitu.c	Sat Aug 24 21:41:12 2002
+@@ -804,6 +804,7 @@
+ 	char	 buf[BUFSZ];
+ 	struct permonst *olduasmon = youmonst.data;
+ 	int res;
++	boolean burnmsg = FALSE;
+ 
+ 	if (!canspotmon(mtmp))
+ 	    map_invisible(mtmp->mx, mtmp->my);
+@@ -877,11 +878,52 @@
+ 			    if (!Stoned)
+ 				goto do_stone;
+ 			}
++			
++			/* MRKR: If hit with a burning torch,     */ 
++			/*       then do an extra point of damage */
++			/*       but save the message till after  */
++			/*       the hitmsg()                     */
++
++			if (otmp->otyp == TORCH && otmp->lamplit &&
++			    !Fire_resistance) {
++			  burnmsg = TRUE;
++			  dmg++;
++			}
++
+ 			dmg += dmgval(otmp, &youmonst);
+ 			if (dmg <= 0) dmg = 1;
+ 			if (!(otmp->oartifact &&
+-				artifact_hit(mtmp, &youmonst, otmp, &dmg,dieroll)))
++			      artifact_hit(mtmp, &youmonst, otmp, &dmg,dieroll)))
+ 			     hitmsg(mtmp, mattk);
++
++			if (burnmsg) {			    
++			  boolean plural = (Blind ? FALSE : otmp->quan > 1L);
++			  boolean water = (youmonst.data == 
++					   &mons[PM_WATER_ELEMENTAL]);
++			  
++			  pline("%s %s%s %syou!", 
++				(Blind ? "It" : Yname2(otmp)),
++				(water ? "vaporize" : "burn"),
++				(plural ? "" : "s"),
++				(water ? "part of " : ""));
++
++			  if (!rn2(2) && burnarmor(&youmonst)) {
++			    dmg++;
++
++			    /* Torch flame is not hot enough to guarantee */
++			    /* burning away slime */
++			    
++			    if (!rn2(4)) burn_away_slime();
++			    if (!rn2(3)) 
++			      (void)destroy_item(POTION_CLASS, AD_FIRE);
++			    if (!rn2(3)) 
++			      (void)destroy_item(SCROLL_CLASS, AD_FIRE);
++			    if (!rn2(5)) 
++			      (void)destroy_item(SPBOOK_CLASS, AD_FIRE);
++			  }
++			  burn_faster(otmp, 1);	
++			}
++
+ 			if (!dmg) break;
+ 			if (u.mh > 1 && u.mh > ((u.uac>0) ? dmg : dmg+u.uac) &&
+ 				   objects[otmp->otyp].oc_material == IRON &&
+@@ -2109,8 +2151,8 @@
+ 			Blind ? "She" : Monnam(mon), xname(ring));
+ 		makeknown(RIN_ADORNMENT);
+ 		if (ring==uleft || ring==uright) Ring_gone(ring);
+-		if (ring==uwep) setuwep((struct obj *)0);
+-		if (ring==uswapwep) setuswapwep((struct obj *)0);
++		if (ring==uwep) setuwep((struct obj *)0, FALSE);
++		if (ring==uswapwep) setuswapwep((struct obj *)0, FALSE);
+ 		if (ring==uquiver) setuqwep((struct obj *)0);
+ 		freeinv(ring);
+ 		(void) mpickobj(mon,ring);
+diff -ruN nethack-3.4.0dd/src/mkobj.c nethack-3.4.0/src/mkobj.c
+--- nethack-3.4.0dd/src/mkobj.c	Thu Mar 21 00:43:10 2002
++++ nethack-3.4.0/src/mkobj.c	Sat Aug 24 21:41:12 2002
+@@ -470,6 +470,12 @@
+ 					      (long)(rn2(2) ? rn2(7) : 0);
+ 					blessorcurse(otmp, 5);
+ 					break;
++	        case TORCH:	        otmp->spe = 0;
++					otmp->age = (long) rn1(300,600);
++					otmp->lamplit = 0;
++					otmp->quan = rnd(3);
++					blessorcurse(otmp, 5);
++					break;
+ 		case BRASS_LANTERN:
+ 		case OIL_LAMP:		otmp->spe = 1;
+ 					otmp->age = (long) rn1(500,1000);
+diff -ruN nethack-3.4.0dd/src/objects.c nethack-3.4.0/src/objects.c
+--- nethack-3.4.0dd/src/objects.c	Thu Mar 21 00:43:12 2002
++++ nethack-3.4.0/src/objects.c	Sat Aug 24 21:41:12 2002
+@@ -594,8 +594,8 @@
+ /* light sources */
+ TOOL("tallow candle", "candle", 0, 1, 0, 0,  20,  2,  10, WAX, CLR_WHITE),
+ TOOL("wax candle", "candle",    0, 1, 0, 0,   5,  2,  20, WAX, CLR_WHITE),
+-TOOL("brass lantern", (char *)0,1, 0, 0, 0,  30, 30,  12, COPPER, CLR_YELLOW),
+-TOOL("oil lamp", "lamp",        0, 0, 0, 0,  45, 20,  10, COPPER, CLR_YELLOW),
++TOOL("brass lantern", (char *)0,1, 0, 0, 0,  20, 30,  12, COPPER, CLR_YELLOW),
++TOOL("oil lamp", "lamp",        0, 0, 0, 0,  30, 20,  10, COPPER, CLR_YELLOW),
+ TOOL("magic lamp", "lamp",      0, 0, 1, 0,  15, 20,  50, COPPER, CLR_YELLOW),
+ /* other tools */
+ #ifdef TOURIST
+@@ -649,6 +649,13 @@
+ 	0, 0, 0,  5,  30,  50,  2,  6, WHACK,  P_FLAIL, IRON, HI_METAL),
+ WEPTOOL("unicorn horn", (char *)0,
+ 	1, 1, 1,  0,  20, 100, 12, 12, PIERCE, P_UNICORN_HORN, BONE, CLR_WHITE),
++/* WEPTOOL("torch", (char *)0,   
++	   1, 0, 0,  0,  20, 8, 5, 2, WHACK, P_CLUB, WOOD, HI_WOOD), */ 
++
++OBJECT(OBJ("torch", (char *)0),
++	BITS(1,1,1,0,0,1,0,0,0,0,WHACK,P_CLUB,WOOD), 
++	0, TOOL_CLASS, 25, 0, 
++	20, 8, 2, 5, WHACK, 0, 20, HI_WOOD ),
+ 
+ /* two special unique artifact "tools" */
+ OBJECT(OBJ("Candelabrum of Invocation", "candelabrum"),
+diff -ruN nethack-3.4.0dd/src/objnam.c nethack-3.4.0/src/objnam.c
+--- nethack-3.4.0dd/src/objnam.c	Thu Mar 21 00:43:12 2002
++++ nethack-3.4.0/src/objnam.c	Sat Aug 24 21:41:12 2002
+@@ -643,8 +643,6 @@
+ 			Strcat(bp, " (in use)");
+ 			break;
+ 		}
+-		if (is_weptool(obj))
+-			goto plus;
+ 		if (obj->otyp == CANDELABRUM_OF_INVOCATION) {
+ 			if (!obj->spe)
+ 			    Strcpy(tmpbuf, "no");
+@@ -655,14 +653,16 @@
+ 				!obj->lamplit ? " attached" : ", lit");
+ 			break;
+ 		} else if (obj->otyp == OIL_LAMP || obj->otyp == MAGIC_LAMP ||
+-			obj->otyp == BRASS_LANTERN || Is_candle(obj)) {
++			obj->otyp == BRASS_LANTERN || obj->otyp == TORCH ||
++			   Is_candle(obj)) {
+ 			if (Is_candle(obj) &&
+ 			    obj->age < 20L * (long)objects[obj->otyp].oc_cost)
+ 				Strcat(prefix, "partly used ");
+ 			if(obj->lamplit)
+ 				Strcat(bp, " (lit)");
+-			break;
+ 		}
++		if (is_weptool(obj))
++			goto plus;
+ 		if(objects[obj->otyp].oc_charged)
+ 		    goto charges;
+ 		break;
+@@ -1463,8 +1463,9 @@
+ 				return bp;
+ 			}
+ 
+-			/* note: nurses, axes but boxes */
+-			if(!BSTRCMP(bp, p-5, "boxes")) {
++			/* note: nurses, axes but boxes, torches */
++			if(!BSTRCMP(bp, p-5, "boxes") 
++			   || !BSTRCMP(bp, p-7, "torches") ) {
+ 				p[-2] = 0;
+ 				return bp;
+ 			}
+@@ -2309,7 +2310,8 @@
+ 	}
+ 
+ 	if (islit &&
+-		(typ == OIL_LAMP || typ == MAGIC_LAMP || typ == BRASS_LANTERN ||
++		(typ == OIL_LAMP || typ == MAGIC_LAMP || 
++		 typ == BRASS_LANTERN || typ == TORCH || 
+ 		 Is_candle(otmp) || typ == POT_OIL)) {
+ 	    place_object(otmp, u.ux, u.uy);  /* make it viable light source */
+ 	    begin_burn(otmp, FALSE);
+diff -ruN nethack-3.4.0dd/src/pickup.c nethack-3.4.0/src/pickup.c
+--- nethack-3.4.0dd/src/pickup.c	Thu Mar 21 00:43:13 2002
++++ nethack-3.4.0/src/pickup.c	Sat Aug 24 21:41:12 2002
+@@ -1704,10 +1704,10 @@
+ 			weldmsg(obj);
+ 			return 0;
+ 		}
+-		setuwep((struct obj *) 0);
++		setuwep((struct obj *) 0, FALSE);
+ 		if (uwep) return 0;	/* unwielded, died, rewielded */
+ 	} else if (obj == uswapwep) {
+-		setuswapwep((struct obj *) 0);
++		setuswapwep((struct obj *) 0, FALSE);
+ 		if (uswapwep) return 0;     /* unwielded, died, rewielded */
+ 	} else if (obj == uquiver) {
+ 		setuqwep((struct obj *) 0);
+diff -ruN nethack-3.4.0dd/src/potion.c nethack-3.4.0/src/potion.c
+--- nethack-3.4.0dd/src/potion.c	Thu Mar 21 00:43:14 2002
++++ nethack-3.4.0/src/potion.c	Sat Aug 24 21:41:12 2002
+@@ -1616,8 +1616,8 @@
+ 
+ 		obj = poly_obj(obj, STRANGE_OBJECT);
+ 
+-		if (was_wep) setuwep(obj);
+-		else if (was_swapwep) setuswapwep(obj);
++		if (was_wep) setuwep(obj, TRUE);
++		else if (was_swapwep) setuswapwep(obj, TRUE);
+ 		else if (was_quiver) setuqwep(obj);
+ 
+ 		if (obj->otyp != save_otyp) {
+diff -ruN nethack-3.4.0dd/src/restore.c nethack-3.4.0/src/restore.c
+--- nethack-3.4.0dd/src/restore.c	Sat Aug 24 21:40:29 2002
++++ nethack-3.4.0/src/restore.c	Sat Aug 24 21:41:12 2002
+@@ -400,7 +400,7 @@
+ 	   applied or wielded it, so be conservative and assume the former */
+ 	otmp = uwep;	/* `uwep' usually init'd by setworn() in loop above */
+ 	uwep = 0;	/* clear it and have setuwep() reinit */
+-	setuwep(otmp);	/* (don't need any null check here) */
++	setuwep(otmp,FALSE);	/* (don't need any null check here) */
+ 	if (!uwep || uwep->otyp == PICK_AXE || uwep->otyp == GRAPPLING_HOOK)
+ 	    unweapon = TRUE;
+ 
+diff -ruN nethack-3.4.0dd/src/shk.c nethack-3.4.0/src/shk.c
+--- nethack-3.4.0dd/src/shk.c	Sat Aug 24 21:40:29 2002
++++ nethack-3.4.0/src/shk.c	Sat Aug 24 21:41:12 2002
+@@ -2838,6 +2838,17 @@
+ 		if (Is_candle(obj) &&
+ 			obj->age < 20L * (long)objects[obj->otyp].oc_cost)
+ 		    tmp /= 2L;
++		else if (obj->otyp == TORCH) {
++		  if (obj->age == 0) {
++		    tmp = 0L;
++		  }
++		  else if (obj->age < 25) {
++		    tmp /= 4L;
++		  }
++		  else if (obj->age < 50) {
++		    tmp /= 2L;
++		  }
++		}
+ 		break;
+ 	}
+ 	return tmp;
+@@ -3805,6 +3816,8 @@
+ 		  otmp->otyp <= DRUM_OF_EARTHQUAKE) ||	 /* 5 - 9 */
+ 		  otmp->oclass == WAND_CLASS) {		 /* 3 - 11 */
+ 		if (otmp->spe > 1) tmp /= 4L;
++	} else if (otmp->otyp == TORCH) {
++	            tmp /= 2L;	
+ 	} else if (otmp->oclass == SPBOOK_CLASS) {
+ 		tmp -= tmp / 5L;
+ 	} else if (otmp->otyp == CAN_OF_GREASE
+@@ -3835,8 +3848,13 @@
+ 	const char *fmt, *arg1, *arg2;
+ 	long tmp;
+ 
++	/* MRKR: Torches are a special case. As weapons they can have */
++	/*       a 'charge' == plus value, which is independent of their */
++	/*       use as a light source. */
++
+ 	if (!otmp->unpaid || !*u.ushops ||
+-		(otmp->spe <= 0 && objects[otmp->otyp].oc_charged))
++		(otmp->spe <= 0 && objects[otmp->otyp].oc_charged &&
++		 otmp->otyp != TORCH))
+ 	    return;
+ 	if (!(shkp = shop_keeper(*u.ushops)) || !inhishop(shkp))
+ 	    return;
+diff -ruN nethack-3.4.0dd/src/shknam.c nethack-3.4.0/src/shknam.c
+--- nethack-3.4.0dd/src/shknam.c	Thu Mar 21 00:43:17 2002
++++ nethack-3.4.0/src/shknam.c	Sat Aug 24 21:41:12 2002
+@@ -214,7 +214,7 @@
+ 	 * loader.
+ 	 */
+ 	{"lighting store", TOOL_CLASS, 0, D_SHOP,
+-	    {{32, -WAX_CANDLE}, {50, -TALLOW_CANDLE},
++	    {{30, -WAX_CANDLE}, {42, -TALLOW_CANDLE}, {10, -TORCH},
+ 	     {5, -BRASS_LANTERN}, {10, -OIL_LAMP}, {3, -MAGIC_LAMP}}, shklight},
+ 	{(char *)0, 0, 0, 0, {{0, 0}, {0, 0}, {0, 0}}, 0}
+ };
+diff -ruN nethack-3.4.0dd/src/steal.c nethack-3.4.0/src/steal.c
+--- nethack-3.4.0dd/src/steal.c	Thu Mar 21 00:43:18 2002
++++ nethack-3.4.0/src/steal.c	Sat Aug 24 21:41:12 2002
+@@ -439,7 +439,7 @@
+ 	snuff_otmp = TRUE;
+     }
+     /* Must do carrying effects on object prior to add_to_minv() */
+-    carry_obj_effects(otmp);
++    carry_obj_effects(mtmp, otmp);
+     /* add_to_minv() might free otmp [if merged with something else],
+        so we have to call it after doing the object checks */
+     freed_otmp = add_to_minv(mtmp, otmp);
+diff -ruN nethack-3.4.0dd/src/timeout.c nethack-3.4.0/src/timeout.c
+--- nethack-3.4.0dd/src/timeout.c	Thu Mar 21 00:43:19 2002
++++ nethack-3.4.0/src/timeout.c	Sat Aug 24 21:41:12 2002
+@@ -12,6 +12,7 @@
+ STATIC_DCL void NDECL(slip_or_trip);
+ STATIC_DCL void FDECL(see_lamp_flicker, (struct obj *, const char *));
+ STATIC_DCL void FDECL(lantern_message, (struct obj *));
++STATIC_DCL void FDECL(accelerate_timer, (short, genericptr_t, long));
+ STATIC_DCL void FDECL(cleanup_burn, (genericptr_t,long));
+ 
+ #ifdef OVLB
+@@ -804,7 +805,8 @@
+ 		    obfree(obj, (struct obj *)0);
+ 		    obj = (struct obj *) 0;
+ 		    break;
+-
++		    
++	    case TORCH:
+ 	    case BRASS_LANTERN:
+ 	    case OIL_LAMP:
+ 		switch((int)obj->age) {
+@@ -862,6 +864,16 @@
+ 				    break;
+ 			    }
+ 			}
++			
++			/* MRKR: Burnt out torches are considered worthless */
++			
++			if (obj->otyp == TORCH) {
++			  if (obj->unpaid && costly_spot(u.ux, u.uy)) {
++			    const char *ithem = obj->quan > 1L ? "them" : "it";
++			    verbalize("You burn %s, you bought %s!", ithem, ithem);
++			    bill_dummy_object(obj);
++			  }
++			}
+ 			end_burn(obj, FALSE);
+ 			break;
+ 
+@@ -1012,6 +1024,10 @@
+  * a timer.
+  *
+  * Burn rules:
++ *      torches
++ *		age = # of turns of fuel left
++ *		spe = <weapon plus of torch, not used here>
++ *
+  *	potions of oil, lamps & candles:
+  *		age = # of turns of fuel left
+  *		spe = <unused>
+@@ -1059,6 +1075,7 @@
+ 
+ 	    case BRASS_LANTERN:
+ 	    case OIL_LAMP:
++	    case TORCH:
+ 		/* magic times are 150, 100, 50, 25, and 0 */
+ 		if (obj->age > 150L)
+ 		    turns = obj->age - 150L;
+@@ -1181,6 +1198,25 @@
+ #endif /* OVL0 */
+ #ifdef OVL1
+ 
++/* 
++ * MRKR: Use up some fuel quickly, eg: when hitting a monster with 
++ *       a torch.
++ */
++
++void 
++burn_faster(obj, time) 
++struct obj *obj;
++long time;
++{
++
++  if (!obj->lamplit) {
++    impossible("burn_faster: obj %s not lit", xname(obj));
++    return;
++  }
++
++  accelerate_timer(BURN_OBJECT, obj, time);
++}
++
+ void
+ do_storms()
+ {
+@@ -1647,6 +1683,39 @@
+     }
+ }
+ 
++/*
++ * MRKR: Run one particular timer faster for a number of steps
++ *       Needed for burn_faster above.
++ */
++
++STATIC_OVL void
++accelerate_timer(func_index, arg, time) 
++short func_index;
++genericptr_t arg;
++long time;
++{ 
++    timer_element *timer;
++
++    /* This will effect the ordering, so we remove it from the list */
++    /* and add it back in afterwards (if warranted) */
++
++    timer = remove_timer(&timer_base, func_index, arg);    
++
++    for (; time > 0; time--) {
++      timer->timeout--;
++
++      if (timer->timeout <= monstermoves) {
++	if (timer->kind == TIMER_OBJECT) ((struct obj *)arg)->timed--;
++	(*timeout_funcs[func_index].f)(arg, timer->timeout);
++	free((genericptr_t) timer);
++	break;
++      }
++    }
++
++    if (time == 0) {
++      insert_timer(timer);
++    }    
++}
+ 
+ /*
+  * Return TRUE if the object will stay on the level when the level is
+diff -ruN nethack-3.4.0dd/src/u_init.c nethack-3.4.0/src/u_init.c
+--- nethack-3.4.0dd/src/u_init.c	Thu Mar 21 00:43:20 2002
++++ nethack-3.4.0/src/u_init.c	Sat Aug 24 21:41:12 2002
+@@ -187,6 +187,10 @@
+ 	{ OIL_LAMP, 1, TOOL_CLASS, 1, 0 },
+ 	{ 0, 0, 0, 0, 0 }
+ };
++static struct trobj Torch[] = {
++	{ TORCH, 0, TOOL_CLASS, 2, 0 },
++	{ 0, 0, 0, 0, 0 }
++};
+ static struct trobj Blindfold[] = {
+ 	{ BLINDFOLD, 0, TOOL_CLASS, 1, 0 },
+ 	{ 0, 0, 0, 0, 0 }
+@@ -606,7 +610,8 @@
+ 	case PM_ARCHEOLOGIST:
+ 		ini_inv(Archeologist);
+ 		if(!rn2(10)) ini_inv(Tinopener);
+-		else if(!rn2(4)) ini_inv(Lamp);
++		else if(!rn2(4)) 
++		  (rn2(100) > 50 ? ini_inv(Lamp) : ini_inv(Torch));
+ 		else if(!rn2(10)) ini_inv(Magicmarker);
+ 		knows_object(SACK);
+ 		knows_object(TOUCHSTONE);
+@@ -618,7 +623,7 @@
+ 		    Barbarian[B_MINOR].trotyp = SHORT_SWORD;
+ 		}
+ 		ini_inv(Barbarian);
+-		if(!rn2(6)) ini_inv(Lamp);
++		if(!rn2(6)) ini_inv(Torch);
+ 		knows_class(WEAPON_CLASS);
+ 		knows_class(ARMOR_CLASS);
+ 		skill_init(Skill_B);
+@@ -663,7 +668,8 @@
+ 	case PM_PRIEST:
+ 		ini_inv(Priest);
+ 		if(!rn2(10)) ini_inv(Magicmarker);
+-		else if(!rn2(10)) ini_inv(Lamp);
++		else if(!rn2(10)) 
++		  (rn2(100) > 50 ? ini_inv(Lamp) : ini_inv(Torch));
+ 		knows_object(POT_WATER);
+ 		skill_init(Skill_P);
+ 		/* KMH, conduct --
+@@ -718,7 +724,8 @@
+ #endif
+ 	case PM_VALKYRIE:
+ 		ini_inv(Valkyrie);
+-		if(!rn2(6)) ini_inv(Lamp);
++		if(!rn2(6)) 
++		  (rn2(100) > 50 ? ini_inv(Lamp) : ini_inv(Torch));
+ 		knows_class(WEAPON_CLASS);
+ 		knows_class(ARMOR_CLASS);
+ 		skill_init(Skill_V);
+@@ -1018,7 +1025,8 @@
+ 		if(obj->oclass == ARMOR_CLASS){
+ 			if (is_shield(obj) && !uarms) {
+ 				setworn(obj, W_ARMS);
+-				if (uswapwep) setuswapwep((struct obj *) 0);
++				if (uswapwep) 
++				  setuswapwep((struct obj *) 0, TRUE);
+ 			} else if (is_helmet(obj) && !uarmh)
+ 				setworn(obj, W_ARMH);
+ 			else if (is_gloves(obj) && !uarmg)
+@@ -1039,8 +1047,8 @@
+ 			otyp == TIN_OPENER || otyp == FLINT || otyp == ROCK) {
+ 		    if (is_ammo(obj) || is_missile(obj)) {
+ 			if (!uquiver) setuqwep(obj);
+-		    } else if (!uwep) setuwep(obj);
+-		    else if (!uswapwep) setuswapwep(obj);
++		    } else if (!uwep) setuwep(obj, FALSE);
++		    else if (!uswapwep) setuswapwep(obj, FALSE);
+ 		}
+ 		if (obj->oclass == SPBOOK_CLASS &&
+ 				obj->otyp != SPE_BLANK_PAPER)
+diff -ruN nethack-3.4.0dd/src/uhitm.c nethack-3.4.0/src/uhitm.c
+--- nethack-3.4.0dd/src/uhitm.c	Sat Aug 24 21:40:29 2002
++++ nethack-3.4.0/src/uhitm.c	Sat Aug 24 21:41:12 2002
+@@ -509,6 +509,7 @@
+ 	boolean jousting = FALSE;
+ #endif
+ 	boolean valid_weapon_attack = FALSE;
++	boolean burnmsg = FALSE;
+ 	int wtype;
+ 	struct obj *monwep;
+ 	char yourbuf[BUFSZ];
+@@ -641,12 +642,28 @@
+ 			if(obj->opoisoned && is_poisonable(obj))
+ 			    ispoisoned = TRUE;
+ 		    }
++		    /* MRKR: Hitting with a lit torch does extra */
++		    /*       fire damage, but uses up the torch  */
++		    /*       more quickly.                       */
++		    
++		    if(obj->otyp == TORCH && obj->lamplit
++		       && !resists_fire(mon)) {			  
++		      
++		      burnmsg = TRUE;
++		      
++		      tmp++;
++		      if (resists_cold(mon)) tmp += rnd(3);
++		     
++		      /* Additional damage due to burning armor */
++		      /* & equipment is delayed to below, after */
++		      /* the hit messages are printed. */
++		    }
+ 		}
+ 	    } else if(obj->oclass == POTION_CLASS) {
+ 		if (obj->quan > 1L)
+ 		    obj = splitobj(obj, 1L);
+ 		else
+-		    setuwep((struct obj *)0);
++		    setuwep((struct obj *)0, FALSE);
+ 		freeinv(obj);
+ 		potionhit(mon, obj, TRUE);
+ 		if (mon->mhp <= 0) return FALSE;	/* killed */
+@@ -943,6 +960,38 @@
+ 			 mon_nam(mon), canseemon(mon) ? exclam(tmp) : ".");
+ 	}
+ 
++	if (burnmsg) {
++	  /* A chance of setting the monster's */
++	  /* armour + equipment on fire */
++	  /* (this does not do any extra damage) */
++
++	  if (!Blind) {
++	    Your("%s %s %s.", xname(obj),
++		 (mon->data == &mons[PM_WATER_ELEMENTAL]) ?
++		 "vaporizes part of" : "burns", mon_nam(mon));
++	  }
++
++	  if (!rn2(2) && burnarmor(mon)) {
++	    if (!rn2(3)) 
++	      (void)destroy_mitem(mon, POTION_CLASS, AD_FIRE);
++	    if (!rn2(3)) 
++	      (void)destroy_mitem(mon, SCROLL_CLASS, AD_FIRE);
++	    if (!rn2(5)) 
++	      (void)destroy_mitem(mon, SPBOOK_CLASS, AD_FIRE);
++	  }
++
++	  if (mon->data == &mons[PM_WATER_ELEMENTAL]) {
++	    if (!Blind) {
++	      Your("%s goes out.", xname(obj));
++	    }
++	    end_burn(obj, TRUE);
++	  }
++	  else {
++	    /* use up the torch more quickly */	    
++	    burn_faster(obj, 1);
++	  }
++	}
++	
+ 	if (silvermsg) {
+ 		const char *fmt;
+ 		char *whom = mon_nam(mon);
+diff -ruN nethack-3.4.0dd/src/weapon.c nethack-3.4.0/src/weapon.c
+--- nethack-3.4.0dd/src/weapon.c	Sat Aug 24 21:40:29 2002
++++ nethack-3.4.0/src/weapon.c	Sat Aug 24 21:41:12 2002
+@@ -489,7 +489,7 @@
+ 	  RUBBER_HOSE,
+ #endif /* KOPS */
+ 	  WAR_HAMMER, SILVER_DAGGER, ELVEN_DAGGER, DAGGER, ORCISH_DAGGER,
+-	  ATHAME, SCALPEL, KNIFE, WORM_TOOTH
++	  ATHAME, SCALPEL, KNIFE, TORCH, WORM_TOOTH
+ 	};
+ 
+ struct obj *
+diff -ruN nethack-3.4.0dd/src/wield.c nethack-3.4.0/src/wield.c
+--- nethack-3.4.0dd/src/wield.c	Thu Mar 21 00:43:21 2002
++++ nethack-3.4.0/src/wield.c	Sat Aug 24 21:41:12 2002
+@@ -49,8 +49,8 @@
+  * No item may be in more than one of these slots.
+  */
+ 
+-
+-STATIC_DCL int FDECL(ready_weapon, (struct obj *));
++STATIC_DCL int FDECL(ready_weapon, (struct obj *, boolean));
++STATIC_DCL void FDECL(unwield, (struct obj *, boolean));
+ 
+ /* elven weapons vibrate warningly when enchanted beyond a limit */
+ #define is_elven_weapon(optr)	((optr)->otyp == ELVEN_ARROW\
+@@ -87,10 +87,15 @@
+  * If the item is being moved from another slot, it is the caller's
+  * responsibility to handle that.  It's also the caller's responsibility
+  * to print the appropriate messages.
++ *
++ * MRKR: It now takes an extra flag put_away which is true if the 
++ *       unwielded weapon is being put back into the inventory 
++ *       (rather than dropped, destroyed, etc)
+  */
+ void
+-setuwep(obj)
++setuwep(obj, put_away)
+ register struct obj *obj;
++boolean put_away;
+ {
+ 	struct obj *olduwep = uwep;
+ 
+@@ -117,12 +122,21 @@
+ 				) : !is_weptool(obj);
+ 	} else
+ 		unweapon = TRUE;	/* for "bare hands" message */
++
++	
++	/* MRKR: Handle any special effects of unwielding a weapon */
++
++	if (olduwep && olduwep != uwep) {
++	  unwield(olduwep, put_away);
++	}
++
+ 	update_inventory();
+ }
+ 
+ STATIC_OVL int
+-ready_weapon(wep)
++ready_weapon(wep, put_away)
+ struct obj *wep;
++boolean put_away;
+ {
+ 	/* Separated function so swapping works easily */
+ 	int res = 0;
+@@ -131,7 +145,7 @@
+ 	    /* No weapon */
+ 	    if (uwep) {
+ 		You("are empty %s.", body_part(HANDED));
+-		setuwep((struct obj *) 0);
++		setuwep((struct obj *) 0, put_away);
+ 		res++;
+ 	    } else
+ 		You("are already empty %s.", body_part(HANDED));
+@@ -176,7 +190,7 @@
+ 		prinv((char *)0, wep, 0L);
+ 		wep->owornmask = dummy;
+ 	    }
+-	    setuwep(wep);
++	    setuwep(wep, put_away);
+ 
+ 	    /* KMH -- Talking artifacts are finally implemented */
+ 	    arti_speak(wep);
+@@ -220,10 +234,16 @@
+ }
+ 
+ void
+-setuswapwep(obj)
++setuswapwep(obj, put_away)
+ register struct obj *obj;
++boolean put_away;
+ {
++	struct obj *oldswapwep = uswapwep;
+ 	setworn(obj, W_SWAPWEP);
++
++	if (oldswapwep && oldswapwep != uswapwep) {
++	  unwield(oldswapwep, put_away);
++	}
+ 	update_inventory();
+ }
+ 
+@@ -281,9 +301,9 @@
+ 
+ 	/* Set your new primary weapon */
+ 	oldwep = uwep;
+-	result = ready_weapon(wep);
++	result = ready_weapon(wep, !flags.pushweapon);
+ 	if (flags.pushweapon && oldwep && uwep != oldwep)
+-		setuswapwep(oldwep);
++		setuswapwep(oldwep, TRUE);
+ 	untwoweapon();
+ 
+ 	return (result);
+@@ -310,17 +330,17 @@
+ 	/* Unwield your current secondary weapon */
+ 	oldwep = uwep;
+ 	oldswap = uswapwep;
+-	setuswapwep((struct obj *) 0);
++	setuswapwep((struct obj *) 0, FALSE);
+ 
+ 	/* Set your new primary weapon */
+-	result = ready_weapon(oldswap);
++	result = ready_weapon(oldswap, FALSE);
+ 
+ 	/* Set your new secondary weapon */
+ 	if (uwep == oldwep)
+ 		/* Wield failed for some reason */
+-		setuswapwep(oldswap);
++		setuswapwep(oldswap, FALSE);
+ 	else {
+-		setuswapwep(oldwep);
++		setuswapwep(oldwep, FALSE);
+ 		if (uswapwep)
+ 			prinv((char *)0, uswapwep, 0L);
+ 		else
+@@ -384,7 +404,7 @@
+ 
+ 		/* Check if it's the secondary weapon */
+ 		if (newquiver == uswapwep) {
+-			setuswapwep((struct obj *) 0);
++			setuswapwep((struct obj *) 0, TRUE);
+ 			untwoweapon();
+ 		}
+ 
+@@ -479,12 +499,14 @@
+ uwepgone()
+ {
+ 	if (uwep) {
++	        struct obj *otmp;
+ 		if (artifact_light(uwep) && uwep->lamplit) {
+ 		    end_burn(uwep, FALSE);
+ 		    if (!Blind) pline("%s glowing.", Tobjnam(uwep, "stop"));
+ 		}
+ 		setworn((struct obj *)0, W_WEP);
+ 		unweapon = TRUE;
++		unwield(otmp, FALSE);
+ 		update_inventory();
+ 	}
+ }
+@@ -715,4 +737,21 @@
+ 	obj->owornmask = savewornmask;
+ }
+ 
++STATIC_DCL void
++unwield(obj, put_away)
++register struct obj *obj;
++boolean put_away;
++{
++
++  /* MRKR: Extinguish torches when they are put away */
++  
++  if (put_away && 
++      obj->otyp == TORCH && 
++      obj->lamplit) {
++    You("extinguish %s before putting it away.", yname(obj));
++    end_burn(obj, TRUE);
++  }
++  
++}
++
+ /*wield.c*/
