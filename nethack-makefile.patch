@@ -1,18 +1,16 @@
-diff -ruN nethack-3.4.0./sys/unix/Makefile.src nethack-3.4.0/sys/unix/Makefile.src
---- nethack-3.4.0./sys/unix/Makefile.src	Thu Apr 11 17:58:28 2002
-+++ nethack-3.4.0/sys/unix/Makefile.src	Wed Jun 12 00:01:35 2002
-@@ -150,8 +150,8 @@
+diff -ruN nethack-3.4.1./sys/unix/Makefile.src nethack-3.4.1/sys/unix/Makefile.src
+--- nethack-3.4.1./sys/unix/Makefile.src	Sun Feb 23 15:43:39 2003
++++ nethack-3.4.1/sys/unix/Makefile.src	Tue Feb 25 21:42:49 2003
+@@ -150,7 +150,7 @@
  # The Qt and Be window systems are written in C++, while the rest of
  # NetHack is standard C.  If using Qt, uncomment the LD line here to get
  # the C++ libraries linked in.
 -CXXFLAGS = $(CFLAGS) -I. -I$(QTDIR)/include
--CXX=g++
-+CXXFLAGS = $(CFLAGS) -I. -I/usr/X11R6/include/qt
-+#CXX=g++
++CXXFLAGS = $(CFLAGS) -I. -I$(QTDIR)/include/qt
+ CXX=g++
  #LD=g++
  
- # Set the WINSRC, WINOBJ, and WINLIB lines to correspond to your desired
-@@ -203,8 +203,8 @@
+@@ -204,8 +204,8 @@
  
  #
  #
@@ -23,7 +21,7 @@ diff -ruN nethack-3.4.0./sys/unix/Makefile.src nethack-3.4.0/sys/unix/Makefile.s
  
  # on some systems the termcap library is in -ltermcap or -lcurses
  # on 386 Xenix, the -ltermlib tputs() seems not to work; use -lcurses instead
-@@ -219,8 +219,8 @@
+@@ -220,8 +220,8 @@
  # WINTTYLIB = -ltermcap
  # WINTTYLIB = -lcurses
  # WINTTYLIB = -lcurses16
@@ -34,16 +32,7 @@ diff -ruN nethack-3.4.0./sys/unix/Makefile.src nethack-3.4.0/sys/unix/Makefile.s
  #
  # libraries for X11
  # If USE_XPM is defined in config.h, you will also need -lXpm here.
-@@ -230,7 +230,7 @@
- # WINX11LIB = -lXaw -lXmu -lXpm -lXext -lXt -lX11 -lSM -lICE -lm # BSD/OS 2.0
- #
- # libraries for Qt
--WINQTLIB = -L$(QTDIR)/lib -lqt
-+WINQTLIB = -L/usr/X11R6/lib -lqt
- #
- # libraries for KDE (with Qt)
- WINKDELIB = -lkdecore -lkdeui -lXext
-@@ -244,7 +244,7 @@
+@@ -245,7 +245,7 @@
  # libraries for BeOS 
  WINBELIB = -lbe
  
@@ -52,7 +41,7 @@ diff -ruN nethack-3.4.0./sys/unix/Makefile.src nethack-3.4.0/sys/unix/Makefile.s
  
  # any other strange libraries your system needs (for Sysunix only -- the more
  # specialized targets should already be right)
-@@ -381,7 +381,7 @@
+@@ -382,7 +382,7 @@
  
  Sysunix:	$(HOBJ) Makefile
  	@echo "Loading ..."
@@ -61,26 +50,9 @@ diff -ruN nethack-3.4.0./sys/unix/Makefile.src nethack-3.4.0/sys/unix/Makefile.s
  	@touch Sysunix
  
  Sys3B2:	$(HOBJ) Makefile
-@@ -450,13 +450,13 @@
- 
- # Qt windowport meta-object-compiler output
- qt_kde0.moc: ../include/qt_kde0.h
--	$(QTDIR)/bin/moc ../include/qt_kde0.h > qt_kde0.moc
-+	/usr/X11R6/bin/moc ../include/qt_kde0.h > qt_kde0.moc
- 
- qt_win.moc: ../include/qt_win.h
--	$(QTDIR)/bin/moc ../include/qt_win.h > qt_win.moc
-+	/usr/X11R6/bin/moc ../include/qt_win.h > qt_win.moc
- 
- qttableview.moc: ../include/qttableview.h
--	$(QTDIR)/bin/moc ../include/qttableview.h > qttableview.moc
-+	/usr/X11R6/bin/moc ../include/qttableview.h > qttableview.moc
- 
- $(MAKEDEFS): ../util/makedefs.c  $(CONFIG_H) ../include/permonst.h \
- 		../include/objclass.h ../include/monsym.h \
-diff -ruN nethack-3.4.0./sys/unix/Makefile.top nethack-3.4.0/sys/unix/Makefile.top
---- nethack-3.4.0./sys/unix/Makefile.top	Thu Apr 11 17:58:28 2002
-+++ nethack-3.4.0/sys/unix/Makefile.top	Wed Jun 12 00:00:43 2002
+diff -ruN nethack-3.4.1./sys/unix/Makefile.top nethack-3.4.1/sys/unix/Makefile.top
+--- nethack-3.4.1./sys/unix/Makefile.top	Sun Feb 23 15:43:39 2003
++++ nethack-3.4.1/sys/unix/Makefile.top	Tue Feb 25 21:42:41 2003
 @@ -14,7 +14,7 @@
  # MAKE = make
  
@@ -120,7 +92,7 @@ diff -ruN nethack-3.4.0./sys/unix/Makefile.top nethack-3.4.0/sys/unix/Makefile.t
  
  #
  # end of configuration
-@@ -177,6 +177,7 @@
+@@ -185,6 +185,7 @@
  	-rm -f $(SHELLDIR)/$(GAME)
  	sed -e 's;/usr/games/lib/nethackdir;$(GAMEDIR);' \
  		-e 's;HACKDIR/nethack;HACKDIR/$(GAME);' \
@@ -128,10 +100,10 @@ diff -ruN nethack-3.4.0./sys/unix/Makefile.top nethack-3.4.0/sys/unix/Makefile.t
  		< sys/unix/nethack.sh \
  		> $(SHELLDIR)/$(GAME)
  # set up their permissions
-diff -ruN nethack-3.4.0./sys/unix/Makefile.utl nethack-3.4.0/sys/unix/Makefile.utl
---- nethack-3.4.0./sys/unix/Makefile.utl	Thu Apr 11 17:58:28 2002
-+++ nethack-3.4.0/sys/unix/Makefile.utl	Wed Jun 12 00:00:43 2002
-@@ -97,11 +97,11 @@
+diff -ruN nethack-3.4.1./sys/unix/Makefile.utl nethack-3.4.1/sys/unix/Makefile.utl
+--- nethack-3.4.1./sys/unix/Makefile.utl	Sun Feb 23 15:43:39 2003
++++ nethack-3.4.1/sys/unix/Makefile.utl	Tue Feb 25 21:42:41 2003
+@@ -101,11 +101,11 @@
  
  # yacc/lex programs to use to generate *_comp.h, *_lex.c, and *_yacc.c.
  # if, instead of yacc/lex you have bison/flex, comment/uncomment the following.
