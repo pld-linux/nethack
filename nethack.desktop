@@ -1,8 +1,9 @@
 [Desktop Entry]
 Name=nethack
 Comment=An adventure into the Mazes of Menace
-Comment[pl]=Przygoda w Labiryntach Groºby
+Comment[pl]=Przygoda w Labiryntach Gro≈∫by
 Icon=nethack.png
 Exec=/usr/games/nethack
 Terminal=0
 Type=Application
+# vi: encoding=utf-8
