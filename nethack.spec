@@ -18,14 +18,19 @@ Release:	1
 License:	Nethack GPL
 Group:		Applications/Games
 Source0:	ftp://ftp.nethack.org/pub/nethack/nh%{file_version}/src/%{name}-%{file_version}.tgz
+# Source0-md5:	aefcbeb20210b2d64511c84bd03c3e4e
 #Source1:	http://www.spod-central.org/~psmith/nh/spoi-%{file_version}.tar.gz
 Source1:	http://www.spod-central.org/~psmith/nh/spoi-340.tar.gz
+# Source1-md5:	0e6596bfb1d6c527f805d4ba8e88b031
 Source2:	http://www.spod-central.org/~psmith/nh/gazetteer.tar.gz
+# Source2-md5:	8c878e1eb8190f42ce28131fb2a3e65f
 Source3:	%{name}.desktop
 Source4:	%{name}.png
 Source5:	Guidebook-3.2pl.ps.gz
+# Source5-md5:	4a2a9a38deb08e9c4177c3b5ce6e627e
 Source6:	Guidebook.pdf
 Source7:	%{name}rc.gz
+# Source7-md5:	ffd3d14ab4df527e9f3738320dec7f93
 # http://avrc.city.ac.uk/nethack/VernonSpoilers/vol3-1.2.2.pdf
 Source8:	%{name}-vol3-1.2.2.pdf
 Patch0:		%{name}-config.patch
