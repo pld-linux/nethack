@@ -1,3 +1,7 @@
+#
+# Conditional build:
+# --with vanilla - build vanilla NetHack (without patches)
+#
 %define		file_version	%(echo %{version} | tr -d .)
 Summary:	NetHack - An adventure into the Mazes of Menace
 Summary(es):	Juego estilo rogue que se basa en Dungeons and Dragons (calabozos y dragones)
@@ -57,6 +61,8 @@ Andries Brouwer, were simply called `hack'. The name changed when
 maintenance was taken over by a group of hackers originally organized
 by Mike Stephenson.
 
+%{?!_with_vanilla:This package contains additional features.}
+
 %description -l pt_BR
 Nethack é um jogo clássico estilo rogue, baseado no Dungeons and
 Dragons. Ele é um jogo muito elaborado e profundo, desenvolvido há
@@ -86,6 +92,8 @@ Najwcze¶niejsze wersje, napisane przez Jaya Fenlasona, a nastêpnie
 znacznie rozszerzone przez Andriesa Brouwara, nazywa³y siê po prostu
 'hack' (r±baæ, siekaæ.) Nazwa zmieni³a siê gdy opieka nad gr± zosta³a
 przejêta przez grupê hackerów zawi±zan± przez Mike'a Stephensona.
+
+%{?!_with_vanilla:Ten pakiet zawiera dodatkowe bajery.}
 
 %package spoilers
 Summary:	Spoilers to NetHack
@@ -119,20 +127,20 @@ Nethackowy podrêcznik w formacie PDF.
 %patch1 -p1
 
 # patches adding fun
-%patch100 -p1
-%patch101 -p1
-%patch102 -p1
-%patch103 -p1
-%patch104 -p1
-%patch105 -p1
-%patch106 -p1
-%patch107 -p1
-%patch108 -p1
-%patch109 -p1
-%patch110 -p1
-%patch111 -p1
-%patch112 -p1
-%patch200 -p1
+%{?!_with_vanilla:%patch100 -p1}
+%{?!_with_vanilla:%patch101 -p1}
+%{?!_with_vanilla:%patch102 -p1}
+%{?!_with_vanilla:%patch103 -p1}
+%{?!_with_vanilla:%patch104 -p1}
+%{?!_with_vanilla:%patch105 -p1}
+%{?!_with_vanilla:%patch106 -p1}
+%{?!_with_vanilla:%patch107 -p1}
+%{?!_with_vanilla:%patch108 -p1}
+%{?!_with_vanilla:%patch109 -p1}
+%{?!_with_vanilla:%patch110 -p1}
+%{?!_with_vanilla:%patch111 -p1}
+%{?!_with_vanilla:%patch112 -p1}
+%{?!_with_vanilla:%patch200 -p1}
 
 %build
 sh ./sys/unix/setup.sh links
