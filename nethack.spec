@@ -66,6 +66,7 @@ BuildRequires:	flex
 BuildRequires:	ncurses-devel
 %{?!_without_qt:BuildRequires:	qt-devel >= 3.0.3}
 Requires:	/bin/gzip
+Conflicts:	applnk < 1.5.13
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define _nhdir	%{_datadir}/nethack
