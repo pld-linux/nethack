@@ -1,15 +1,6 @@
 diff -ruN nethack-3.4.0.orig/include/config.h 2/include/config.h
 --- nethack-3.4.0.orig/include/config.h	Mon Mar 25 23:47:30 2002
 +++ 2/include/config.h	Tue Mar 26 20:35:52 2002
-@@ -44,7 +44,7 @@
-  */
- #define TTY_GRAPHICS	/* good old tty based graphics */
- /* #define X11_GRAPHICS */	/* X11 interface */
--/* #define QT_GRAPHICS */	/* Qt interface */
-+#define QT_GRAPHICS		/* Qt interface */
- /* #define GNOME_GRAPHICS */	/* Gnome interface */
- /* #define MSWIN_GRAPHICS */	/* Windows NT, CE, Graphics */
- 
 @@ -136,6 +136,7 @@
   *		LOGFILE and NEWS refer to files in the playground.
   */

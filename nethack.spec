@@ -1,6 +1,7 @@
 #
 # Conditional build:
 # --with vanilla - build vanilla NetHack (without patches)
+# --without qt   - no X11 and QT bloat
 #
 # no patches for now, wait for updates
 %define _with_vanilla	1
@@ -30,6 +31,7 @@ Source8:	%{name}-vol3-1.2.2.pdf
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-makefile.patch
 Patch2:		%{name}-gcc3.patch
+Patch3:		%{name}-qt.patch
 # patches below are adapted from ones found at http://avrc.city.ac.uk/nethack/patches.html
 # warning: order is important in most cases
 Patch100:	%{name}-show_born.patch
@@ -53,11 +55,11 @@ Patch117:	%{name}-newt.patch
 # after adding additional features update this patch
 Patch200:	%{name}-makedefs.patch
 URL:		http://www.nethack.org/
-BuildRequires:	XFree86-devel
+%{?!_without_qt:BuildRequires:	XFree86-devel}
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	ncurses-devel
-BuildRequires:	qt-devel >= 3.0.3
+%{?!_without_qt:BuildRequires:	qt-devel >= 3.0.3}
 Requires:	/bin/gzip
 Requires:	applnk >= 1.5.13
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -139,6 +141,7 @@ Nethackowy podrêcznik w formacie PDF.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%{?!_without_qt:%patch3 -p1}
 
 # patches adding fun
 %{?!_with_vanilla:%patch100 -p1}
@@ -207,8 +210,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %attr(755,root,root) %dir %{_nhdir}
 %{_nhdir}/nhdat
-%{_nhdir}/*.xpm
-%{_nhdir}/x11tiles
+%{?!_without_qt:%{_nhdir}/*.xpm}
+%{?!_without_qt:%{_nhdir}/x11tiles}
 
 %attr(2775,root,games) %dir %{_dyndir}
 %attr(2775,root,games) %dir %{_dyndir}/save

@@ -1,0 +1,35 @@
+diff -ruN nethack-3.4.1/include/config.h nethack-3.4.1-qt/include/config.h
+--- nethack-3.4.1/include/config.h	Mon Mar  3 01:16:08 2003
++++ nethack-3.4.1-qt/include/config.h	Mon Mar  3 01:11:30 2003
+@@ -44,7 +44,7 @@
+  */
+ #define TTY_GRAPHICS	/* good old tty based graphics */
+ /* #define X11_GRAPHICS */	/* X11 interface */
+-/* #define QT_GRAPHICS */	/* Qt interface */
++#define QT_GRAPHICS		/* Qt interface */
+ /* #define GNOME_GRAPHICS */	/* Gnome interface */
+ /* #define MSWIN_GRAPHICS */	/* Windows NT, CE, Graphics */
+ 
+diff -ruN nethack-3.4.1/sys/unix/Makefile.src nethack-3.4.1-qt/sys/unix/Makefile.src
+--- nethack-3.4.1/sys/unix/Makefile.src	Mon Mar  3 01:16:08 2003
++++ nethack-3.4.1-qt/sys/unix/Makefile.src	Mon Mar  3 01:11:30 2003
+@@ -204,8 +204,8 @@
+ 
+ #
+ #
+-WINSRC = $(WINTTYSRC)
+-WINOBJ = $(WINTTYOBJ)
++WINSRC = $(WINTTYSRC) $(WINQTSRC)
++WINOBJ = $(WINTTYOBJ) $(WINQTOBJ)
+ 
+ # on some systems the termcap library is in -ltermcap or -lcurses
+ # on 386 Xenix, the -ltermlib tputs() seems not to work; use -lcurses instead
+@@ -245,7 +245,7 @@
+ # libraries for BeOS 
+ WINBELIB = -lbe
+ 
+-WINLIB = $(WINTTYLIB)
++WINLIB = $(WINTTYLIB) $(WINQTLIB)
+ 
+ # any other strange libraries your system needs (for Sysunix only -- the more
+ # specialized targets should already be right)
