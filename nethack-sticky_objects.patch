@@ -1,0 +1,235 @@
+diff -ruN nethack-3.4.0.orig/include/config.h nethack-3.4.0/include/config.h
+--- nethack-3.4.0.orig/include/config.h	Sat Apr 13 16:32:15 2002
++++ nethack-3.4.0/include/config.h	Sat Apr 13 17:15:58 2002
+@@ -348,6 +348,7 @@
+  * bugs left here.
+  */
+ 
++#define STICKY_OBJECTS	/* sticky objects patch */
+ #define DUMP_LOG	/* dump log patch */                                    
+ #define DUMP_FN		"/var/games/nethack/%n.dump"
+ #define SHOW_BORN	/* show born patch */
+diff -ruN nethack-3.4.0.orig/include/extern.h nethack-3.4.0/include/extern.h
+--- nethack-3.4.0.orig/include/extern.h	Sat Apr 13 16:32:15 2002
++++ nethack-3.4.0/include/extern.h	Sat Apr 13 17:10:02 2002
+@@ -797,6 +797,9 @@
+ E void NDECL(free_invbuf);
+ E void NDECL(reassign);
+ E int NDECL(doorganize);
++#ifdef STICKY_OBJECTS
++E int NDECL(dosticky);
++#endif /* STICKY_OBJECTS */
+ E int FDECL(count_unpaid, (struct obj *));
+ E int FDECL(count_buc, (struct obj *,int));
+ E void FDECL(carry_obj_effects, (struct obj *));
+diff -ruN nethack-3.4.0.orig/include/obj.h nethack-3.4.0/include/obj.h
+--- nethack-3.4.0.orig/include/obj.h	Thu Apr 11 17:58:27 2002
++++ nethack-3.4.0/include/obj.h	Sat Apr 13 17:10:02 2002
+@@ -86,7 +86,13 @@
+ 
+ 	Bitfield(in_use,1);	/* for magic items before useup items */
+ 	Bitfield(bypass,1);	/* mark this as an object to be skipped by bhito() */
++#ifndef STICKY_OBJECTS
+ 	/* 6 free bits */
++#else
++	Bitfield(sticky,1);	/* "sticky" inventory slot */
++	/* 5 free bits */
++#endif /* STICKY_OBJECTS */
++
+ 
+ 	int	corpsenm;	/* type of corpse is mons[corpsenm] */
+ #define leashmon  corpsenm	/* gets m_id of attached pet */
+diff -ruN nethack-3.4.0.orig/src/bones.c nethack-3.4.0/src/bones.c
+--- nethack-3.4.0.orig/src/bones.c	Thu Apr 11 17:58:27 2002
++++ nethack-3.4.0/src/bones.c	Sat Apr 13 17:10:02 2002
+@@ -81,6 +81,9 @@
+ 			otmp->dknown = otmp->bknown = 0;
+ 			otmp->rknown = 0;
+ 			otmp->invlet = 0;
++#ifdef STICKY_OBJECTS
++			otmp->sticky = 0;
++#endif /* STICKY_OBJECTS */
+ 			otmp->no_charge = 0;
+ 
+ 			if (otmp->otyp == SLIME_MOLD) goodfruit(otmp->spe);
+diff -ruN nethack-3.4.0.orig/src/cmd.c nethack-3.4.0/src/cmd.c
+--- nethack-3.4.0.orig/src/cmd.c	Sat Apr 13 16:32:15 2002
++++ nethack-3.4.0/src/cmd.c	Sat Apr 13 17:10:02 2002
+@@ -97,6 +97,9 @@
+ extern int NDECL(dowieldquiver); /**/
+ extern int NDECL(dozap); /**/
+ extern int NDECL(doorganize); /**/
++#ifdef STICKY_OBJECTS
++extern int NDECL(dosticky); /**/
++#endif /* STICKY_OBJECTS */
+ #endif /* DUMB */
+ 
+ #ifdef OVL1
+@@ -1732,6 +1735,9 @@
+ 	{'x', FALSE, doswapweapon},
+ 	{'X', TRUE, enter_explore_mode},
+ /*	'y', 'Y' : go nw */
++#ifdef STICKY_OBJECTS
++	{M('y'), TRUE, dosticky},
++#endif /* STICKY_OBJECTS */
+ 	{'z', FALSE, dozap},
+ 	{'Z', TRUE, docast},
+ 	{'<', FALSE, doup},
+@@ -1786,6 +1792,9 @@
+ #endif
+ 	{"rub", "rub a lamp or a stone", dorub, FALSE},
+ 	{"sit", "sit down", dosit, FALSE},
++#ifdef STICKY_OBJECTS
++	{"sticky", "set 'sticky' inventory slots", dosticky, TRUE},
++#endif /* STICKY_OBJECTS */
+ 	{"turn", "turn undead", doturn, TRUE},
+ 	{"twoweapon", "toggle two-weapon combat", dotwoweapon, FALSE},
+ 	{"untrap", "untrap something", dountrap, FALSE},
+diff -ruN nethack-3.4.0.orig/src/invent.c nethack-3.4.0/src/invent.c
+--- nethack-3.4.0.orig/src/invent.c	Sat Apr 13 16:32:15 2002
++++ nethack-3.4.0/src/invent.c	Sat Apr 13 17:14:34 2002
+@@ -36,6 +36,9 @@
+ 
+ #ifdef OVLB
+ 
++#ifdef STICKY_OBJECTS
++boolean sticky_inv_hack = 0;	/* blech ick yuck... */
++#endif /* STICKY_OBJECTS */
+ static int lastinvnr = 51;	/* 0 ... 51 (never saved&restored) */
+ 
+ #ifdef WIZARD
+@@ -164,6 +167,9 @@
+ struct obj **potmp, **pobj;
+ {
+ 	register struct obj *otmp = *potmp, *obj = *pobj;
++#ifdef STICKY_OBJECTS
++	boolean sticky_hack = 0;
++#endif /* STICKY_OBJECTS */
+ 
+ 	if(mergable(otmp, obj)) {
+ 		/* Approximate age: we do it this way because if we were to
+@@ -228,7 +234,19 @@
+ 		}
+ #endif /*0*/
+ 
++#ifdef STICKY_OBJECTS
++		if (flags.invlet_constant && obj->invlet &&
++		    obj->sticky && !otmp->sticky) {
++			otmp->invlet = obj->invlet;
++			otmp->sticky = 1;
++			sticky_hack = 1;
++		}
++#endif /* STICKY_OBJECTS */
+ 		obfree(obj,otmp);	/* free(obj), bill->otmp */
++#ifdef STICKY_OBJECTS
++		/* if we're not merging in inventory, this will be a nop */
++		if (sticky_hack) reorder_invent();
++#endif /* STICKY_OBJECTS */
+ 		return(1);
+ 	}
+ 	return 0;
+@@ -308,6 +326,10 @@
+ struct obj *obj;
+ {
+ 	struct obj *otmp, *prev;
++#ifdef STICKY_OBJECTS
++	struct obj *otmp2;
++	char save_invlet = '\0';
++#endif /* STICKY_OBJECTS */
+ 
+ 	if (obj->where != OBJ_FREE)
+ 	    panic("addinv: obj not free");
+@@ -320,6 +342,16 @@
+ 	    return obj;
+ #endif
+ 
++#ifdef STICKY_OBJECTS
++	/* if object is sticky, find the object we'll be displacing */
++	if (flags.invlet_constant && obj->invlet && obj->sticky) {
++		save_invlet = obj->invlet;
++		for (otmp2 = invent; otmp2; otmp2 = otmp2->nobj)
++			if (otmp2->invlet == save_invlet)
++				break;
++	}
++#endif /* STICKY_OBJECTS */
++
+ 	/* merge if possible; find end of chain in the process */
+ 	for (prev = 0, otmp = invent; otmp; prev = otmp, otmp = otmp->nobj)
+ 	    if (merged(&otmp, &obj)) {
+@@ -328,7 +360,15 @@
+ 	    }
+ 	/* didn't merge, so insert into chain */
+ 	if (flags.invlet_constant || !prev) {
+-	    if (flags.invlet_constant) assigninvlet(obj);
++	    if (flags.invlet_constant) {
++	    	assigninvlet(obj);
++#ifdef STICKY_OBJECTS
++		    if (save_invlet) {
++			    if (otmp2) otmp2->invlet = obj->invlet;
++			    obj->invlet = save_invlet;
++		    }
++#endif /* STICKY_OBJECTS */
++	    }
+ 	    obj->nobj = invent;		/* insert at beginning */
+ 	    invent = obj;
+ 	    if (flags.invlet_constant) reorder_invent();
+@@ -1530,9 +1570,16 @@
+ #endif
+     } else {
+ 	/* ordinary inventory display or pickup message */
++#ifndef STICKY_OBJECTS
+ 	Sprintf(li, "%c - %s%s",
+ 		(use_invlet ? obj->invlet : let),
+ 		(txt ? txt : doname(obj)), (dot ? "." : ""));
++#else
++	Sprintf(li, "%c %c %s%s",
++		(use_invlet ? obj->invlet : let),
++		(use_invlet && obj->sticky ? '=' : '-'),
++		(txt ? txt : doname(obj)), (dot ? "." : ""));
++#endif /* STICKY_OBJECTS */
+     }
+     if (savequan) obj->quan = savequan;
+ 
+@@ -1695,9 +1742,19 @@
+ 				classcount++;
+ 			    }
+ 			    any.a_char = ilet;
++#ifdef STICKY_OBJECTS
++			    /*
++			     * Yes, this is evil and disgusting.  If you
++			     * have a better way of doing this, jump on it.
++			     */
++			    sticky_inv_hack = otmp->sticky;
++#endif /* STICKY_OBJECTS */
+ 			    add_menu(win, obj_to_glyph(otmp),
+ 					&any, ilet, 0, ATR_NONE, doname(otmp),
+ 					MENU_UNSELECTED);
++#ifdef STICKY_OBJECTS
++			    sticky_inv_hack = 0;
++#endif /* STICKY_OBJECTS */
+ #ifdef DUMP_LOG
+ 			    if (want_dump) {
+ 			      char letbuf[7];
+@@ -2656,6 +2713,22 @@
+ 	update_inventory();
+ 	return(0);
+ }
++#ifdef STICKY_OBJECTS
++int
++dosticky()	/* toggle "sticky" inventory slot */
++{
++	struct obj *obj;
++	char allowall[2];
++
++	/* get a pointer to the object the user wants to modify */
++	allowall[0] = ALL_CLASSES; allowall[1] = '\0';
++	if (!(obj = getobj(allowall,"mark"))) return 0;
++
++	obj->sticky = !obj->sticky;
++	prinv(obj->sticky ? "Marking:" : "Unmarking:", obj, 0L);
++	return(0);
++}
++#endif /* STICKY_OBJECTS */
+ 
+ /* common to display_minventory and display_cinventory */
+ STATIC_OVL void

@@ -1,0 +1,197 @@
+diff -ruN nethack-3.4.0.orig/include/extern.h nethack-3.4.0/include/extern.h
+--- nethack-3.4.0.orig/include/extern.h	Sat Apr 13 17:30:36 2002
++++ nethack-3.4.0/include/extern.h	Sat Apr 13 17:48:09 2002
+@@ -210,6 +210,7 @@
+ E const char *FDECL(level_distance, (d_level *));
+ E void FDECL(use_crystal_ball, (struct obj *));
+ E void NDECL(do_mapping);
++E int NDECL(dolistmons);
+ E void NDECL(do_vicinity_map);
+ E void FDECL(cvt_sdoor_to_door, (struct rm *));
+ #ifdef USE_TRAMPOLI
+diff -ruN nethack-3.4.0.orig/src/cmd.c nethack-3.4.0/src/cmd.c
+--- nethack-3.4.0.orig/src/cmd.c	Sat Apr 13 17:31:50 2002
++++ nethack-3.4.0/src/cmd.c	Sat Apr 13 17:48:47 2002
+@@ -98,6 +98,7 @@
+ extern int NDECL(dozap); /**/
+ extern int NDECL(doorganize); /**/
+ extern int NDECL(dowashhands); /**/
++extern int NDECL(dolistmons); /**/
+ #ifdef STICKY_OBJECTS
+ extern int NDECL(dosticky); /**/
+ #endif /* STICKY_OBJECTS */
+@@ -1782,6 +1783,7 @@
+ 	{"force", "force a lock", doforce, FALSE},
+ 	{"invoke", "invoke an object's powers", doinvoke, TRUE},
+ 	{"jump", "jump to a location", dojump, FALSE},
++        {"listmons", "list monsters you can see or detect", dolistmons, TRUE},
+ 	{"loot", "loot a box on the floor", doloot, FALSE},
+ 	{"monster", "use a monster's special ability", domonability, TRUE},
+ 	{"name", "name an item or type of object", ddocall, TRUE},
+diff -ruN nethack-3.4.0.orig/src/detect.c nethack-3.4.0/src/detect.c
+--- nethack-3.4.0.orig/src/detect.c	Thu Apr 11 17:58:27 2002
++++ nethack-3.4.0/src/detect.c	Sat Apr 13 17:48:09 2002
+@@ -20,6 +20,163 @@
+ STATIC_PTR void FDECL(findone,(int,int,genericptr_t));
+ STATIC_PTR void FDECL(openone,(int,int,genericptr_t));
+ 
++/* stuff for #listmons -command begins */
++
++#define LM_PLINELIM 4 /* # of uniquely identifiable monsters needed for
++		         showing in a separate window. */
++
++struct _listmons {
++   struct _listmons *next;
++   xchar prefix;  /* 0 = no prefix, 1 = an(), 2 = the() */
++   int nummons;
++   char *name;
++};
++
++static struct _listmons *mlist = (struct _listmons *)0;
++static long listmons_diffmons = 0, listmons_allmons = 0;
++static boolean listmons_see = TRUE;
++
++void
++add_str_listmons(str, prefix)
++char *str;
++xchar prefix;
++{
++   struct _listmons *tmp;
++   
++   listmons_allmons++;
++   
++   for (tmp = mlist; tmp; tmp = tmp->next) {
++      if (!strcmp(tmp->name, str)) {
++	 tmp->nummons++;
++	 return;
++      }
++   }
++   tmp = (struct _listmons *) alloc(sizeof(struct _listmons));
++   tmp->next = mlist;
++   tmp->nummons = 1;
++   tmp->prefix = prefix;
++   tmp->name = (char *) alloc(strlen(str)+1);
++   (void) memcpy((genericptr_t)tmp->name, (genericptr_t)str, strlen(str)+1);
++   mlist = tmp;
++   listmons_diffmons++;
++}
++
++void
++free_listmons()
++{
++   struct _listmons *tmp = mlist;
++   
++   while (tmp) {
++      struct _listmons *tmp2 = tmp->next;
++      free(tmp->name);
++      free(tmp);
++      tmp = tmp2;
++   }
++
++   mlist = (struct _listmons *)0;
++   listmons_diffmons = listmons_allmons = 0;
++   listmons_see = TRUE;
++}
++
++void
++show_listmons()
++{
++   struct _listmons *tmp;
++   char buf[BUFSZ];
++   
++   if (listmons_allmons < 1) {
++      if (!canseeself()) {
++	 You("can't even see yourself.");
++      } else You("don't see any monsters.");
++      return;
++   }
++   
++   if (listmons_diffmons >= LM_PLINELIM) {
++      /* show the monsters in a window */
++      winid win = create_nhwindow(NHW_MENU);
++      Sprintf(buf, "You %s %li creatures:", listmons_see ? "see" : "sense",
++	      listmons_allmons);
++      putstr(win, 0, buf);
++      putstr(win, 0, "");
++      for (tmp = mlist; tmp; tmp = tmp->next) {
++	 if (tmp->nummons > 1) {
++	    Sprintf(buf, "%i %s", tmp->nummons, makeplural(tmp->name));
++	    putstr(win, 0, buf);
++	 } else {
++	    switch (tmp->prefix) {
++	     case 2:  putstr(win, 0, the(tmp->name)); break;
++	     case 1:  putstr(win, 0, an(tmp->name));  break;
++	     default: putstr(win, 0, tmp->name);      break;
++	    }
++	 }
++      }
++      display_nhwindow(win, FALSE);
++      destroy_nhwindow(win);
++   } else {
++      /* just pline() the monsters */
++      long allmon = listmons_allmons;
++      Sprintf(buf, "You %s%s ", 
++	      (listmons_allmons == 1) ? "can only " : "",
++	      listmons_see ? "see" : "sense");
++      for (tmp = mlist; tmp; tmp = tmp->next) {
++	 allmon -= tmp->nummons;
++	 if (tmp != mlist)
++	   Sprintf(eos(buf),"%s", (allmon) ? ", " : " and ");
++	 if (tmp->nummons > 1) {
++	    Sprintf(eos(buf), "%i %s", tmp->nummons, makeplural(tmp->name));
++	 } else {
++	    switch (tmp->prefix) {
++	     case 2:  Sprintf(eos(buf), "%s", the(tmp->name)); break;
++	     case 1:  Sprintf(eos(buf), "%s", an(tmp->name));  break;
++	     default: Sprintf(eos(buf), "%s", tmp->name);      break;
++	    }
++	 }
++      }
++      pline("%s.", buf);
++   }
++}
++
++int
++dolistmons()
++{
++   struct monst *mtmp;
++   char buf[BUFSZ];
++   
++   /* It would be too easy to see the funny hallucinatory monsters
++    * for example in the bigroom, and this function doesn't give
++    * any real information while you're hallucinating anyway.
++    */
++   if (Hallucination) {
++      You("can't bear to look at all those evil monsters!");
++      return 0;
++   }
++
++   for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
++      register int sensed = (canspotmon(mtmp) &&
++	     ((mtmp->m_ap_type == M_AP_NOTHING) || sensemon(mtmp)));
++      if (sensed) {
++	 boolean is_uniq = !!(mons[mtmp->mnum].geno & G_UNIQ);
++	 if (mtmp->mtame) {
++	    Sprintf(buf, "tame ");
++	 } else
++	 if (mtmp->mpeaceful) {
++	    Sprintf(buf, "peaceful ");
++	 } else buf[0] = '\0';
++	 Sprintf(eos(buf), "%s", l_monnam(mtmp));
++	 
++	 if (!canseemon(mtmp)) listmons_see = FALSE;
++	 
++	 add_str_listmons(&buf[0], 
++			  is_uniq ? 2 : 
++			  (mtmp->isshk || mtmp->mnamelth) ? 0 : 1);
++      }
++   }
++   show_listmons();
++   free_listmons();
++   return 0;
++}
++/* stuff for #listmons -command ends */
++
+ /* Recursively search obj for an object in class oclass and return 1st found */
+ struct obj *
+ o_in(obj, oclass)

@@ -1,0 +1,15 @@
+diff -ruN nethack-3.4.0.orig/src/hack.c nethack-3.4.0/src/hack.c
+--- nethack-3.4.0.orig/src/hack.c	Sat Apr 13 17:17:13 2002
++++ nethack-3.4.0/src/hack.c	Sat Apr 13 17:19:02 2002
+@@ -589,10 +589,9 @@
+ 					 u.usteed->mnamelth ? ARTICLE_NONE : ARTICLE_THE,
+ 				 	 (char *)0, SUPPRESS_SADDLE, FALSE));
+ 		 	    else {
+-#else
++#endif
+ 			        pline("Ouch!  You bump into a door.");
+ 			        exercise(A_DEX, FALSE);
+-#endif
+ #ifdef STEED
+ 			    }
+ #endif

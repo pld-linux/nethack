@@ -1,0 +1,60 @@
+diff -ruN nethack-3.4.0.orig/dat/cmdhelp nethack-3.4.0/dat/cmdhelp
+--- nethack-3.4.0.orig/dat/cmdhelp	Thu Apr 11 17:58:27 2002
++++ nethack-3.4.0/dat/cmdhelp	Sat Apr 13 18:01:28 2002
+@@ -114,6 +114,7 @@
+ M-p     Pray to the gods for help
+ M-q     Quit
+ M-r     Rub a lamp
++M-R     Ride (or stop riding) a monster
+ M-s     Sit down
+ M-t     Turn undead
+ M-u     Untrap something (trap, door, or chest)
+diff -ruN nethack-3.4.0.orig/dat/hh nethack-3.4.0/dat/hh
+--- nethack-3.4.0.orig/dat/hh	Thu Apr 11 17:58:27 2002
++++ nethack-3.4.0/dat/hh	Sat Apr 13 18:01:28 2002
+@@ -99,6 +99,7 @@
+ M-p     pray    pray to the gods for help
+ M-q     quit    stop playing
+ M-r     rub     rub a lamp or a stone
++M-R     ride    ride (or stop riding) a monster
+ M-s     sit     sit down
+ M-t     turn    turn undead
+ M-u     untrap  untrap something
+diff -ruN nethack-3.4.0.orig/doc/Guidebook.mn nethack-3.4.0/doc/Guidebook.mn
+--- nethack-3.4.0.orig/doc/Guidebook.mn	Sat Apr 13 17:17:13 2002
++++ nethack-3.4.0/doc/Guidebook.mn	Sat Apr 13 18:01:28 2002
+@@ -752,6 +752,8 @@
+ #quit
+ .lp M-r
+ #rub
++.lp M-R
++#ride
+ .lp M-s
+ #sit
+ .lp M-t
+diff -ruN nethack-3.4.0.orig/doc/Guidebook.tex nethack-3.4.0/doc/Guidebook.tex
+--- nethack-3.4.0.orig/doc/Guidebook.tex	Sat Apr 13 17:17:13 2002
++++ nethack-3.4.0/doc/Guidebook.tex	Sat Apr 13 18:01:28 2002
+@@ -1010,6 +1010,9 @@
+ \item[\tb{M-r}]
+ {\tt\#rub}
+ %.lp
++\item[\tb{M-R}]
++{\tt\#ride}
++%.lp
+ \item[\tb{M-s}]
+ {\tt\#sit}
+ %.lp
+diff -ruN nethack-3.4.0.orig/src/cmd.c nethack-3.4.0/src/cmd.c
+--- nethack-3.4.0.orig/src/cmd.c	Sat Apr 13 17:48:47 2002
++++ nethack-3.4.0/src/cmd.c	Sat Apr 13 18:01:28 2002
+@@ -1719,6 +1719,9 @@
+ 	{'r', FALSE, doread},
+ 	{'R', FALSE, doremring},
+ 	{M('r'), FALSE, dorub},
++#ifdef STEED
++	{M('R'), TRUE, doride},
++#endif
+ 	{'s', TRUE, dosearch, "searching"},
+ 	{'S', TRUE, dosave},
+ 	{M('s'), FALSE, dosit},
