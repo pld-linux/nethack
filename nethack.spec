@@ -155,9 +155,9 @@ Nethackowy podrêcznik w formacie PDF.
 %{?!_with_vanilla:%patch111 -p1}
 %{?!_with_vanilla:%patch112 -p1}
 %{?!_with_vanilla:%patch113 -p1}
-#%{?!_with_vanilla:%patch114 -p1}
-#%{?!_with_vanilla:%patch115 -p1}
-#%{?!_with_vanilla:%patch116 -p1}
+#%%{?!_with_vanilla:%patch114 -p1}
+#%%{?!_with_vanilla:%patch115 -p1}
+#%%{?!_with_vanilla:%patch116 -p1}
 %{?!_with_vanilla:%patch117 -p1}
 %{?!_with_vanilla:%patch200 -p1}
 
