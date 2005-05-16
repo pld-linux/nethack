@@ -64,6 +64,7 @@ URL:		http://www.nethack.org/
 %{?with_qt:BuildRequires:	XFree86-devel}
 BuildRequires:	bison
 BuildRequires:	flex
+BuildRequires:	groff
 BuildRequires:	ncurses-devel
 %{?with_qt:BuildRequires:	qt-devel >= 3.0.3}
 Requires:	/bin/gzip
