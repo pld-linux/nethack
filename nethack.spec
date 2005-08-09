@@ -1,13 +1,9 @@
 #
 # Conditional build:
 %bcond_without	qt	# no X11 and Qt bloat 
-%bcond_with	vanilla	# build vanilla NetHack (without patches)
 #
 # --define 'wizard other_username', default is root
 %define		_wizard		%{?wizard:%{wizard}}%{!?wizard:"root"}
-#
-# no patches for now, wait for updates
-%define		with_vanilla	1
 #
 %define		file_version	%(echo %{version} | tr -d .)
 Summary:	NetHack - An adventure into the Mazes of Menace
@@ -24,7 +20,6 @@ Source0:	http://dl.sourceforge.net/sourceforge/nethack/%{name}-%{file_version}-s
 # Source0-md5:	21479c95990eefe7650df582426457f9
 Source1:	http://www.spod-central.org/~psmith/nh/spoi-%{file_version}.tar.gz
 # Source1-md5:	72cac599c3660eac0a54b17ece8989ff
-#Source1:	http://www.spod-central.org/~psmith/nh/spoi-340.tar.gz
 Source2:	http://www.spod-central.org/~psmith/nh/gazetteer.tar.gz
 # Source2-md5:	651997ab54552b5e9a586cef46bcc50a
 Source3:	%{name}.desktop
@@ -41,28 +36,6 @@ Patch1:		%{name}-makefile.patch
 Patch2:		%{name}-gcc3.patch
 Patch3:		%{name}-qt.patch
 Patch4:		%{name}-qt33.patch
-# patches below are adapted from ones found at http://avrc.city.ac.uk/nethack/patches.html
-# warning: order is important in most cases
-Patch100:	%{name}-show_born.patch
-Patch101:	%{name}-dump.patch
-Patch102:	%{name}-behind_boulder.patch
-Patch103:	%{name}-yafm-monabil.patch
-Patch104:	%{name}-chivalry.patch
-Patch105:	%{name}-kenny.patch
-Patch106:	%{name}-sticky_objects.patch
-Patch107:	%{name}-steed-fix.patch
-Patch108:	%{name}-wash_hands.patch
-Patch109:	%{name}-listmons.patch
-Patch110:	%{name}-flipcoin.patch
-Patch111:	%{name}-ride_key.patch
-Patch112:	%{name}-dungeon_growth.patch
-Patch113:	%{name}-dragon_hoard.patch
-Patch114:	%{name}-torch.patch
-Patch115:	%{name}-hole.patch
-Patch116:	%{name}-mirror.patch
-Patch117:	%{name}-newt.patch
-# after adding additional features update this patch
-Patch200:	%{name}-makedefs.patch
 URL:		http://www.nethack.org/
 %{?with_qt:BuildRequires:	XFree86-devel}
 BuildRequires:	bison
@@ -85,8 +58,6 @@ versions, written by Jay Fenlason and later considerably enhanced by
 Andries Brouwer, were simply called `hack'. The name changed when
 maintenance was taken over by a group of hackers originally organized
 by Mike Stephenson.
-
-%{!?with_vanilla:This package contains additional features.}
 
 %description -l pt_BR
 Nethack é um jogo clássico estilo rogue, baseado no Dungeons and
@@ -117,8 +88,6 @@ Najwcze¶niejsze wersje, napisane przez Jaya Fenlasona, a nastêpnie
 znacznie rozszerzone przez Andriesa Brouwara, nazywa³y siê po prostu
 'hack' (r±baæ, siekaæ.) Nazwa zmieni³a siê gdy opieka nad gr± zosta³a
 przejêta przez grupê hackerów zawi±zan± przez Mike'a Stephensona.
-
-%{!?with_vanilla:Ten pakiet zawiera dodatkowe bajery.}
 
 %package spoilers
 Summary:	Spoilers to NetHack
@@ -153,27 +122,6 @@ Nethackowy podrêcznik w formacie PDF.
 %patch2 -p1
 %{?with_qt:%patch3 -p1}
 %patch4 -p1
-
-# patches adding fun
-%{!?with_vanilla:%patch100 -p1}
-%{!?with_vanilla:%patch101 -p1}
-%{!?with_vanilla:%patch102 -p1}
-%{!?with_vanilla:%patch103 -p1}
-%{!?with_vanilla:%patch104 -p1}
-%{!?with_vanilla:%patch105 -p1}
-%{!?with_vanilla:%patch106 -p1}
-%{!?with_vanilla:%patch107 -p1}
-%{!?with_vanilla:%patch108 -p1}
-%{!?with_vanilla:%patch109 -p1}
-%{!?with_vanilla:%patch110 -p1}
-%{!?with_vanilla:%patch111 -p1}
-%{!?with_vanilla:%patch112 -p1}
-%{!?with_vanilla:%patch113 -p1}
-#%%{!?with_vanilla:%patch114 -p1}
-#%%{!?with_vanilla:%patch115 -p1}
-#%%{!?with_vanilla:%patch116 -p1}
-%{!?with_vanilla:%patch117 -p1}
-%{!?with_vanilla:%patch200 -p1}
 
 %build
 sh ./sys/unix/setup.sh links
