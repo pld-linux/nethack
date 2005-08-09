@@ -3,6 +3,9 @@
 %bcond_without	qt	# no X11 and Qt bloat 
 %bcond_with	vanilla	# build vanilla NetHack (without patches)
 #
+# --define 'wizard other_username', default is root
+%define		_wizard		%{?wizard:%{wizard}}%{!?wizard:"root"}
+#
 # no patches for now, wait for updates
 %define		with_vanilla	1
 #
@@ -14,7 +17,7 @@ Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by
 Summary(pt_BR):	Jogo estilo rogue baseado no Dungeons and Dragons
 Name:		nethack
 Version:	3.4.3
-Release:	2
+Release:	3
 License:	Nethack GPL
 Group:		Applications/Games
 Source0:	http://dl.sourceforge.net/sourceforge/nethack/%{name}-%{file_version}-src.tgz
@@ -176,7 +179,7 @@ Nethackowy podrêcznik w formacie PDF.
 sh ./sys/unix/setup.sh links
 
 %{__make} all \
-	CFLAGS="%{rpmcflags} -I../include -I%{_includedir}/ncurses" \
+	CFLAGS="%{rpmcflags} -I../include -I%{_includedir}/ncurses -DWIZARD='\"%{_wizard}\"'" \
 	LFLAGS="%{rpmldflags}" \
 	CC="%{__cc}" \
 	CXX="%{__cxx}" \
