@@ -127,7 +127,7 @@ Nethackowy podrêcznik w formacie PDF.
 sh ./sys/unix/setup.sh links
 
 %{__make} all \
-	CFLAGS="%{rpmcflags} -I../include -I%{_includedir}/ncurses -DWIZARD='\"%{_wizard}\"'" \
+	CFLAGS="%{rpmcflags} -I../include -I/usr/include/ncurses -DWIZARD='\"%{_wizard}\"'" \
 	LFLAGS="%{rpmldflags}" \
 	CC="%{__cc}" \
 	CXX="%{__cxx}" \
