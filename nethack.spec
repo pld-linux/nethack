@@ -16,7 +16,7 @@ Version:	3.4.3
 Release:	3
 License:	Nethack GPL
 Group:		Applications/Games
-Source0:	http://dl.sourceforge.net/sourceforge/nethack/%{name}-%{file_version}-src.tgz
+Source0:	http://dl.sourceforge.net/nethack/%{name}-%{file_version}-src.tgz
 # Source0-md5:	21479c95990eefe7650df582426457f9
 Source1:	http://www.spod-central.org/~psmith/nh/spoi-%{file_version}.tar.gz
 # Source1-md5:	72cac599c3660eac0a54b17ece8989ff
@@ -176,8 +176,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(2775,root,games) %dir %{_dyndir}
 %attr(2775,root,games) %dir %{_dyndir}/save
 %attr(664,root,games) %{_dyndir}/perm
-%attr(664,root,games) %config(noreplace) %verify(not,md5,size,mtime) %{_dyndir}/record
-%attr(664,root,games) %config(noreplace) %verify(not,md5,size,mtime) %{_dyndir}/logfile
+%attr(664,root,games) %config(noreplace) %verify(not md5 mtime size) %{_dyndir}/record
+%attr(664,root,games) %config(noreplace) %verify(not md5 mtime size) %{_dyndir}/logfile
 
 %{_mandir}/man6/*
 
