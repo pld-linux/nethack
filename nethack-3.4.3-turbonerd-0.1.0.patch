@@ -1,0 +1,1777 @@
+diff -Nru nethack-3.4.3/README.turbonerd nethack-3.4.3-turbonerd/README.turbonerd
+--- nethack-3.4.3/README.turbonerd	1969-12-31 19:00:00.000000000 -0500
++++ nethack-3.4.3-turbonerd/README.turbonerd	2006-06-05 23:56:39.000000000 -0400
+@@ -0,0 +1,9 @@
++This is version 0.1.0 of the Nethack Turbonerd patch, dated 2006-06-05.
++
++The Nethack Turbonerd patch is copyright (C) 2006 Daniel Franke and is licensed
++under the same terms as the rest of Nethack.  Most changes to the original
++source are set off by #ifdef TURBONERD conditionals, and are enabled by default
++in config.h.
++
++The User Friendly characters and content upon which the Turbonerd patch is 
++based are copyrighted and trademarks of J.D. Frazer.
+diff -Nru nethack-3.4.3/dat/Turbonerd.des nethack-3.4.3-turbonerd/dat/Turbonerd.des
+--- nethack-3.4.3/dat/Turbonerd.des	1969-12-31 19:00:00.000000000 -0500
++++ nethack-3.4.3-turbonerd/dat/Turbonerd.des	2006-06-05 19:38:40.000000000 -0400
+@@ -0,0 +1,285 @@
++MAZE: "Ner-strt",' '
++FLAGS: hardfloor
++GEOMETRY:center,center
++MAP
++----------------------------------------------------------------------------
++|............|.....|.........|.........|.........|.........|.....|.........|
++|............|.....|.........|.........|.........|.........|.....|.........|
++|............+.....+.........|.........|.........|.........+.....|.........|
++|............|.....|.........|.........|.........|.........|.....|.........|
++|............|.....|.........|.........|.........|.........|.....|.........|
++|............|.....|.........|.........|.........|.........|.....|.........|
++|-------------.....--------+---+---------+------------------.....---+------|
++|..........................................................................|
++|..........................................................................|
++|..........................................................................|
++|..........................................................................|
++|-------------.....--------+---+---------+--------------------------.....-+|
++|............|.....|.........|.........|.........|.................|.....|.|
++|............|.....|.........|.........|.........|.................|.....|.|
++|............|.....|.........|.........|.........|.\...............+.....|.|
++|............+.....+.........|.........|.........|.................+.....|.|
++|............|.....|.........|.........|.........|.................|.....|.|
++|............|.....|.........|.........|.........|.................|.....|.|
++----------------------------------------------------------------------------
++ENDMAP
++REGION:(00,08,10,11),lit,"ordinary"
++REGION:(50,13,66,18),lit,"ordinary"
++STAIR:(74,18),down
++BRANCH:(2,9,2,9),(0,0,0,0)
++DOOR:locked,(13,3)
++DOOR:closed,(13,16)
++DOOR:closed,(19,3)
++DOOR:locked,(19,16)
++DOOR:closed,(27,7)
++DOOR:closed,(27,12)
++DOOR:locked,(31,7)
++DOOR:closed,(31,12)
++DOOR:closed,(59,3)
++DOOR:closed,(68,7)
++DOOR:closed,(67,15)
++DOOR:closed,(67,16)
++DOOR:closed,(74,12)
++MONSTER:'@',"Illiad",(51,15)
++OBJECT:'(',"chest",(51,16)
++MONSTER:'@',"hacker",(3,3)
++MONSTER:'@',"hacker",(3,17)
++MONSTER:'@',"hacker",(18,3)
++MONSTER:'@',"hacker",(18,18)
++MONSTER:'@',"hacker",(32,3)
++MONSTER:'@',"hacker",(32,18)
++MONSTER:'@',"hacker",(73,3)
++MONSTER:'@',"hacker",(72,5)
++MONSTER:'@',"hacker",(30,10)
++MONSTER:'@',"hacker",(50,10)
++MONSTER:'@',"hacker",(70,10)
++MONSTER:'a',random,random
++MONSTER:'a',random,random
++MONSTER:'a',random,random
++MONSTER:'a',random,random
++MONSTER:'a',random,random
++MONSTER:'a',random,random
++MONSTER:'a',random,random
++MONSTER:'a',random,random
++MONSTER:'a',random,random
++MONSTER:'a',random,random
++OBJECT:'?',random,random
++OBJECT:'?',random,random
++OBJECT:'?',random,random
++OBJECT:'?',random,random
++OBJECT:'?',random,random
++OBJECT:'?',random,random
++OBJECT:'?',random,random
++OBJECT:'?',random,random
++OBJECT:'?',random,random
++OBJECT:'+',random,random
++OBJECT:'+',random,random
++OBJECT:'+',random,random
++OBJECT:'!',random,random
++OBJECT:'!',random,random
++OBJECT:'!',random,random
++OBJECT:'!',random,random
++OBJECT:'!',random,random
++
++MAZE: "Ner-loca", ' '
++GEOMETRY:center,center
++MAP
++                ----------                                                  
++                |........|                                          |       
++ ########       |........|                                       |... .|    
++ ########       ----++----            ############               | .....    
++      ###           ##                ############                .....|    
++      ###           ##                ##                          -...--    
++      ##################################                           ###      
++      ##################################           -----           ###      
++      ###           ##                ##           |...|           ###      
++      ###           ##                ##           |...|           ###      
++      ###------     ##---------       ##           --+--           ###      
++      ###|....|     ##+.......| ########             #             ###      
++      ###S....|     ##|.......| #     ##             #             ###      
++      ###|....|     ##|.......| #     ##             #             ###      
++      ###------     ##|.......| #     # ##############################      
++                    ##|.......+##     ################################      
++                    ##|.......|                                             
++                    ##+.......|                                             
++                      ---------                                             
++ENDMAP
++NON_DIGGABLE:(0,0,75,18)
++TELEPORT_REGION:(68,6,68,6),(0,0,0,0)
++STAIR:(11,13),up
++DOOR:locked,(9,12)
++DOOR:locked,(22,11)
++DOOR:locked,(22,17)
++DOOR:locked,(20,3)
++DOOR:locked,(21,3)
++DOOR:locked,(30,15)
++DOOR:locked,(53,10)
++OBJECT:'`',"boulder",(46,3)
++OBJECT:'`',"boulder",(48,4)
++OBJECT:'*',"rock",(47,3)
++OBJECT:'*',"rock",(48,3)
++OBJECT:'*',"rock",(49,3)
++OBJECT:'*',"rock",(46,4)
++OBJECT:'*',"rock",(47,4)
++OBJECT:'*',"rock",(49,4)
++OBJECT:'`',"boulder",(66,4)
++OBJECT:'*',"rock",(66,2)
++OBJECT:'*',"rock",(67,2)
++OBJECT:'*',"rock",(69,3)
++TRAP:"hole",(67,4)
++TRAP:"hole",(68,4)
++TRAP:"hole",(69,4)
++TRAP:"hole",(67,3)
++TRAP:"hole",(68,3)
++TRAP:"hole",(70,3)
++TRAP:"pit",(18,1)
++TRAP:"pit",(22,2)
++TRAP:"pit",(28,14)
++TRAP:"pit",(26,13)
++TRAP:"pit",(27,11)
++MONSTER:'P',random,random
++MONSTER:'P',random,random
++MONSTER:'P',random,random
++MONSTER:'P',random,random
++MONSTER:'P',random,random
++MONSTER:'P',random,random
++MONSTER:'P',random,random
++MONSTER:'P',random,random
++MONSTER:'a',random,random
++MONSTER:'a',random,random
++MONSTER:'a',random,random
++MONSTER:'a',random,random
++MONSTER:'a',random,random
++MONSTER:'a',random,random
++MONSTER:'a',random,random
++MONSTER:'a',random,random
++MONSTER:'a',random,random
++OBJECT:'+',random,(52,8)
++OBJECT:'+',random,(53,8)
++OBJECT:'+',random,(54,8)
++OBJECT:'+',random,(52,9)
++OBJECT:'+',random,(53,9)
++OBJECT:'+',random,(54,9)
++OBJECT:random,random,random
++OBJECT:random,random,random
++OBJECT:random,random,random
++OBJECT:random,random,random
++
++MAZE: "Ner-goal", ' '
++FLAGS: hardfloor, nommap
++GEOMETRY: center,center
++MAP
++                           LLLLL      ...                                  
++       ......              LLLLLL     ...               ...                
++       ......                LLLLL                     .....               
++       ......              LLLLLL                      .....               
++                           LLLLL                        ...                
++                            LLLLLL                                         
++                            LLLLL                                          
++       LLLLL                                        LLLLLL                 
++        LLLLL                                        LLLLLLL               
++    LLLLLLLLL                  ..                  LLLLLLLL                
++    LLLLLLLL                   ..                    LLLLLL                
++      LLLL       LLL                                                       
++                 LLL                                                       
++        ---                    LLLLLL         ...         LLL              
++       -|.|-                   LLLLLLLL       ...         LLL              
++      --...--               LLLLLLLL          ...                          
++      |.....|                  LLLLLLLL                                    
++      --...--                LLLLLLL                                       
++       -|.|-                                                               
++        ---                                                                
++ENDMAP
++TELEPORT_REGION: (55,1,59,4),(0,0,0,0)
++STAIR: (57,2),up
++FOUNTAIN: (47,14)
++OBJECT: '(', "pick-axe", (57,3)
++OBJECT: '*', random, (7,1)
++OBJECT: '*', random, (8,1)
++OBJECT: '*', random, (9,1)
++OBJECT: '*', random, (10,1)
++OBJECT: '*', random, (11,1)
++OBJECT: '*', random, (12,1)
++OBJECT: '*', random, (7,2)
++OBJECT: '*', random, (8,2)
++OBJECT: '*', random, (9,2)
++OBJECT: '*', random, (10,2)
++OBJECT: '*', random, (11,2)
++OBJECT: '*', random, (12,2)
++OBJECT: '*', random, (7,3)
++OBJECT: '*', random, (8,3)
++OBJECT: '*', random, (9,3)
++OBJECT: '*', random, (10,3)
++OBJECT: '*', random, (11,3)
++OBJECT: '*', random, (12,3)
++MONSTER: 'P', "green slime", (38,1)
++MONSTER: 'P', "green slime", (39,1)
++MONSTER: 'P', "green slime", (40,1)
++MONSTER: 'P', "green slime", (38,0)
++MONSTER: 'P', "green slime", (39,0)
++MONSTER: 'P', "green slime", (40,0)
++
++MONSTER: 'P', "Crud Puppy", (9,16)
++OBJECT: '(',"magic marker",(9,16),blessed,75,"The Lime-Green Crayon of Engfeh"
++
++LEVEL: "Ner-fila"
++ROOM: "ordinary",random,random,random,random
++ROOM: "ordinary",random,random,random,random
++ROOM: "ordinary",random,random,random,random
++ROOM: "ordinary",random,random,random,random
++ROOM: "ordinary",random,random,random,random
++ROOM: "ordinary",random,random,random,random
++OBJECT:random,random,random
++OBJECT:random,random,random
++OBJECT:random,random,random
++OBJECT:random,random,random
++OBJECT:random,random,random
++OBJECT:random,random,random
++OBJECT:random,random,random
++OBJECT:random,random,random
++OBJECT:random,random,random
++OBJECT:random,random,random
++STAIR:random,up
++STAIR:random,down
++MONSTER:random,random,random
++MONSTER:random,random,random
++MONSTER:random,random,random
++MONSTER:random,random,random
++MONSTER:random,random,random
++MONSTER:random,random,random
++MONSTER:random,random,random
++MONSTER:random,random,random
++RANDOM_CORRIDORS
++
++MAZE: "Ner-filb", ' '
++INIT_MAP: '.', 'L', true, true, unlit, true
++NOMAP
++STAIR: random, up
++STAIR: random, down
++MONSTER: random, random, random
++MONSTER: random, random, random
++MONSTER: random, random, random
++MONSTER: random, random, random
++MONSTER: random, random, random
++MONSTER: random, random, random
++MONSTER: random, random, random
++MONSTER: 'F',random,random
++MONSTER: 'F',random,random
++MONSTER: 'F',random,random
++MONSTER: 'F',random,random
++MONSTER: 'F',random,random
++MONSTER: 'F',random,random
++MONSTER: 'F',random,random
++TRAP: random, random
++TRAP: random, random
++TRAP: random, random
++TRAP: random, random
++OBJECT: random, random, random
++OBJECT: random, random, random
++OBJECT: random, random, random
++OBJECT: random, random, random
++OBJECT: random, random, random
++OBJECT: random, random, random
++OBJECT: random, random, random
++OBJECT: random, random, random
++OBJECT: random, random, random
+diff -Nru nethack-3.4.3/dat/data.base nethack-3.4.3-turbonerd/dat/data.base
+--- nethack-3.4.3/dat/data.base	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/dat/data.base	2006-06-05 21:04:49.000000000 -0400
+@@ -806,6 +806,33 @@
+ 	without sound of something that is going to happen to you
+ 	soon.  It is seldom good news.
+ 	[ The Tough Guide to Fantasyland, by Diana Wynne Jones ]
++crud puppy
++	Mike: I have to ask, Henry, Have you seen John Carpenter's 
++	movie "The Thing"?
++	Henry: Yeah, we have fun with it. Mostly because it's a 
++	game to pick at all of the discrepancies.
++	Henry: For example, there are no firearms here. And we don't 
++	have flamethrowers, nor do we store huge canisters of fuel 
++	or crates of dynamite. But hey, it's science-fiction.
++	Mike: You have gotta be friggin' kidding!!
++	Henry: Oh, way to ruin a great line from the movie. Don't they 
++	swear in Canada?
++		[ User Friendly, September 22, 2004 ]
++cthulhu
++hastur
++	There were legends of a hidden lake unglimpsed by mortal sight, 
++	in which dwelt a huge, formless white polypous thing with luminous 
++	eyes; and squatters whispered that bat-winged devils flew up out 
++	of caverns in inner earth to worship it at midnight. They said it 
++	had been there before d'Iberville, before La Salle, before the 
++	Indians, and before even the wholesome beasts and birds of the 
++	woods. It was nightmare itself, and to see it was to die. But it 
++	made men dream, and so they knew enough to keep away. The present 
++	voodoo orgy was, indeed, on the merest fringe of this abhorred area,
++	but that location was bad enough; hence perhaps the very place of 
++	the worship had terrified the squatters more than the shocking sounds 
++	and incidents.
++		[ H.P. Lovecraft, The Call of Cthulhu ]
+ curse*
+ 	Curses are longstanding ill-wishings which, in Fantasyland,
+ 	often manifest as semisentient.  They have to be broken or
+@@ -4057,6 +4084,14 @@
+ 	special process, causing it to never rust.  The tsurugi is
+ 	rumored to be so sharp that it can occasionally cut
+ 	opponents in half!
++turbonerd
++hacker
++illiad
++	Intelligent. Scruffy. Intense. Abstracted. Surprisingly 
++	for a sedentary profession, more hackers run to skinny than 
++	fat; both extremes are more common than elsewhere. Tans are 
++	rare.
++		[ Portrait of J. Random Hacker, by Eric S. Raymond ]
+ twoflower
+ guide
+ 	"Rincewind!"
+diff -Nru nethack-3.4.3/dat/quest.txt nethack-3.4.3-turbonerd/dat/quest.txt
+--- nethack-3.4.3/dat/quest.txt	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/dat/quest.txt	2006-06-05 19:39:39.000000000 -0400
+@@ -2817,6 +2817,215 @@
+ be spoken by the %gP with awe.  You are truly an inspiration to your
+ %sp!"
+ %E
++
++#
++#	Turbonerd
++#
++%Cc Ner 00001
++You materialize in the lobby of %H.  The hum of servers 
++is conspicuously absent and there is a faint scent of magic smoke in the 
++air.  Something is terribly wrong here.
++%E
++%Cp Ner 00002
++Once again, you find yourself at %H.
++%E
++%Cp Ner 00003
++You reappear in %Hs lobby. Once again, your sense of urgency returns.
++%E
++%Cp Ner 00005
++God, root, what is difference?
++%E
++%Cp Ner 00006
++You will be dispatchink the Crud Puppy soon now, da?
++%E
++%Cp Ner 00007
++Ebbeh...
++%E
++%Cp Ner 00008
++Sleep is just a cheap caffeine substitute.
++%E
++%Cp Ner 00009
++You'd better recover %o soon, or we might have to 
++take iCant up on their acquisition offer again.
++%E
++%Cp Ner 00010
++God, root, what is difference?
++%E
++%Cp Ner 00011
++You think we've seen the end of Crud Puppy for sure this time?
++%E
++%Cp Ner 00012
++Looks like we'll be impairing productivity for some time yet, %p.
++%E
++%Cp Ner 00013
++Sleep, she is for the weak.
++%E
++%Cp Ner 00014
++So shiny...
++%E
++%Cc Ner 00015
++"%p! You're back! %H desperately needs your help."
++
++"But first, I must see if you are prepared for the quest we face."
++%E
++%Cp Ner 00016
++"%p, are you prepared now to face %n?"
++%E
++%Cp Ner 00017
++"Back again, %p?  Are you prepared now to save us?"
++%E
++%Cc Ner 00018
++"You have betrayed us, %p.  Begone.  Your account with 
++%H is disabled, and your IP will be blocked!"
++%E
++%Cc Ner 00019
++"%p, your heart is true, but you are not yet experienced enough
++to face %n. A mere %r would surely be devoured. Return here 
++when you have achieved the rank of %Ra."
++%E
++%Cc Ner 00020
++"You have strayed from the true way of the geek, %p!  The forces of 
++FUD have corrupted you.  Return here when your mind is cleansed!"
++%E
++%Cc Ner 00021
++"Terrible times have fallen on %H, %p, for %n
++has taken %o. Should we fail to recover it, 
++the net is doomed."
++
++"%n has made his lair within %i. Go there and destroy 
++him, and bring %o back here."
++
++"May %d guide you."
++%E
++%Cp Ner 00025
++"Beware of %ns bite, %p."
++%E
++%Cp Ner 00026
++"Carry a source of fire with you to protect yourself."
++%E
++%Cp Ner 00027
++"%ns slime can be deadly.  Beware!"
++%E
++%Cp Ner 00028
++"%n has rotted out the electrical wires.  Bring a light."
++%E
++%Cp Ner 00029
++"Beware of %ns bite, %p."
++%E
++%Cp Ner 00030
++"Carry a source of fire with you to protect yourself."
++%E
++%Cp Ner 00031
++"%ns slime can be deadly.  Beware!"
++%E
++%Cp Ner 00032
++"%n has rotted out the electrical wires.  Bring a light."
++%E
++%Cp Ner 00033
++"Carry a source of fire with you to protect yourself."
++%E
++%Cp Ner 00034
++"%ns slime can be deadly.  Beware!"
++%E
++%Cc Ner 00035
++The peeling markings on the stairwell indicate that you have reached
++%i.
++
++Mold lines the walls and sludge covers the floor, but you do not yet 
++sense %ns presence.  Something sinister is afoot.
++%E
++%Cp Ner 00036
++Once again, you find yourself in %i.
++%E
++%Cc Ner 00040
++Gleeful images of shiny dance about in your mind. 
++
++%oC is nearby.
++%E
++%Cp Ner 00041
++The thoughts of shiny return to the fore of your consiousness.
++%E
++%Cc Ner 00050
++So, %l has sent another %r to recover %o from 
++me.  Good!  I will feast upon your flesh just like I have on all those before 
++you.  The %o will be mine forever!
++%E
++%Cp Ner 00051
++My masters at SCO will be pleased to hear of your demise, dweeb!
++%E
++%Cp Ner 00052
++You still persue the %o?  You will die trying, fool!
++%E
++%Cp Ner 00053
++Return %o and then die, cretin!
++%E
++%Cp Ner 00060
++Try your best, %r.  You will never defeat me.
++%E
++%Cp Ner 00061
++If you are the best %l can send me, %o will 
++never again see the light of day!
++%E
++%Cp Ner 00062
++%d has forsaken you, %r.  Give up!
++%E
++%Cp Ner 00063
++Try your best, %r.  You will never defeat me.
++%E
++%Cp Ner 00064
++If you are the best %l can send me, %o will 
++never again see the light of day!
++%E
++%Cp Ner 00065
++%d has forsaken you, %r.  Give up!
++%E
++%Cp Ner 00066
++Try your best, %r.  You will never defeat me.
++%E
++%Cp Ner 00067
++If you are the best %l can send me, %o will 
++never again see the light of day!
++%E
++%Cp Ner 00068
++%d has forsaken you, %r.  Give up!
++%E
++%Cp Ner 00069
++If you are the best %l can send me, %o will 
++never again see the light of day!
++%E
++%Cp Ner 00070
++W00T!  Teh shiny!!!!!1111oneone
++%E
++%Cc Ner 00080
++%ns discorporates, and his gooey remains seep through the cracks 
++of the porous rock floor.  He is gone.
++%E
++%Cc Ner 00081
++Well done, %p.  You have defeated %n and recovered 
++%o.  But I fear it will never be safe with only 
++myself as a guardian.
++
++Take %o, %p, and use it to aid you in your quest
++for the Amulet of Yendor.  Try your hand at composition with it.  Your
++creativity may surprise you.
++%E
++%Cc Ner 00082
++No, %p, the crayon is yours now.  I will make due without it.  Use 
++it wisely in your quest for the Amulet.
++%E
++%Cp Ner 00090
++Welcome back, %p.  How goes your quest for the Amulet of Yendor?
++%E
++%Cc Ner 00091
++Amazing, %p.  The Amulet of Yendor is shinier than I ever imagined.
++For years I suspected that they may all be plastic.
++
++Make haste to the surface with the Amulet, %p.  If you delay, the 
++Wizard of Yendor will only grow stronger.  From there, make your way to the
++Astral Plane and offer the Amulet to %d.
++
++Godspeed, %r.
++%E
+ #
+ #	Valkyrie
+ #
+diff -Nru nethack-3.4.3/dat/rumors.add nethack-3.4.3-turbonerd/dat/rumors.add
+--- nethack-3.4.3/dat/rumors.add	1969-12-31 19:00:00.000000000 -0500
++++ nethack-3.4.3-turbonerd/dat/rumors.add	2006-06-05 03:50:07.000000000 -0400
+@@ -0,0 +1,6 @@
++They say that engraving "Hastur Hastur Hastur" is probably a bad idea.
++They say that engraving "Ia Ia Cthulhu Fhtagn" is definitely a bad idea.
++They say that blindfolds can come in handy against Cthulhu.
++They say that it's best to use crayon for writing unidentified scrolls.
++They say that a little bit of lime-green ink can go a long way.
++They say that getting bitten by a crud puppy is no fun at all.
+diff -Nru nethack-3.4.3/dat/rumors.tru nethack-3.4.3-turbonerd/dat/rumors.tru
+--- nethack-3.4.3/dat/rumors.tru	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/dat/rumors.tru	2006-06-05 03:53:12.000000000 -0400
+@@ -181,6 +181,7 @@
+ They say that a giant gets strong by eating right, try it!
+ They say that a grid bug won't hit you when you cross it.
+ They say that a lembas wafer is a very light snack.
++They say that a little bit of lime-green ink can go a long way.
+ They say that a loadstone has a strange attraction and is not bad luck.
+ They say that a lock pick by any other name is still a lock pick.
+ They say that a lucky amulet will block poisoned arrows.
+@@ -205,6 +206,7 @@
+ They say that an unlucky hacker was once killed by an exploding tin.
+ They say that antique dealers are always interested in precious stones.
+ They say that bandaging one's wounds helps to keep up one's appearance.
++They say that blindfolds can come in handy against Cthulhu.
+ They say that booze can be diluted but not cancelled.
+ They say that by listening carefully, you can hear a secret door!
+ They say that carrots and carrot juice may improve your vision.
+@@ -217,12 +219,15 @@
+ They say that eating a bat corpse will make you batty, for a while.
+ They say that eating a cram ration is a smart move.
+ They say that eating blue jelly is cool if you don't fight the feeling.
++They say that engraving "Hastur Hastur Hastur" is probably a bad idea.
++They say that engraving "Ia Ia Cthulhu Fhtagn" is definitely a bad idea.
+ They say that escaping a dungeon is only the beginning of the end.
+ They say that feeling an unexpected draft of air is sort of a breakthrough.
+ They say that finding a cursed gray stone is always bad luck.
+ They say that gaining a level is an experience that can raise your sights.
+ They say that garter snake meat rarely tastes good but it's still healthy.
+ They say that gauntlets of dexterity have a hidden enchanted touch.
++They say that getting bitten by a crud puppy is no fun at all.
+ They say that going to heaven is just another way of escaping the dungeon.
+ They say that golden nagas are law-abiding denizens as long as you are too.
+ They say that gremlins can make you feel cooler than you are now.
+@@ -242,6 +247,7 @@
+ They say that it is easier to kill the Wizard than to make him stand still.
+ They say that it only takes 1 zorkmid to meet the Kops.
+ They say that it's a blast when you mix the right potions together.
++They say that it's best to use crayon for writing unidentified scrolls.
+ They say that it's not blind luck if you catch a glimpse of Medusa.
+ They say that killing a shopkeeper brings bad luck.
+ They say that monsters never step on a scare monster scroll.
+@@ -260,6 +266,7 @@
+ They say that only chaotics can kill shopkeepers and get away with it.
+ They say that only female monsters can lay eggs.
+ They say that playing a horn really bad is really good.
++They say that prayer at an altar can sometimes make the water there holy.
+ They say that rubbing a glowing potion does not make it a magic lamp.
+ They say that scalpels become dull because they're not athames.
+ They say that shopkeepers don't like pick-axes.
+@@ -304,7 +311,6 @@
+ They say that throwing glass gems is the same as throwing rocks.
+ They say that trespassing a boulder is probably beneath you.
+ They say that unicorns are fond of precious gems.
+-They say that prayer at an altar can sometimes make the water there holy.
+ They say that what goes down the drain might come back up.
+ They say that wielded, a long sword named Fire Brand makes you feel cooler.
+ They say that wielded, a long sword named Frost Brand makes you hot stuff.
+diff -Nru nethack-3.4.3/doc/Guidebook.mn nethack-3.4.3-turbonerd/doc/Guidebook.mn
+--- nethack-3.4.3/doc/Guidebook.mn	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/doc/Guidebook.mn	2006-06-05 20:30:08.000000000 -0400
+@@ -115,6 +115,9 @@
+ a credit card, lots of food, some maps, and an expensive camera.  Most
+ monsters don't like being photographed.
+ .pg
++\fITurbonerds\fP dash about on a caffeine rush, and start out with a 
++hefty cluebat, a sturdy pair of boots, and a few scrolls.
++.pg               
+ \fIValkyries\fP are hardy warrior women.  Their upbringing in the harsh
+ Northlands makes them strong, inures them to extremes of cold, and instills
+ in them stealth and cunning.
+diff -Nru nethack-3.4.3/doc/Guidebook.tex nethack-3.4.3-turbonerd/doc/Guidebook.tex
+--- nethack-3.4.3/doc/Guidebook.tex	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/doc/Guidebook.tex	2006-06-05 20:27:11.000000000 -0400
+@@ -176,6 +176,10 @@
+ a credit card, lots of food, some maps, and an expensive camera.  Most
+ monsters don't like being photographed.
+ %.pg
++\item[\bb{Turbonerds}]%
++dash about on a caffeine rush, and start out with a hefty cluebat, a sturdy
++pair of boots, and a few scrolls.
++%.pg
+ %
+ \item[\bb{Valkyries}]%
+ are hardy warrior women.  Their upbringing in the harsh
+diff -Nru nethack-3.4.3/doc/Guidebook.txt nethack-3.4.3-turbonerd/doc/Guidebook.txt
+--- nethack-3.4.3/doc/Guidebook.txt	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/doc/Guidebook.txt	2006-06-05 20:28:52.000000000 -0400
+@@ -147,7 +147,10 @@
+                Tourists start out with lots of gold (suitable for  shopping
+           with),  a  credit card, lots of food, some maps, and an expensive
+           camera.  Most monsters don't like being photographed.
+-
++	       
++               Turbonerds dash about on a caffeine rush, and start out with a 
++          hefty cluebat, a sturdy pair of boots, and a few scrolls.
++               
+                Valkyries are hardy warrior women.  Their upbringing in  the
+           harsh  Northlands  makes  them strong, inures them to extremes of
+           cold, and instills in them stealth and cunning.
+diff -Nru nethack-3.4.3/include/artifact.h nethack-3.4.3-turbonerd/include/artifact.h
+--- nethack-3.4.3/include/artifact.h	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/include/artifact.h	2006-06-04 00:11:40.000000000 -0400
+@@ -34,7 +34,9 @@
+ #define SPFX_DBONUS 0x1F00000L	/* attack bonus mask */
+ #define SPFX_XRAY   0x2000000L	/* gives X-RAY vision to player */
+ #define SPFX_REFLECT 0x4000000L /* Reflection */
+-
++#ifdef TURBONERD
++#define SPFX_POLYCTRL 0x8000000L /* Polymorph Control */
++#endif
+ 
+ struct artifact {
+ 	short	    otyp;
+@@ -60,5 +62,7 @@
+ #define CREATE_PORTAL	(LAST_PROP+7)
+ #define ENLIGHTENING	(LAST_PROP+8)
+ #define CREATE_AMMO	(LAST_PROP+9)
+-
++#ifdef TURBONERD
++#define POLYSELF	(LAST_PROP+10)
++#endif
+ #endif /* ARTIFACT_H */
+diff -Nru nethack-3.4.3/include/artilist.h nethack-3.4.3-turbonerd/include/artilist.h
+--- nethack-3.4.3/include/artilist.h	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/include/artilist.h	2006-06-04 00:28:45.000000000 -0400
+@@ -230,6 +230,12 @@
+ 	(SPFX_NOGEN|SPFX_RESTR|SPFX_INTEL), (SPFX_EREGEN|SPFX_HSPDAM), 0,
+ 	NO_ATTK,	NO_DFNS,	CARY(AD_MAGM),
+ 	CREATE_PORTAL,	A_NEUTRAL, PM_WIZARD, NON_PM, 4000L ),
++#ifdef TURBONERD
++A("The Lime-Green Crayon of Engfeh", MAGIC_MARKER,
++	(SPFX_NOGEN|SPFX_RESTR|SPFX_INTEL), (SPFX_POLYCTRL), 0,
++	NO_ATTK,	NO_DFNS,	NO_CARY,
++	POLYSELF,	A_LAWFUL, PM_TURBONERD, NON_PM, 3500L ),
++#endif
+ 
+ /*
+  *  terminator; otyp must be zero
+diff -Nru nethack-3.4.3/include/config.h nethack-3.4.3-turbonerd/include/config.h
+--- nethack-3.4.3/include/config.h	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/include/config.h	2006-06-05 19:55:07.000000000 -0400
+@@ -325,6 +325,7 @@
+ #define SEDUCE		/* Succubi/incubi seduction, by KAA, suggested by IM */
+ #define STEED		/* Riding steeds */
+ #define TOURIST		/* Tourist players with cameras and Hawaiian shirts */
++#define TURBONERD
+ /* difficulty */
+ #define ELBERETH	/* Engraving the E-word repels monsters */
+ /* I/O */
+diff -Nru nethack-3.4.3/include/patchlevel.h nethack-3.4.3-turbonerd/include/patchlevel.h
+--- nethack-3.4.3/include/patchlevel.h	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/include/patchlevel.h	2006-06-06 01:55:39.000000000 -0400
+@@ -13,7 +13,7 @@
+  * Incrementing EDITLEVEL can be used to force invalidation of old bones
+  * and save files.
+  */
+-#define EDITLEVEL	0
++#define EDITLEVEL	0xf00b13 /* Turbonerd patch */
+ 
+ #define COPYRIGHT_BANNER_A \
+ "NetHack, Copyright 1985-2003"
+diff -Nru nethack-3.4.3/include/qtext.h nethack-3.4.3-turbonerd/include/qtext.h
+--- nethack-3.4.3/include/qtext.h	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/include/qtext.h	2006-06-05 19:55:54.000000000 -0400
+@@ -5,7 +5,7 @@
+ #ifndef QTEXT_H
+ #define QTEXT_H
+ 
+-#define N_HDR	16		/* Maximum number of categories */
++#define N_HDR	32		/* Maximum number of categories */
+ 				/* (i.e., num roles + 1) */
+ #define LEN_HDR 3		/* Maximum length of a category name */
+ 
+diff -Nru nethack-3.4.3/src/artifact.c nethack-3.4.3-turbonerd/src/artifact.c
+--- nethack-3.4.3/src/artifact.c	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/src/artifact.c	2006-06-04 00:54:17.000000000 -0400
+@@ -466,6 +466,12 @@
+ 	    if (on) EHalf_physical_damage |= wp_mask;
+ 	    else EHalf_physical_damage &= ~wp_mask;
+ 	}
++#ifdef TURBONERD
++	if (spfx & SPFX_POLYCTRL) {
++	    if (on) EPolymorph_control |= wp_mask;
++	    else EPolymorph_control &= ~wp_mask;
++        }
++#endif
+ 	if (spfx & SPFX_XRAY) {
+ 	    /* this assumes that no one else is using xray_range */
+ 	    if (on) u.xray_range = 3;
+@@ -1349,6 +1355,11 @@
+ 				       aobjnam(otmp, "fall"), (const char *)0);
+ 	    break;
+ 	  }
++#ifdef TURBONERD
++	case POLYSELF:
++	  polyself(FALSE);
++	  break;
++#endif
+ 	}
+     } else {
+ 	long eprop = (u.uprops[oart->inv_prop].extrinsic ^= W_ARTI),
+diff -Nru nethack-3.4.3/src/attrib.c nethack-3.4.3-turbonerd/src/attrib.c
+--- nethack-3.4.3/src/attrib.c	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/src/attrib.c	2006-06-06 01:10:52.000000000 -0400
+@@ -80,6 +80,12 @@
+ 		     {	20, &(HPoison_resistance), "hardy", "" },
+ 		     {	 0, 0, 0, 0 } },
+ 
++#ifdef TURBONERD	
++	ner_abil[] = { { 1, &(HFast), "", "" },
++ 		     { 5, &(HSleep_resistance), "wired", "drowsy" },
++		     { 0, 0, 0, 0 } },
++#endif
++
+ 	val_abil[] = { {	 1, &(HCold_resistance), "", "" },
+ 		     {	 1, &(HStealth), "", "" },
+ 		     {   7, &(HFast), "quick", "slow" },
+@@ -554,6 +560,9 @@
+ #ifdef TOURIST
+ 	case PM_TOURIST:        abil = tou_abil;	break;
+ #endif
++#ifdef TURBONERD
++	case PM_TURBONERD:	abil = ner_abil;	break;
++#endif
+ 	case PM_VALKYRIE:       abil = val_abil;	break;
+ 	case PM_WIZARD:         abil = wiz_abil;	break;
+ 	default:                abil = 0;		break;
+diff -Nru nethack-3.4.3/src/do_name.c nethack-3.4.3-turbonerd/src/do_name.c
+--- nethack-3.4.3/src/do_name.c	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/src/do_name.c	2006-06-04 01:09:33.000000000 -0400
+@@ -934,9 +934,15 @@
+ 	"Barney the dinosaur",			/* saccharine kiddy TV */
+ 	"Morgoth",				/* Angband */
+ 	"Vorlon",				/* Babylon 5 */
+-	"questing beast",		/* King Arthur */
++	"questing beast",			/* King Arthur */
+ 	"Predator",				/* Movie */
+-	"mother-in-law"				/* common pest */
++	"mother-in-law"	 			/* common pest */
++#ifdef TURBONERD
++	,"evilphish", "Dark Side Dave", "Artur", "Mr. Cola",
++	"BSD daemon", "EULA", "distilled USENET bitterness",
++	"MSN butterfly", "inflatable llama", "grue", "flying pig",
++	"smiling man", "drop bear" /* User Friendly gags */
++#endif
+ };
+ 
+ 
+diff -Nru nethack-3.4.3/src/dog.c nethack-3.4.3-turbonerd/src/dog.c
+--- nethack-3.4.3/src/dog.c	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/src/dog.c	2006-06-04 00:50:26.000000000 -0400
+@@ -152,6 +152,9 @@
+ 	    if(Role_if(PM_SAMURAI)) petname = "Hachi";     /* Shibuya Station */
+ 	    if(Role_if(PM_BARBARIAN)) petname = "Idefix";  /* Obelix */
+ 	    if(Role_if(PM_RANGER)) petname = "Sirius";     /* Orion's dog */
++#ifdef TURBONERD
++	    if(Role_if(PM_TURBONERD)) petname = "Cat Five";
++#endif
+ 	}
+ 
+ 	mtmp = makemon(&mons[pettype], u.ux, u.uy, MM_EDOG);
+diff -Nru nethack-3.4.3/src/engrave.c nethack-3.4.3-turbonerd/src/engrave.c
+--- nethack-3.4.3/src/engrave.c	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/src/engrave.c	2006-06-05 20:57:32.000000000 -0400
+@@ -1108,6 +1108,23 @@
+ 	    if (!Blind) Your(vision_clears);
+ 	}
+ 
++#ifdef TURBONERD
++	if(strstri(buf, "Ia Ia Cthulhu Fhtagn") &&
++	   !(mvitals[PM_CTHULHU].mvflags & G_GONE)) {
++	    if(!(Blind)) pline("The writing glows eerily, then fades...");
++	    del_engr_at(u.ux, u.uy);
++	    You("have summoned %s!", a_monnam(
++		makemon(&mons[PM_CTHULHU], u.ux, u.uy, NO_MM_FLAGS)));
++	    exercise(A_WIS, FALSE);
++	} else if(strstri(buf, "Hastur Hastur Hastur") &&
++		  !(mvitals[PM_HASTUR].mvflags & G_GONE)) {
++	    if(!(Blind)) pline("The writing glows eerily, then fades...");
++            del_engr_at(u.ux, u.uy);
++            You("have summoned %s!", a_monnam(
++                makemon(&mons[PM_HASTUR], u.ux, u.uy, NO_MM_FLAGS)));
++	    exercise(A_WIS, FALSE);
++	}
++#endif
+ 	return(1);
+ }
+ 
+diff -Nru nethack-3.4.3/src/mhitu.c nethack-3.4.3-turbonerd/src/mhitu.c
+--- nethack-3.4.3/src/mhitu.c	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/src/mhitu.c	2006-06-04 16:46:15.000000000 -0400
+@@ -2031,6 +2031,60 @@
+ 		    stop_occupation();
+ 		break;
+ #endif
++#ifdef TURBONERD
++	    case AD_HALU:
++		if(!mtmp->mcan && canseemon(mtmp)) {
++		   pline("%s gaze is maddening!", s_suffix(Monnam(mtmp)));
++		   make_hallucinated(HHallucination + 100,FALSE,0L);
++		}
++		break;
++
++	    case AD_DRIN:
++		if(!mtmp->mcan && canseemon(mtmp)) {
++		  pline("As you behold %s, your powers of reason fade.",  
++			Monnam(mtmp));
++		  if (!uarmh || uarmh->otyp != DUNCE_CAP) {
++                    /* No such thing as mindless players... */
++                    if (ABASE(A_INT) <= ATTRMIN(A_INT)) {
++                        int lifesaved = 0;
++                        struct obj *wore_amulet = uamul;
++
++                        while(1) {
++                            /* avoid looping on "die(y/n)?" */
++                            if (lifesaved && (discover || wizard)) {
++                                if (wore_amulet && !uamul) {
++                                    /* used up AMULET_OF_LIFE_SAVING; still
++                                       subject to dying from brainlessness */
++                                    wore_amulet = 0;
++                                } else {
++                                    /* explicitly chose not to die;
++                                       arbitrarily boost intelligence */
++                                    ABASE(A_INT) = ATTRMIN(A_INT) + 2;
++                                    You_feel("like a scarecrow.");
++                                    break;
++                                }
++                            }
++
++                            if (lifesaved)
++                                pline("Unfortunately your mind is still gone.");
++                            else
++                                Your("last bit of sanity fades away.");
++                            killer = "the Great Old One's maddening image";
++                            killer_format = KILLED_BY;
++                            done(DIED);
++                            lifesaved++;
++                        }
++                    }
++                
++                    /* adjattrib gives dunce cap message when appropriate */
++                    (void) adjattrib(A_INT, -rnd(2), TRUE);
++                    forget_levels(25);      /* lose memory of 25% of levels */
++                    forget_objects(25);     /* lose memory of 25% of objects */
++                    exercise(A_WIS, FALSE);
++		}
++	      }
++	      break;
++#endif
+ 	    default: impossible("Gaze attack %d?", mattk->adtyp);
+ 		break;
+ 	}
+diff -Nru nethack-3.4.3/src/monst.c nethack-3.4.3-turbonerd/src/monst.c
+--- nethack-3.4.3/src/monst.c	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/src/monst.c	2006-06-04 17:17:06.000000000 -0400
+@@ -2710,6 +2710,18 @@
+ 	M2_NOPOLY|M2_DEMON|M2_STALK|M2_HOSTILE|M2_PNAME|M2_NASTY|
+ 	  M2_PRINCE|M2_MALE|M2_COLLECT,
+ 	M3_WANTSAMUL|M3_INFRAVISIBLE|M3_INFRAVISION, HI_LORD),
++#ifdef TURBONERD
++    MON("Hastur", S_DEMON,
++	LVL(80, 9, -3, 85, -20), (G_HELL|G_NOCORPSE|G_NOGEN|G_UNIQ),
++	A(ATTK(AT_BITE, AD_CORR, 4, 4), ATTK(AT_BITE, AD_ENCH, 4, 4),
++	  ATTK(AT_BITE, AD_ACID, 4, 4), ATTK(AT_ENGL, AD_ACID, 6, 6),
++	  NO_ATTK, NO_ATTK),
++	  SIZ(3000, 1000, 0, MS_GURGLE, MZ_GIGANTIC), MR_ACID|MR_POISON, 0,
++	M1_AMORPHOUS|M1_NOEYES|M1_NOHANDS|M1_NOLIMBS|M1_NOHEAD|M1_REGEN|
++	M1_SEE_INVIS|M1_METALLIVORE,
++	M2_DEMON|M2_PRINCE|M2_NEUTER|M2_PNAME|M2_HOSTILE|M2_NASTY,
++	M3_INFRAVISIBLE, HI_LORD),
++#endif
+     MON("Baalzebub", S_DEMON,
+ 	LVL(89, 9, -5, 85, 20), (G_HELL|G_NOCORPSE|G_NOGEN|G_UNIQ),
+ 	A(ATTK(AT_BITE, AD_DRST, 2, 6), ATTK(AT_GAZE, AD_STUN, 2, 6),
+@@ -2738,6 +2750,20 @@
+ 	M2_NOPOLY|M2_DEMON|M2_STALK|M2_HOSTILE|M2_PNAME|M2_NASTY|
+ 	  M2_PRINCE|M2_MALE,
+ 	M3_WANTSAMUL|M3_INFRAVISIBLE|M3_INFRAVISION, HI_LORD),
++#ifdef TURBONERD
++    MON("Cthulhu", S_DEMON,
++	LVL(120, 12, -10, 90, -20), (G_HELL|G_NOCORPSE|G_NOGEN|G_UNIQ),
++	A(ATTK(AT_GAZE, AD_DRIN, 0, 0), ATTK(AT_GAZE, AD_HALU, 0, 0),
++          ATTK(AT_BITE, AD_DGST, 6, 6), ATTK(AT_MAGC, AD_CLRC, 0, 0),
++	  ATTK(AT_MAGC, AD_CLRC, 0, 0), NO_ATTK),
++        SIZ(1500, 500, 0, MS_LAUGH, MZ_LARGE), 
++	MR_FIRE|MR_COLD|MR_SLEEP|MR_ELEC|MR_POISON|MR_ACID|MR_STONE, 0,
++	M1_FLY|M1_SWIM|M1_AMPHIBIOUS|M1_SLITHY|M1_THICK_HIDE|M1_TPORT|
++	M1_TPORT_CNTRL|M1_OMNIVORE|M1_SEE_INVIS,
++	M2_NOPOLY|M2_DEMON|M2_PRINCE|M2_MALE|M2_PNAME|M2_STALK|M2_NASTY|
++	M2_STRONG|M2_MAGIC,
++	M3_INFRAVISIBLE|M3_INFRAVISION, HI_LORD),
++#endif
+ 	/* Riders -- the Four Horsemen of the Apocalypse ("War" == player)
+ 	 */
+     MON("Death", S_DEMON,
+@@ -3021,6 +3047,15 @@
+ 	M1_HUMANOID|M1_OMNIVORE,
+ 	M2_NOPOLY|M2_HUMAN|M2_STRONG|M2_COLLECT, M3_INFRAVISIBLE, HI_DOMESTIC),
+ #endif
++#ifdef TURBONERD
++    MON("turbonerd", S_HUMAN,
++        LVL(10, 12, 10, 1, 0), G_NOGEN,
++        A(ATTK(AT_WEAP, AD_PHYS, 1, 6), ATTK(AT_WEAP, AD_PHYS, 1, 6),
++          NO_ATTK, NO_ATTK, NO_ATTK, NO_ATTK),
++        SIZ(WT_HUMAN, 400, 0, MS_HUMANOID, MZ_HUMAN), 0, 0,
++        M1_HUMANOID|M1_OMNIVORE,
++        M2_NOPOLY|M2_HUMAN|M2_STRONG|M2_COLLECT, M3_INFRAVISIBLE, HI_DOMESTIC),
++#endif
+     MON("valkyrie", S_HUMAN,
+ 	LVL(10, 12, 10, 1, -1), G_NOGEN,
+ 	A(ATTK(AT_WEAP, AD_PHYS, 1, 8), ATTK(AT_WEAP, AD_PHYS, 1, 8),
+@@ -3167,6 +3202,17 @@
+ 	  M2_COLLECT|M2_MAGIC,
+ 	M3_CLOSE|M3_INFRAVISIBLE, HI_DOMESTIC),
+ #endif
++#ifdef TURBONERD
++    MON("Illiad", S_HUMAN,
++        LVL(20, 12, 10, 20, 0), (G_NOGEN|G_UNIQ),
++        A(ATTK(AT_WEAP, AD_PHYS, 1, 6), ATTK(AT_WEAP, AD_PHYS, 1, 6),
++          NO_ATTK, NO_ATTK, NO_ATTK, NO_ATTK),
++        SIZ(WT_HUMAN, 400, 0, MS_LEADER, MZ_HUMAN), 0, 0,
++        M1_HUMANOID|M1_OMNIVORE,
++        M2_NOPOLY|M2_HUMAN|M2_PNAME|M2_PEACEFUL|M2_STRONG|M2_MALE|
++          M2_COLLECT|M2_MAGIC,
++        M3_CLOSE|M3_INFRAVISIBLE, HI_DOMESTIC),
++#endif
+     MON("Norn", S_HUMAN,
+ 	LVL(20, 12, 0, 80, 0), (G_NOGEN|G_UNIQ),
+ 	A(ATTK(AT_WEAP, AD_PHYS, 1, 8), ATTK(AT_WEAP, AD_PHYS, 1, 6),
+@@ -3309,6 +3355,16 @@
+ 	 * Note: the Master of Thieves was defined above.
+ 	 */
+ #endif
++#ifdef TURBONERD
++    MON("Crud Puppy", S_PUDDING,
++	LVL(20, 12, 5, 50, -13), (G_NOGEN|G_UNIQ|G_NOCORPSE),
++	A(ATTK(AT_CLAW, AD_PHYS, 2, 10), ATTK(AT_BITE, AD_SLIM, 2, 8),
++	  ATTK(AT_TUCH, AD_STCK, 2, 8), NO_ATTK, NO_ATTK, NO_ATTK),
++        SIZ(100, 0, 0, MS_NEMESIS, MZ_SMALL), MR_POISON|MR_ACID, 0,
++	M1_AMORPHOUS|M1_CLING|M1_NOHANDS|M1_REGEN|M1_TPORT|M1_TPORT_CNTRL,
++	M2_NOPOLY|M2_DEMON|M2_LORD|M2_MALE|M2_HOSTILE|M2_STALK|M2_NASTY|
++	M2_PNAME, M3_WANTSARTI|M3_WAITFORU, HI_LORD),
++#endif 
+     MON("Lord Surtur", S_GIANT,
+ 	LVL(15, 12, 2, 50, 12), (G_NOGEN|G_UNIQ),
+ 	A(ATTK(AT_WEAP, AD_PHYS, 2,10), ATTK(AT_WEAP, AD_PHYS, 2,10),
+@@ -3439,6 +3495,16 @@
+ 	M2_NOPOLY|M2_HUMAN|M2_PEACEFUL | M2_STRONG|M2_COLLECT|M2_MAGIC,
+ 	M3_INFRAVISIBLE, HI_DOMESTIC),
+ #endif
++#ifdef TURBONERD
++    MON("hacker", S_HUMAN,
++	LVL(5,12,10,30,0), G_NOGEN,
++	A(ATTK(AT_WEAP, AD_PHYS, 1, 6), ATTK(AT_MAGC, AD_SPEL, 0, 0),
++          NO_ATTK, NO_ATTK, NO_ATTK, NO_ATTK),
++        SIZ(WT_HUMAN, 400, 0, MS_GUARDIAN, MZ_HUMAN), 0, 0,
++        M1_HUMANOID|M1_OMNIVORE,
++        M2_NOPOLY|M2_HUMAN|M2_PEACEFUL|M2_STRONG|M2_COLLECT|M2_MAGIC,
++        M3_INFRAVISIBLE, HI_DOMESTIC),
++#endif
+     MON("warrior", S_HUMAN,
+ 	LVL(5, 12, 10, 10, -1), G_NOGEN,
+ 	A(ATTK(AT_WEAP, AD_PHYS, 1, 8), ATTK(AT_WEAP, AD_PHYS, 1, 8),
+diff -Nru nethack-3.4.3/src/objects.c nethack-3.4.3-turbonerd/src/objects.c
+--- nethack-3.4.3/src/objects.c	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/src/objects.c	2006-06-05 19:59:04.000000000 -0400
+@@ -236,8 +236,15 @@
+ WEAPON("war hammer", (char *)0,
+ 	1, 0, 0, 15, 50,  5,  4,  4, 0, B,   P_HAMMER, IRON, HI_METAL),
+ 						/* +1 small */
++#ifndef TURBONERD
+ WEAPON("club", (char *)0,
+ 	1, 0, 0, 12, 30,  3,  6,  3, 0, B,   P_CLUB, WOOD, HI_WOOD),
++#else
++WEAPON("club", (char *)0,
++	1, 0, 0, 10, 30,  3,  6,  3, 0, B,   P_CLUB, WOOD, HI_WOOD),
++WEAPON("cluebat", (char *)0,
++	1, 0, 0, 2, 20,  50,  6,  8, 1, B,   P_CLUB, WOOD, HI_WOOD),
++#endif  
+ #ifdef KOPS
+ WEAPON("rubber hose", (char *)0,
+ 	1, 0, 0,  0, 20,  3,  4,  3, 0, B,   P_WHIP, PLASTIC, CLR_BROWN),
+diff -Nru nethack-3.4.3/src/quest.c nethack-3.4.3-turbonerd/src/quest.c
+--- nethack-3.4.3/src/quest.c	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/src/quest.c	2006-06-05 19:29:25.000000000 -0400
+@@ -96,7 +96,7 @@
+ ok_to_quest()
+ {
+ 	return((boolean)((Qstat(got_quest) || Qstat(got_thanks)))
+-			&& (is_pure(FALSE) > 0));
++			&& (is_pure(TRUE) > 0));
+ }
+ 
+ STATIC_OVL boolean
+diff -Nru nethack-3.4.3/src/questpgr.c nethack-3.4.3-turbonerd/src/questpgr.c
+--- nethack-3.4.3/src/questpgr.c	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/src/questpgr.c	2006-06-05 19:30:04.000000000 -0400
+@@ -11,7 +11,7 @@
+ 
+ #define QTEXT_FILE	"quest.dat"
+ 
+-/* #define DEBUG */	/* uncomment for debugging */
++/* #define DEBUG */ 	/* uncomment for debugging */
+ 
+ static void FDECL(Fread, (genericptr_t,int,int,dlb *));
+ STATIC_DCL struct qtmsg * FDECL(construct_qtlist, (long));
+diff -Nru nethack-3.4.3/src/read.c nethack-3.4.3-turbonerd/src/read.c
+--- nethack-3.4.3/src/read.c	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/src/read.c	2006-06-04 00:45:57.000000000 -0400
+@@ -1110,12 +1110,24 @@
+ 			(!confused || sobj->cursed ? ALL_MAP : 0) );
+ 		if (Hallucination) /* Ommmmmm! */
+ 			Your("mind releases itself from mundane concerns.");
++#ifdef TURBONERD
++		else if (!strncmpi(plname, "Miranda", 4))
++#else
+ 		else if (!strncmpi(plname, "Maud", 4))
++#endif
+ 			pline("As your mind turns inward on itself, you forget everything else.");
+ 		else if (rn2(2))
++#ifdef TURBONERD
++			pline("Who was that Miranda person anyway?");
++#else
+ 			pline("Who was that Maud person anyway?");
++#endif
+ 		else
++#ifdef TURBONERD
++		pline("Thinking of Miranda you forget everything else.");
++#else
+ 			pline("Thinking of Maud you forget everything else.");
++#endif
+ 		exercise(A_WIS, FALSE);
+ 		break;
+ 	case SCR_FIRE:
+diff -Nru nethack-3.4.3/src/role.c nethack-3.4.3-turbonerd/src/role.c
+--- nethack-3.4.3/src/role.c	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/src/role.c	2006-06-04 00:30:14.000000000 -0400
+@@ -326,6 +326,31 @@
+ 	0, 5, 1, 2, 10, A_INT, SPE_CHARM_MONSTER,   -4
+ },
+ #endif
++#ifdef TURBONERD
++{	{"Turbonerd", 0}, {
++	{"Newbie", 0},
++	{"Random", 0},
++	{"Webdork", 0},
++	{"Code Monkey", 0},
++	{"Superuser", 0},
++	{"Hacker", 0},
++	{"Guru", 0},
++	{"Source of All Good Bits", 0},
++	{"Alpha Geek", 0} },
++	"Richard Stallman", "Linus Torvalds", "Eric Raymond",
++	"Ner", "Columbia Internet", "the sub-basement",
++	PM_TURBONERD, NON_PM, PM_KITTEN,
++	PM_ILLIAD, PM_HACKER, PM_CRUD_PUPPY,
++	PM_GIANT_BEETLE, PM_SOLDIER_ANT, S_ANT, S_SPIDER,
++	ART_LIME_GREEN_CRAYON_OF_ENGFE,
++	MH_HUMAN | ROLE_MALE | ROLE_LAWFUL | ROLE_NEUTRAL | ROLE_CHAOTIC,
++	{ 7, 10, 7, 9, 7, 7},
++	{10, 30, 10, 20, 20, 10},
++	{12, 0, 0, 9, 2, 1 },
++	{3, 2, 0, 2, 0, 2}, 14,
++	0, 0, 3, 0, 3, A_INT, SPE_HASTE_SELF, -4
++},
++#endif
+ {	{"Valkyrie", 0}, {
+ 	{"Stripling",   0},
+ 	{"Skirmisher",  0},
+diff -Nru nethack-3.4.3/src/u_init.c nethack-3.4.3-turbonerd/src/u_init.c
+--- nethack-3.4.3/src/u_init.c	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/src/u_init.c	2006-06-04 03:07:32.000000000 -0400
+@@ -150,6 +150,16 @@
+ 	{ 0, 0, 0, 0, 0 }
+ };
+ #endif
++#ifdef TURBONERD
++static struct trobj Turbonerd[] = {
++	{ CLUEBAT, 0, WEAPON_CLASS, 1, UNDEF_BLESS },
++	{ T_SHIRT, 2, ARMOR_CLASS, 1, UNDEF_BLESS },
++	{ LOW_BOOTS, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
++	{ UNDEF_TYP, UNDEF_SPE, SCROLL_CLASS, 1, UNDEF_BLESS },
++	{ UNDEF_TYP, UNDEF_SPE, SCROLL_CLASS, 1, UNDEF_BLESS },
++	{ 0, 0, 0, 0, 0 }
++};	
++#endif
+ static struct trobj Valkyrie[] = {
+ 	{ LONG_SWORD, 1, WEAPON_CLASS, 1, UNDEF_BLESS },
+ 	{ DAGGER, 0, WEAPON_CLASS, 1, UNDEF_BLESS },
+@@ -453,6 +463,25 @@
+ };
+ #endif /* TOURIST */
+ 
++#ifdef TURBONERD
++static const struct def_skill Skill_Turbonerd[] = {
++    { P_DAGGER, P_SKILLED },		{ P_KNIFE, P_SKILLED },
++    { P_SHORT_SWORD, P_SKILLED },	{ P_LONG_SWORD, P_BASIC },
++    { P_SCIMITAR, P_BASIC },		{ P_SABER, P_BASIC },
++    { P_CLUB, P_EXPERT },		{ P_QUARTERSTAFF, P_SKILLED },
++    { P_HAMMER, P_SKILLED },		{ P_DART, P_SKILLED },
++    { P_BOW, P_SKILLED },		{ P_CROSSBOW, P_SKILLED },
++    { P_SHURIKEN, P_SKILLED },		{ P_BOOMERANG, P_BASIC },
++    { P_UNICORN_HORN, P_BASIC },	{ P_PICK_AXE, P_BASIC },
++    { P_ATTACK_SPELL, P_SKILLED },	{ P_ENCHANTMENT_SPELL, P_SKILLED },
++    { P_DIVINATION_SPELL, P_BASIC },    { P_ESCAPE_SPELL, P_EXPERT },
++    { P_MATTER_SPELL, P_SKILLED },	{ P_HEALING_SPELL, P_BASIC },
++    { P_TWO_WEAPON_COMBAT, P_SKILLED },
++    { P_BARE_HANDED_COMBAT, P_EXPERT },
++    { P_NONE, 0 }
++};
++#endif
++
+ static const struct def_skill Skill_V[] = {
+     { P_DAGGER, P_EXPERT },		{ P_AXE, P_EXPERT },
+     { P_PICK_AXE, P_SKILLED },		{ P_SHORT_SWORD, P_SKILLED },
+@@ -716,6 +745,12 @@
+ 		skill_init(Skill_T);
+ 		break;
+ #endif
++#ifdef TURBONERD
++	case PM_TURBONERD:
++		ini_inv(Turbonerd);
++		skill_init(Skill_Turbonerd);
++		break;
++#endif
+ 	case PM_VALKYRIE:
+ 		ini_inv(Valkyrie);
+ 		if(!rn2(6)) ini_inv(Lamp);
+diff -Nru nethack-3.4.3/src/write.c nethack-3.4.3-turbonerd/src/write.c
+--- nethack-3.4.3/src/write.c	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/src/write.c	2006-06-04 22:37:56.000000000 -0400
+@@ -12,7 +12,6 @@
+ cost(otmp)
+ register struct obj *otmp;
+ {
+-
+ 	if (otmp->oclass == SPBOOK_CLASS)
+ 		return(10 * objects[otmp->otyp].oc_level);
+ 
+@@ -166,6 +165,9 @@
+ 
+ 	/* see if there's enough ink */
+ 	basecost = cost(new_obj);
++#ifdef TURBONERD
++	if(pen->oartifact == ART_LIME_GREEN_CRAYON_OF_ENGFE) basecost=6;
++#endif
+ 	if(pen->spe < basecost/2)  {
+ 		Your("marker is too dry to write that!");
+ 		obfree(new_obj, (struct obj *) 0);
+@@ -198,6 +200,10 @@
+ 	/* can't write if we don't know it - unless we're lucky */
+ 	if(!(objects[new_obj->otyp].oc_name_known) &&
+ 	   !(objects[new_obj->otyp].oc_uname) &&
++#ifdef TURBONERD
++	   !(pen->oartifact ==
++		ART_LIME_GREEN_CRAYON_OF_ENGFE) &&
++#endif
+ 	   (rnl(Role_if(PM_WIZARD) ? 3 : 15))) {
+ 		You("%s to write that!", by_descr ? "fail" : "don't know how");
+ 		/* scrolls disappear, spellbooks don't */
+diff -Nru nethack-3.4.3/sys/amiga/Makefile.agc nethack-3.4.3-turbonerd/sys/amiga/Makefile.agc
+--- nethack-3.4.3/sys/amiga/Makefile.agc	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/sys/amiga/Makefile.agc	2006-06-05 20:23:28.000000000 -0400
+@@ -265,9 +265,13 @@
+ 	$(SLIB)Wiz-strt.lev
+ WDFILES= $(SLIB)Wiz-goal.lev $(WDFILES1)
+ 
++TUFILES1= $(SLIB)Ner-fila.lev $(SLIB)Ner-filb.lev $(SLIB)Ner-loca.lev \
++	$(SLIB)Ner-start.lev
++TUFILES= $(SLIB)Ner-goal.lev $(TUFILES1)
++
+ XDFILES=	$(ADFILES) $(BDFILES) $(CDFILES) $(HDFILES) $(KDFILES) \
+ 		$(MDFILES) $(PDFILES) $(RDFILES) $(RANFILES) $(SDFILES) $(TDFILES) \
+-		$(VDFILES) $(WDFILES)
++		$(VDFILES) $(WDFILES) $(TUFILES)
+ 
+ SOUNDFILES= \
+ 	$(SBIN)cvtsnd \
+@@ -410,6 +414,7 @@
+ #	-delete $(TDFILES)
+ #	-delete $(VDFILES)
+ #	-delete $(WDFILES)
++#	-delete $(TUFILES)
+ 	-delete $(I)onames.h $(I)pm.h $(I)date.h
+ 	-delete $(NHS)tile.c $(NHS)monstr.c
+ 	-delete $(I)tile.h 
+@@ -880,6 +885,10 @@
+ 
+ $(SLIB)Wiz-goal.lev:	$(DAT)Wizard.des $(SBIN)lev_comp
+ 
++$(TUFILES1):	$(SLIB)Ner-goal.lev
++
++$(SLIB)Ner-goal.lev:	$(DAT)Turbonerd.des $(SBIN)lev_comp
++
+ $(SLIB)dungeon:  $(DAT)dungeon.def $(SBIN)makedefs $(SBIN)dgn_comp
+ 	$(SBIN)makedefs -e
+ 	$(SBIN)dgn_comp $(DAT)dungeon.pdf
+diff -Nru nethack-3.4.3/sys/amiga/Makefile.ami nethack-3.4.3-turbonerd/sys/amiga/Makefile.ami
+--- nethack-3.4.3/sys/amiga/Makefile.ami	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/sys/amiga/Makefile.ami	2006-06-05 20:23:05.000000000 -0400
+@@ -472,9 +472,14 @@
+ 	$(SLIB)Wiz-strt.lev
+ WDFILES= $(SLIB)Wiz-goal.lev $(WDFILES1)
+ 
++TUFILES1= $(SLIB)Ner-fila.lev $(SLIB)Ner-filb.lev $(SLIB)Ner-loca.lev \
++	$(SLIB)Ner-strt.lev
++TUFILES= $(SLIB)Ner-goal.lev $(TUFILES1)
++
++
+ XDFILES=	$(ADFILES) $(BDFILES) $(CDFILES) $(HDFILES) $(KDFILES) \
+ 		$(MDFILES) $(PDFILES) $(RDFILES) $(RANFILES) $(SDFILES) $(TDFILES) \
+-		$(VDFILES) $(WDFILES)
++		$(VDFILES) $(WDFILES) $(TUFILES)
+ 
+ SOUNDFILES= \
+ 	$(SBIN)cvtsnd \
+@@ -638,6 +643,7 @@
+ #	-delete $(TDFILES)
+ #	-delete $(VDFILES)
+ #	-delete $(WDFILES)
++#	-delete $(TUFILES)
+ 	-delete $(I)onames.h $(I)pm.h $(I)date.h
+ 	-delete $(NHS)tile.c $(NHS)monstr.c
+ 	-delete $(I)tile.h 
+@@ -1203,6 +1209,13 @@
+ #SFD_INSTEAD $(SBIN)lev_comp $(DAT)Wizard.des
+ #none
+ 
++$(TUFILES1):	$(SLIB)Ner-goal.lev
++
++$(SLIB)Ner-goal.lev:	$(DAT)Turbonerd.des $(SBIN)lev_comp
++#SFD_INSTEAD $(SBIN)lev_comp $(DAT)Turbonerd.des
++#none
++
++
+ $(SLIB)dungeon:  $(DAT)dungeon.def $(SBIN)makedefs $(SBIN)dgn_comp
+ 	$(SBIN)makedefs -e
+ 	$(SBIN)dgn_comp $(DAT)dungeon.pdf
+diff -Nru nethack-3.4.3/sys/msdos/Makefile.BC nethack-3.4.3-turbonerd/sys/msdos/Makefile.BC
+--- nethack-3.4.3/sys/msdos/Makefile.BC	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/sys/msdos/Makefile.BC	2006-06-05 20:13:12.000000000 -0400
+@@ -986,6 +986,7 @@
+ 	$(U)lev_comp tourist.des
+ 	$(U)lev_comp valkyrie.des
+ 	$(U)lev_comp wizard.des
++	$(U)lev_comp turbone~1.des
+ 	cd $(SRC)
+ 	echo sp_levs done > $(DAT)\sp_lev.tag
+ 
+diff -Nru nethack-3.4.3/sys/msdos/Makefile.GCC nethack-3.4.3-turbonerd/sys/msdos/Makefile.GCC
+--- nethack-3.4.3/sys/msdos/Makefile.GCC	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/sys/msdos/Makefile.GCC	2006-06-05 20:12:54.000000000 -0400
+@@ -889,7 +889,7 @@
+ 	$(DAT)/caveman.des   $(DAT)/healer.des   $(DAT)/knight.des \
+ 	$(DAT)/monk.des      $(DAT)/priest.des   $(DAT)/ranger.des \
+ 	$(DAT)/rogue.des     $(DAT)/samurai.des  $(DAT)/tourist.des \
+-	$(DAT)/valkyrie.des  $(DAT)/wizard.des
++	$(DAT)/valkyrie.des  $(DAT)/wizard.des $(DAT)/turbone~1.des
+ 	@$(subst /,\,cd $(DAT))
+ 	@$(subst /,\,$(U)lev_comp bigroom.des)
+ 	@$(subst /,\,$(U)lev_comp castle.des)
+@@ -915,6 +915,8 @@
+ 	@$(subst /,\,$(U)lev_comp tourist.des)
+ 	@$(subst /,\,$(U)lev_comp valkyrie.des)
+ 	@$(subst /,\,$(U)lev_comp wizard.des)
++	@$(subst /,\,$(U)lev_comp turbone~1.des)
++
+ 	@$(subst /,\,cd $(SRC))
+ 	@$(subst /,\,echo sp_levs done > $@)
+ 
+diff -Nru nethack-3.4.3/sys/msdos/Makefile.MSC nethack-3.4.3-turbonerd/sys/msdos/Makefile.MSC
+--- nethack-3.4.3/sys/msdos/Makefile.MSC	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/sys/msdos/Makefile.MSC	2006-06-05 20:13:33.000000000 -0400
+@@ -436,6 +436,7 @@
+ 	$(U)lev_comp tourist.des
+ 	$(U)lev_comp valkyrie.des
+ 	$(U)lev_comp wizard.des
++	$(U)lev_comp turbone~1.des
+ 	cd $(SRC)
+ #	-@if exist $(O)sp_lev.tag del $(O)sp_lev.tag
+ 	@echo sp_levs done >$(O)sp_lev.tag
+diff -Nru nethack-3.4.3/sys/os2/Makefile.os2 nethack-3.4.3-turbonerd/sys/os2/Makefile.os2
+--- nethack-3.4.3/sys/os2/Makefile.os2	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/sys/os2/Makefile.os2	2006-06-05 20:16:06.000000000 -0400
+@@ -1289,7 +1289,8 @@
+ WFILES = $(GAMEDIR)\Wiz-goal.lev
+ 
+ XFILES = $(AFILES) $(BFILES) $(CFILES) $(HFILES) $(KFILES) $(MFILES) \
+-	 $(PFILES) $(RANFILES) $(RFILES) $(SFILES) $(TFILES) $(VFILES) $(WFILES)
++	 $(PFILES) $(RANFILES) $(RFILES) $(SFILES) $(TFILES) $(VFILES) \
++	 $(WFILES) $(TUFILES)
+ 
+ spec_lev : $(GAMEDIR)\astral.lev $(GAMEDIR)\bigrm-1.lev $(GAMEDIR)\castle.lev \
+ 	   $(GAMEDIR)\knox.lev $(GAMEDIR)\medusa-1.lev $(GAMEDIR)\minefill.lev \
+@@ -1401,6 +1402,8 @@
+ 	$(MAKEB) QQ=Sam QF=Samurai do_quest
+ $(TFILES) : $(DAT)\Tourist.des $(TEMP)\lev_comp.exe
+ 	$(MAKEB) QQ=Tou QF=Tourist do_quest
++$(TUFILES) : $(DAT)\Turbonerd.des $(TEMP)\lev_comp.exe
++	$(MAKEB) QQ=Ner QF=Turbonerd do_quest
+ $(VFILES) : $(DAT)\Valkyrie.des $(TEMP)\lev_comp.exe
+ 	$(MAKEB) QQ=Val QF=Valkyrie do_quest
+ $(WFILES) : $(DAT)\Wizard.des $(TEMP)\lev_comp.exe
+diff -Nru nethack-3.4.3/sys/unix/Makefile.dat nethack-3.4.3-turbonerd/sys/unix/Makefile.dat
+--- nethack-3.4.3/sys/unix/Makefile.dat	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/sys/unix/Makefile.dat	2006-06-05 23:53:08.000000000 -0400
+@@ -118,7 +118,7 @@
+ quest_levs: ../util/lev_comp \
+ 	Arch.des Barb.des Caveman.des Healer.des Knight.des Monk.des \
+ 	Priest.des Ranger.des Rogue.des Samurai.des Tourist.des Valkyrie.des \
+-	Wizard.des
++	Wizard.des Turbonerd.des
+ 	../util/lev_comp Arch.des
+ 	../util/lev_comp Barb.des
+ 	../util/lev_comp Caveman.des
+@@ -132,6 +132,7 @@
+ 	../util/lev_comp Tourist.des
+ 	../util/lev_comp Valkyrie.des
+ 	../util/lev_comp Wizard.des
++	../util/lev_comp Turbonerd.des
+ 	touch quest_levs
+ 
+ dungeon: dungeon.def ../util/makedefs ../util/dgn_comp
+diff -Nru nethack-3.4.3/sys/vms/Makefile.dat nethack-3.4.3-turbonerd/sys/vms/Makefile.dat
+--- nethack-3.4.3/sys/vms/Makefile.dat	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/sys/vms/Makefile.dat	2006-06-05 20:04:24.000000000 -0400
+@@ -30,7 +30,7 @@
+ # note: the level lists need to be space separated
+ QUESTLEVS = Arch.des Barb.des Caveman.des Healer.des Knight.des \
+ 	Monk.des Priest.des Ranger.des Rogue.des Samurai.des Tourist.des \
+-	Valkyrie.des Wizard.des
++	Valkyrie.des Wizard.des Turobnerd.des
+ SPECLEVS  = bigroom.des castle.des endgame.des gehennom.des knox.des \
+ 	medusa.des mines.des oracle.des sokoban.des tower.des yendor.des
+ 
+diff -Nru nethack-3.4.3/sys/wince/bootstrp.mak nethack-3.4.3-turbonerd/sys/wince/bootstrp.mak
+--- nethack-3.4.3/sys/wince/bootstrp.mak	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/sys/wince/bootstrp.mak	2006-06-05 20:10:34.000000000 -0400
+@@ -244,7 +244,8 @@
+ 	$(DAT)\caveman.des $(DAT)\healer.des   $(DAT)\knight.des \
+ 	$(DAT)\monk.des    $(DAT)\priest.des   $(DAT)\ranger.des \
+ 	$(DAT)\rogue.des   $(DAT)\samurai.des  $(DAT)\sokoban.des \
+-	$(DAT)\tourist.des $(DAT)\valkyrie.des $(DAT)\wizard.des
++	$(DAT)\tourist.des $(DAT)\valkyrie.des $(DAT)\wizard.des \
++	$(DAT)\turbonerd.des
+ 	cd $(DAT)
+ 	$(U)lev_comp bigroom.des
+ 	$(U)lev_comp castle.des
+@@ -270,6 +271,7 @@
+ 	$(U)lev_comp tourist.des
+ 	$(U)lev_comp valkyrie.des
+ 	$(U)lev_comp wizard.des
++	$(U)lev_comp turbonerd.des
+ 	cd $(WINCE)
+ 	echo sp_levs done > $(O)sp_lev.tag
+ 
+diff -Nru nethack-3.4.3/sys/winnt/Makefile.bcc nethack-3.4.3-turbonerd/sys/winnt/Makefile.bcc
+--- nethack-3.4.3/sys/winnt/Makefile.bcc	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/sys/winnt/Makefile.bcc	2006-06-05 20:07:30.000000000 -0400
+@@ -561,7 +561,8 @@
+ 	$(DAT)\caveman.des $(DAT)\healer.des   $(DAT)\knight.des \
+ 	$(DAT)\monk.des    $(DAT)\priest.des   $(DAT)\ranger.des \
+ 	$(DAT)\rogue.des   $(DAT)\samurai.des  $(DAT)\sokoban.des \
+-	$(DAT)\tourist.des $(DAT)\valkyrie.des $(DAT)\wizard.des
++	$(DAT)\tourist.des $(DAT)\valkyrie.des $(DAT)\wizard.des \
++	$(DAT)\turbonerd.des
+ 	cd $(DAT)
+ 	$(U)lev_comp bigroom.des
+ 	$(U)lev_comp castle.des
+@@ -587,6 +588,7 @@
+ 	$(U)lev_comp tourist.des
+ 	$(U)lev_comp valkyrie.des
+ 	$(U)lev_comp wizard.des
++	$(U)lev_comp turbonerd.des
+ 	cd $(SRC)
+ 	echo sp_levs done > $(O)sp_lev.tag
+ 
+diff -Nru nethack-3.4.3/sys/winnt/Makefile.gcc nethack-3.4.3-turbonerd/sys/winnt/Makefile.gcc
+--- nethack-3.4.3/sys/winnt/Makefile.gcc	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/sys/winnt/Makefile.gcc	2006-06-05 20:08:08.000000000 -0400
+@@ -523,7 +523,8 @@
+ 	 $(DAT)/caveman.des $(DAT)/healer.des   $(DAT)/knight.des \
+ 	 $(DAT)/monk.des    $(DAT)/priest.des   $(DAT)/ranger.des \
+ 	 $(DAT)/rogue.des   $(DAT)/samurai.des  $(DAT)/sokoban.des \
+-	 $(DAT)/tourist.des $(DAT)/valkyrie.des $(DAT)/wizard.des
++	 $(DAT)/tourist.des $(DAT)/valkyrie.des $(DAT)/wizard.des \
++	 $(DAT)/turbonerd.des
+ 	$(subst /,\,$(U)lev_comp $(DAT)/bigroom.des)
+ 	$(subst /,\,$(U)lev_comp $(DAT)/castle.des)
+ 	$(subst /,\,$(U)lev_comp $(DAT)/endgame.des)
+@@ -548,6 +549,7 @@
+ 	$(subst /,\,$(U)lev_comp $(DAT)/tourist.des)
+ 	$(subst /,\,$(U)lev_comp $(DAT)/valkyrie.des)
+ 	$(subst /,\,$(U)lev_comp $(DAT)/wizard.des)
++	$(subst /,\,$(U)lev_comp $(DAT)/turbonerd.des)
+ 	$(subst /,\,copy *.lev $(DAT))
+ 	$(subst /,\,del *.lev)
+ 	$(subst /,\,echo sp_levs done > $(O)sp_lev.tag)
+diff -Nru nethack-3.4.3/sys/winnt/Makefile.msc nethack-3.4.3-turbonerd/sys/winnt/Makefile.msc
+--- nethack-3.4.3/sys/winnt/Makefile.msc	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/sys/winnt/Makefile.msc	2006-06-05 20:08:40.000000000 -0400
+@@ -496,7 +496,8 @@
+ 	$(DAT)\caveman.des $(DAT)\healer.des   $(DAT)\knight.des \
+ 	$(DAT)\monk.des    $(DAT)\priest.des   $(DAT)\ranger.des \
+ 	$(DAT)\rogue.des   $(DAT)\samurai.des  $(DAT)\sokoban.des \
+-	$(DAT)\tourist.des $(DAT)\valkyrie.des $(DAT)\wizard.des
++	$(DAT)\tourist.des $(DAT)\valkyrie.des $(DAT)\wizard.des \
++	$(DAT)\turbonerd.des
+ 	cd $(DAT)
+ 	$(U)lev_comp bigroom.des
+ 	$(U)lev_comp castle.des
+@@ -522,6 +523,7 @@
+ 	$(U)lev_comp tourist.des
+ 	$(U)lev_comp valkyrie.des
+ 	$(U)lev_comp wizard.des
++	$(U)lev_comp turbonerd.des
+ 	cd $(SRC)
+ 	echo sp_levs done > $(O)sp_lev.tag
+ 
+diff -Nru nethack-3.4.3/util/makedefs.c nethack-3.4.3-turbonerd/util/makedefs.c
+--- nethack-3.4.3/util/makedefs.c	2003-12-07 18:39:13.000000000 -0500
++++ nethack-3.4.3-turbonerd/util/makedefs.c	2006-06-06 01:53:10.000000000 -0400
+@@ -487,6 +487,9 @@
+ #ifdef RLECOMP
+ 			| (1L << 28)
+ #endif
++#ifdef TURBONERD	
++			| (1L << 29)
++#endif
+ 			);
+ 	/*
+ 	 * Value used for object & monster sanity check.
+@@ -774,6 +777,9 @@
+ #ifdef ZEROCOMP
+ 		"zero-compressed save files",
+ #endif
++#ifdef TURBONERD
++		"turbonerds",
++#endif
+ 		save_bones_compat_buf,
+ 		"basic NetHack features"
+ 	};
+diff -Nru nethack-3.4.3/win/share/monsters.txt nethack-3.4.3-turbonerd/win/share/monsters.txt
+--- nethack-3.4.3/win/share/monsters.txt	2003-12-07 18:39:14.000000000 -0500
++++ nethack-3.4.3-turbonerd/win/share/monsters.txt	2006-06-05 23:15:09.000000000 -0400
+@@ -5923,6 +5923,25 @@
+   MMMMMPPAMPPAMMMM
+   MMMMMMMMMMMMMMMM
+ }
++# tile 395 (Hastur)
++{
++  MMMMMMMAAAMMMMMM
++  MMMMMMAAAAAMMMMM
++  MMMAAAAAAMMMMMMM
++  MMAAAAAAAAMMMMMM
++  MMAACACAAAMMMMMM
++  MMAADCDAAAMMMMMM
++  MMAADADAAAMMMMMM
++  MMAAAAAAAAMMMMMM
++  MMAAAAAAAAMMMMMM
++  MMMAAAAAAAAMMMMM
++  MMMAAAAAAAAMMMMM
++  MMMMAAAAAAAAMMMM
++  MMMAAAAAAAAAAAMM
++  MMMAAAAAAAAAAAAM
++  MMMMAAAAAAAAAAAA
++  MMAAAAAAAAAAAAAM
++}
+ # tile 311 (Baalzebub)
+ {
+   MMMMMMFMMMFMMMMM
+@@ -5980,6 +5999,25 @@
+   MMGAGFAFFFAFAMMM
+   MMMMMMMMMMMMMMMM
+ }
++# tile 394 (Cthulhu)
++{
++  MMMMMMMMMMMMMMMM
++  MMMMMMMGGGGCMMMM
++  MMMMMGGGGGGCMMMM
++  MMMMGGGGGGGCMMMM
++  MMMGCGGGGCCMMMMM
++  MMMGGCGNCGCMMMMM
++  MMMMGGGGGCMMMMMM
++  MMMMGAGAGFMMMMMM
++  MMMMGAGAGFMMMMMM
++  MMMMGAGAGFGMMMMM
++  MMMMMFGFGFGCMAAM
++  MMMMCBGBBFMCAAAM
++  MMMGGGBBFFACAAAM
++  MMMMMMBBFCAAAAMM
++  MMMMMMCFFCAAMMMM
++  MMMMGGCMGGAMMMMM
++}
+ # tile 314 (Death)
+ {
+   MBBBBMMMMJJJMMMM
+@@ -6626,6 +6664,25 @@
+   MMMMMLLAMLLAMMMM
+   MMMMMMMMMMMMMMMM
+ }
++# tile 398 (turbonerd)
++{
++  MMMMMMMMMMMMMMMM
++  MMMMMMMMMMMMMMMM
++  MMMMMGGFGGMMMMMM
++  MMMMMMMGMMMMMMMM
++  MMMMMMNDNDMMMMMM
++  MMMDDDDDDDDMMMMM
++  MMMMMMLELEAMMMMM
++  MMMMMMLLLLAMMMMM
++  MMMMMMALLAMMMMMM
++  MMMMMCKAAKJMAAAM
++  MMMMCKKKJJJJAAAM
++  MMMMKACKJJAJAAAM
++  MMMMLACJKJALAAAM
++  MMMMMKCJAJJAMAMM
++  MMMMMCJJMJKJMMMM
++  MMMMMMMMMMMMMMMM
++}
+ # tile 348 (valkyrie)
+ {
+   MMMMMMMMMMMMMMMM
+@@ -6911,6 +6968,25 @@
+   MMMMMLLAMLLAMMMM
+   MMMMMMMMMMMMMMMM
+ }
++# tile 397 (Illiad)
++{
++  MMJJJJJJJJJJJJMM
++  MMJJAAJJJJAAJJMM
++  MMJAAAAJJAAAAJMM
++  MMJJAAJJJJAAJJMM
++  MMJJJJJJJJJJJJMM
++  MMJJJJJJJJJJJJMM
++  MMMMMMNNNMMMMMMM
++  MMMNNNNNNNNNNMMM
++  MMNNNNNNNNNNNNMM
++  MNNANNNNNNNNANNM
++  MJJANNNNNNNNAJJM
++  MJJADDDDDDDDAJJM
++  MJJANNNNNNNNAJJM
++  MJJANNNNNNNNAJJM
++  MJJAAAAAAAAAAJJM
++  MJJEEEEEEEEEEJJM
++}
+ # tile 363 (Norn)
+ {
+   MMMMMMMMMMMMMMMM
+@@ -7158,6 +7234,25 @@
+   MMMMMIIAMIIAMMMM
+   MMMMMMMMMMMMMMMM
+ }
++# tile 396 (Crud Puppy)
++{
++  MMMMMMAAAAMMMMMM
++  MMMMAJAAAJAAMMMM
++  MMMAAAAJAAJAAMMM
++  MMAAAJAAAJAJAAMM
++  MMAJAAAJAAAJAAMM
++  MMAAAJAJAAAAJAMM
++  MMMAAAAAAAJAAMMM
++  MMMMMAJAAAAMMMMM
++  MMMMMMAAJAMMMMMM
++  MMMMMMOMMOMMMMMM
++  MMMMMOOMMOOMMMMM
++  MMMMMOJMMJOMMMMM
++  MMMMOOOMMOOOMMMM
++  MMMJOOOMMOOOJMMM
++  MMJOOOOMMOOOOJMM
++  MMMMMMMMMMMMMMMM
++}
+ # tile 376 (Lord Surtur)
+ {
+   MMMMPPDDDDAAMMMM
+@@ -7443,6 +7538,25 @@
+   MMMMMLLAMLLAMMMM
+   MMMMMMMMMMMMMMMM
+ }
++# tile 399 (hacker)
++{
++  MMMMMMMMMMMMMMMM
++  MMMMMMMMMMMMMMMM
++  MMMMMGGFGGMMMMMM
++  MMMMMMMGMMMMMMMM
++  MMMMMMNDNDMMMMMM
++  MMMDDDDDDDDMMMMM
++  MMMMMMLELEAMMMMM
++  MMMMMMLLLLAMMMMM
++  MMMMMMALLAMMMMMM
++  MMMMMCKAAKJMAAAM
++  MMMMCKKKJJJJAAAM
++  MMMMKACKJJAJAAAM
++  MMMMLACJKJALAAAM
++  MMMMMKCJAJJAMAMM
++  MMMMMCJJMJKJMMMM
++  MMMMMMMMMMMMMMMM
++}
+ # tile 391 (warrior)
+ {
+   MMMMMOMMMMOMMMMM
+diff -Nru nethack-3.4.3/win/share/objects.txt nethack-3.4.3-turbonerd/win/share/objects.txt
+--- nethack-3.4.3/win/share/objects.txt	2003-12-07 18:39:14.000000000 -0500
++++ nethack-3.4.3-turbonerd/win/share/objects.txt	2006-06-05 23:15:09.000000000 -0400
+@@ -1154,6 +1154,25 @@
+   MJAMMMMMMMMMMMMM
+   MMMMMMMMMMMMMMMM
+ }
++# tile 435 (cluebat)
++{
++  MMMMMMMMMMMMMMMM
++  MMMMMMMMMMMMMMMM
++  MMMMMMMMMMMMMMMM
++  MMMMMMMMMMKKMMMM
++  MMMMMMMMPCKKAMMM
++  MMMMMMMKKKKKAMMM
++  MMMMMMPKKKKPAMMM
++  MMMMMMKKKCKAAMMM
++  MMMMMPCKKKAAMMMM
++  MMMMPKKKPAAMMMMM
++  MMMPKKPAAMMMMMMM
++  MMMKPAAMMMMMMMMM
++  MMKPAMMMMMMMMMMM
++  MKPAMMMMMMMMMMMM
++  MPAMMMMMMMMMMMMM
++  MMMMMMMMMMMMMMMM
++}
+ # tile 60 (rubber hose)
+ {
+   MMMMMMMMMMMMMMMM
+diff -Nru nethack-3.4.3/win/share/tilemap.c nethack-3.4.3-turbonerd/win/share/tilemap.c
+--- nethack-3.4.3/win/share/tilemap.c	2003-12-07 18:39:14.000000000 -0500
++++ nethack-3.4.3-turbonerd/win/share/tilemap.c	2006-06-05 23:47:06.000000000 -0400
+@@ -50,27 +50,58 @@
+ #ifndef CHARON /* not supported yet */
+ 	{ MON_GLYPH, PM_CROESUS, "Charon" },
+ #endif
++#ifndef TURBONERD
++	{ MON_GLYPH, PM_DISPATER, "Hastur" },
++	{ MON_GLYPH, PM_DEMOGORGON, "Cthulhu" },
++#endif
+ #ifndef MAIL
+ 	{ MON_GLYPH, PM_FAMINE, "mail daemon" },
+ #endif
+ #ifndef TOURIST
+ 	{ MON_GLYPH, PM_SAMURAI, "tourist" },
+ #endif
++#ifndef TURBONERD
++	{ MON_GLYPH, PM_TOURIST, "turbonerd" },
++#endif
+ 	/* commented out in monst.c at present */
+ 	{ MON_GLYPH, PM_SHAMAN_KARNOV, "Earendil" },
+ 	{ MON_GLYPH, PM_SHAMAN_KARNOV, "Elwing" },
+ #ifndef TOURIST
+ 	{ MON_GLYPH, PM_LORD_SATO, "Twoflower" },
++#ifndef TURBONERD
++	{ MON_GLYPH, PM_LORD_SATO, "Illiad" },
++#endif
++#else
++#ifndef TURBONERD
++	{ MON_GLYPH, PM_TWOFLOWER, "Illiad" },
++#endif
+ #endif
+ 	/* commented out in monst.c at present */
+ 	{ MON_GLYPH, PM_CHROMATIC_DRAGON, "Goblin King" },
++#ifndef TURBONERD 
++	{ MON_GLYPH, PM_ASHIKAGA_TAKAUJI, "Crud Puppy" },
++#endif
+ 	{ MON_GLYPH, PM_NEANDERTHAL, "High-elf" },
+ #ifndef TOURIST
+ 	{ MON_GLYPH, PM_ROSHI, "guide" },
++#ifndef TURBONERD
++	{ MON_GLYPH, PM_ROSHI, "hacker" },
+ #endif
++#else
++#ifndef TURBONERD
++	{ MON_GLYPH, PM_GUIDE, "hacker" },
++#endif
++#endif
++#ifndef TURBONERD
++	{ OBJ_GLYPH, CLUB, "cluebat" },
+ #ifndef KOPS
+ 	{ OBJ_GLYPH, CLUB, "rubber hose" },
+ #endif
++#else
++#ifndef KOPS
++	{ OBJ_GLYPH, CLUEBAT, "rubber hose" },
++#endif
++#endif
+ 	/* objects commented out in objects.c at present */
+ 	{ OBJ_GLYPH, SILVER_DRAGON_SCALE_MAIL, "shimmering dragon scale mail" },
+ 	{ OBJ_GLYPH, SILVER_DRAGON_SCALES, "shimmering dragon scales" },
