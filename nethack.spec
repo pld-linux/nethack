@@ -13,7 +13,7 @@ Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by
 Summary(pt_BR):	Jogo estilo rogue baseado no Dungeons and Dragons
 Name:		nethack
 Version:	3.4.3
-Release:	4
+Release:	5
 License:	Nethack GPL
 Group:		Applications/Games
 Source0:	http://dl.sourceforge.net/nethack/%{name}-%{file_version}-src.tgz
@@ -36,6 +36,8 @@ Patch1:		%{name}-makefile.patch
 Patch2:		%{name}-gcc3.patch
 Patch3:		%{name}-qt.patch
 Patch4:		%{name}-qt33.patch
+# http://www.userfriendly.org/games/nethack/nethack-3.4.3-turbonerd-0.1.0.patch
+Patch5:		%{name}-3.4.3-turbonerd-0.1.0.patch
 URL:		http://www.nethack.org/
 %{?with_qt:BuildRequires:	XFree86-devel}
 BuildRequires:	bison
@@ -122,6 +124,7 @@ Nethackowy podrêcznik w formacie PDF.
 %patch2 -p1
 %{?with_qt:%patch3 -p1}
 %patch4 -p1
+%patch5 -p1
 
 %build
 sh ./sys/unix/setup.sh links
