@@ -184,7 +184,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %{_mandir}/man6/*
 
-%{_desktopdir}/*
+%{_desktopdir}/*.desktop
 %{_pixmapsdir}/*
 
 %files spoilers
