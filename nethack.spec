@@ -7,10 +7,10 @@
 #
 %define		file_version	%(echo %{version} | tr -d .)
 Summary:	NetHack - An adventure into the Mazes of Menace
-Summary(es):	Juego estilo rogue que se basa en Dungeons and Dragons (calabozos y dragones)
-Summary(nb):	NetHack - Et eventyr i en faretruende labyrint
-Summary(pl):	NetHack - Przygoda w Labiryntach Gro¼by
-Summary(pt_BR):	Jogo estilo rogue baseado no Dungeons and Dragons
+Summary(es.UTF-8):   Juego estilo rogue que se basa en Dungeons and Dragons (calabozos y dragones)
+Summary(nb.UTF-8):   NetHack - Et eventyr i en faretruende labyrint
+Summary(pl.UTF-8):   NetHack - Przygoda w Labiryntach GroÅºby
+Summary(pt_BR.UTF-8):   Jogo estilo rogue baseado no Dungeons and Dragons
 Name:		nethack
 Version:	3.4.3
 Release:	5
@@ -61,39 +61,39 @@ Andries Brouwer, were simply called `hack'. The name changed when
 maintenance was taken over by a group of hackers originally organized
 by Mike Stephenson.
 
-%description -l pt_BR
-Nethack é um jogo clássico estilo rogue, baseado no Dungeons and
-Dragons. Ele é um jogo muito elaborado e profundo, desenvolvido há
-anos pelo mesmo time de indivíduos.
+%description -l pt_BR.UTF-8
+Nethack Ã© um jogo clÃ¡ssico estilo rogue, baseado no Dungeons and
+Dragons. Ele Ã© um jogo muito elaborado e profundo, desenvolvido hÃ¡
+anos pelo mesmo time de indivÃ­duos.
 
-%description -l es
-Nethack es un juego clásico estilo rogue, basado en el juego Dungeons
+%description -l es.UTF-8
+Nethack es un juego clÃ¡sico estilo rogue, basado en el juego Dungeons
 and Dragons (calabozos y dragones). Es un juego muy elaborado y
-profundo, desarrollado desde hace muchos años por el mismo grupo de
+profundo, desarrollado desde hace muchos aÃ±os por el mismo grupo de
 individuos.
 
-%description -l nb
+%description -l nb.UTF-8
 NetHack - Et eventyr i en faretruende labyrint.
 
-NetHack 3.4.0 er siste utvidelse til NetHack, et tøm og røm eventyr
-spill. Det er basert på spill som Rouge og Hack, og er etterfølgeren
+NetHack 3.4.0 er siste utvidelse til NetHack, et tÃ¸m og rÃ¸m eventyr
+spill. Det er basert pÃ¥ spill som Rouge og Hack, og er etterfÃ¸lgeren
 til versjon 3.0 og 3.1 av NetHack.
 
-Denne utgaven er kopilert støtte for følgende utvidelser: Qt og
+Denne utgaven er kopilert stÃ¸tte for fÃ¸lgende utvidelser: Qt og
 ncurses.
 
-%description -l pl
-Gra dziej±ca siê w lochu, podobna do rogue, lecz bardziej dopracowana.
+%description -l pl.UTF-8
+Gra dziejÄ…ca siÄ™ w lochu, podobna do rogue, lecz bardziej dopracowana.
 Bardzo popularna na Uniksach i maszynach klasy PC (nethack jest
-prawdopodobnie najszerzej rozpowszechnion± darmow± gr± labiryntow±.)
-Najwcze¶niejsze wersje, napisane przez Jaya Fenlasona, a nastêpnie
-znacznie rozszerzone przez Andriesa Brouwara, nazywa³y siê po prostu
-'hack' (r±baæ, siekaæ.) Nazwa zmieni³a siê gdy opieka nad gr± zosta³a
-przejêta przez grupê hackerów zawi±zan± przez Mike'a Stephensona.
+prawdopodobnie najszerzej rozpowszechnionÄ… darmowÄ… grÄ… labiryntowÄ….)
+NajwczeÅ›niejsze wersje, napisane przez Jaya Fenlasona, a nastÄ™pnie
+znacznie rozszerzone przez Andriesa Brouwara, nazywaÅ‚y siÄ™ po prostu
+'hack' (rÄ…baÄ‡, siekaÄ‡.) Nazwa zmieniÅ‚a siÄ™ gdy opieka nad grÄ… zostaÅ‚a
+przejÄ™ta przez grupÄ™ hackerÃ³w zawiÄ…zanÄ… przez Mike'a Stephensona.
 
 %package spoilers
 Summary:	Spoilers to NetHack
-Summary(pl):	Psuje dla NetHacka
+Summary(pl.UTF-8):   Psuje dla NetHacka
 Group:		Applications/Games
 
 %description spoilers
@@ -101,21 +101,21 @@ Spoilers - a set of texts which explain many secrets in the game.
 Beware: the game after reading it becomes even more addictive! (But
 you will lose delights of discovering its secrets.)
 
-%description spoilers -l pl
-Psuje - zbiór tekstów wyja¶niaj±cych wiele sekretów w grze. Uwaga: po
-przeczytaniu gra staje siê jeszcze bardziej uzale¿niaj±ca! (Lecz
-stracisz rozkosze poznawania jej tajników.)
+%description spoilers -l pl.UTF-8
+Psuje - zbiÃ³r tekstÃ³w wyjaÅ›niajÄ…cych wiele sekretÃ³w w grze. Uwaga: po
+przeczytaniu gra staje siÄ™ jeszcze bardziej uzaleÅ¼niajÄ…ca! (Lecz
+stracisz rozkosze poznawania jej tajnikÃ³w.)
 
 %package doc-pdf
 Summary:	Nethack Guidebook, PDF format
-Summary(pl):	Nethackowy podrêcznik w formacie PDF
+Summary(pl.UTF-8):   Nethackowy podrÄ™cznik w formacie PDF
 Group:		Applications/Games
 
 %description doc-pdf
 Nethack Guidebook, PDF format.
 
-%description doc-pdf -l pl
-Nethackowy podrêcznik w formacie PDF.
+%description doc-pdf -l pl.UTF-8
+Nethackowy podrÄ™cznik w formacie PDF.
 
 %prep
 %setup -q -a1 -a2
