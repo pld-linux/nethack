@@ -7,10 +7,10 @@
 #
 %define		file_version	%(echo %{version} | tr -d .)
 Summary:	NetHack - An adventure into the Mazes of Menace
-Summary(es.UTF-8):   Juego estilo rogue que se basa en Dungeons and Dragons (calabozos y dragones)
-Summary(nb.UTF-8):   NetHack - Et eventyr i en faretruende labyrint
-Summary(pl.UTF-8):   NetHack - Przygoda w Labiryntach Groźby
-Summary(pt_BR.UTF-8):   Jogo estilo rogue baseado no Dungeons and Dragons
+Summary(es.UTF-8):	Juego estilo rogue que se basa en Dungeons and Dragons (calabozos y dragones)
+Summary(nb.UTF-8):	NetHack - Et eventyr i en faretruende labyrint
+Summary(pl.UTF-8):	NetHack - Przygoda w Labiryntach Groźby
+Summary(pt_BR.UTF-8):	Jogo estilo rogue baseado no Dungeons and Dragons
 Name:		nethack
 Version:	3.4.3
 Release:	5
@@ -93,7 +93,7 @@ przejęta przez grupę hackerów zawiązaną przez Mike'a Stephensona.
 
 %package spoilers
 Summary:	Spoilers to NetHack
-Summary(pl.UTF-8):   Psuje dla NetHacka
+Summary(pl.UTF-8):	Psuje dla NetHacka
 Group:		Applications/Games
 
 %description spoilers
@@ -108,7 +108,7 @@ stracisz rozkosze poznawania jej tajników.)
 
 %package doc-pdf
 Summary:	Nethack Guidebook, PDF format
-Summary(pl.UTF-8):   Nethackowy podręcznik w formacie PDF
+Summary(pl.UTF-8):	Nethackowy podręcznik w formacie PDF
 Group:		Applications/Games
 
 %description doc-pdf
