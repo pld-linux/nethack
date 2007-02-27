@@ -39,12 +39,12 @@ Patch4:		%{name}-qt33.patch
 # http://www.userfriendly.org/games/nethack/nethack-3.4.3-turbonerd-0.1.0.patch
 Patch5:		%{name}-3.4.3-turbonerd-0.1.0.patch
 URL:		http://www.nethack.org/
-%{?with_qt:BuildRequires:	XFree86-devel}
 BuildRequires:	bison
 BuildRequires:	flex
 BuildRequires:	groff
 BuildRequires:	ncurses-devel
 %{?with_qt:BuildRequires:	qt-devel >= 3.0.3}
+%{?with_qt:BuildRequires:	xorg-lib-libX11-devel}
 Requires:	/bin/gzip
 Conflicts:	applnk < 1.5.13
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
