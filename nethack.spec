@@ -13,7 +13,7 @@ Summary(pl.UTF-8):	NetHack - Przygoda w Labiryntach Groźby
 Summary(pt_BR.UTF-8):	Jogo estilo rogue baseado no Dungeons and Dragons
 Name:		nethack
 Version:	3.4.3
-Release:	5
+Release:	6
 License:	Nethack GPL
 Group:		Applications/Games
 Source0:	http://dl.sourceforge.net/nethack/%{name}-%{file_version}-src.tgz
@@ -129,7 +129,7 @@ Nethackowy podręcznik w formacie PDF.
 %build
 sh ./sys/unix/setup.sh links
 
-%{__make} all \
+%{__make} -j1 all \
 	CFLAGS="%{rpmcflags} -I../include -I/usr/include/ncurses -DWIZARD='\"%{_wizard}\"'" \
 	LFLAGS="%{rpmldflags}" \
 	CC="%{__cc}" \
