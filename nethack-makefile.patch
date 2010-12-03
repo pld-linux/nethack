@@ -6,7 +6,7 @@ diff -ruN nethack-3.4.3./sys/unix/Makefile.src nethack-3.4.3/sys/unix/Makefile.s
  # NetHack is standard C.  If using Qt, uncomment the LD line here to get
  # the C++ libraries linked in.
 -CXXFLAGS = $(CFLAGS) -I. -I$(QTDIR)/include
-+CXXFLAGS = $(CFLAGS) -I. -I$(QTDIR)/include/qt
++CXXFLAGS = $(CFLAGS) -I. -I$(QTDIR)/include/qt -D__CORRECT_ISO_CPP_STRINGS_H_PROTO
  CXX=g++
  #LD=g++
  
@@ -16,7 +16,7 @@ diff -ruN nethack-3.4.3./sys/unix/Makefile.src nethack-3.4.3/sys/unix/Makefile.s
  # WINTTYLIB = -lcurses16
 -# WINTTYLIB = -lncurses
 -WINTTYLIB = -ltermlib
-+WINTTYLIB = -lncurses
++WINTTYLIB = -lncurses -ltinfo
 +# WINTTYLIB = -ltermlib
  #
  # libraries for X11
