@@ -16,7 +16,7 @@ Version:	3.4.3
 Release:	6
 License:	Nethack GPL
 Group:		Applications/Games
-Source0:	http://dl.sourceforge.net/nethack/%{name}-%{file_version}-src.tgz
+Source0:	http://downloads.sourceforge.net/nethack/%{name}-%{file_version}-src.tgz
 # Source0-md5:	21479c95990eefe7650df582426457f9
 Source1:	http://www.spod-central.org/~psmith/nh/spoi-%{file_version}.tar.gz
 # Source1-md5:	72cac599c3660eac0a54b17ece8989ff
@@ -44,6 +44,7 @@ BuildRequires:	flex
 BuildRequires:	groff
 BuildRequires:	ncurses-devel
 %{?with_qt:BuildRequires:	qt-devel >= 3.0.3}
+BuildRequires:	util-linux-ng
 %{?with_qt:BuildRequires:	xorg-lib-libX11-devel}
 Requires:	/bin/gzip
 Conflicts:	applnk < 1.5.13
@@ -171,7 +172,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(2755,root,games) %{_nhdir}/nethack
 %attr(2755,root,games) %{_nhdir}/recover
 
-%attr(755,root,root) %dir %{_nhdir}
+%dir %{_nhdir}
 %{_nhdir}/nhdat
 %{?with_qt:%{_nhdir}/*.x[bp]m}
 %{?with_qt:%{_nhdir}/x11tiles}
