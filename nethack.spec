@@ -44,7 +44,7 @@ BuildRequires:	flex
 BuildRequires:	groff
 BuildRequires:	ncurses-devel
 %{?with_qt:BuildRequires:	qt-devel >= 3.0.3}
-BuildRequires:	util-linux-ng
+BuildRequires:	util-linux
 %{?with_qt:BuildRequires:	xorg-lib-libX11-devel}
 Requires:	/bin/gzip
 Conflicts:	applnk < 1.5.13
