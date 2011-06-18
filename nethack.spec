@@ -27,10 +27,12 @@ Source4:	%{name}.png
 Source5:	Guidebook-3.2pl.ps.gz
 # Source5-md5:	4a2a9a38deb08e9c4177c3b5ce6e627e
 Source6:	Guidebook.pdf
+# Source6-md5:	4fc7970cd5664f293c426a4d696c8a6b
 Source7:	%{name}rc.gz
 # Source7-md5:	ffd3d14ab4df527e9f3738320dec7f93
 # http://avrc.city.ac.uk/nethack/VernonSpoilers/vol3-1.2.2.pdf
 Source8:	%{name}-vol3-1.2.2.pdf
+# Source8-md5:	67937e7f7a786390a47bf9f195c1a5c4
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-makefile.patch
 Patch2:		%{name}-gcc3.patch
