@@ -123,13 +123,13 @@ Nethackowy podręcznik w formacie PDF.
 
 %prep
 %setup -q -a1 -a2
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
+%patch -P0 -p1
+%patch -P1 -p1
+%patch -P2 -p1
 %{?with_qt:%patch3 -p1}
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
+%patch -P4 -p1
+%patch -P5 -p1
+%patch -P6 -p1
 
 %build
 sh ./sys/unix/setup.sh links
